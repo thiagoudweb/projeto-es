@@ -26,11 +26,11 @@ public class SecurityConfig {
         return httpSecurity.csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-            .requestMatchers(HttpMethod.POST, "/").permitAll()
+            .anyRequest().permitAll()
             //.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
             //.requestMatchers("/location/**", "/booking/**").hasRole("ADMIN")
             //To-do: substituir as rodas, quando estas estiverem devidamente implementadas
-            .anyRequest().authenticated()
+            //.anyRequest().authenticated()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
