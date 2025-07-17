@@ -11,7 +11,7 @@ public class UserDTO {
     private String name;
 
     @NotBlank(message = "O e-mail não pode ser vazio")
-    @Email(message = "Invalid email format")
+    @Email(message = "Formato de e-mail inválido")
     private String email;
 
     @NotBlank(message = "A senha é obrigatória")

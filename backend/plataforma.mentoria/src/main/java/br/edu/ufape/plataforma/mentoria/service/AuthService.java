@@ -35,9 +35,7 @@ public class AuthService implements UserDetailsService {
         if(userDetails != null){
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já existe no banco de dados!");
         }
-
         String encriptedPassword = this.passwordEncoder.encode(userDTO.getPassword());
-
 
         User user = new User(userDTO.getName(), userDTO.getEmail(), encriptedPassword, userDTO.getRole());
         return this.userRepository.save(user);
