@@ -17,7 +17,6 @@ public class UserDTO {
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, message = "A senha deve possuir pelo menos 8 caracteres")
     private String password;
-
     
     private UserRole role;
 
