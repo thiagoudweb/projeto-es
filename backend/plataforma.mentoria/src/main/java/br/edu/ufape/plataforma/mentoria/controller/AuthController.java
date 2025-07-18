@@ -1,5 +1,7 @@
 package br.edu.ufape.plataforma.mentoria.controller;
 
+import br.edu.ufape.plataforma.mentoria.dto.AuthDTO;
+import br.edu.ufape.plataforma.mentoria.dto.LoginResponseDTO;
 import br.edu.ufape.plataforma.mentoria.dto.UserDTO;
 import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.security.TokenService;
@@ -9,6 +11,7 @@ import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,4 +39,16 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(resgistredUser);
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthDTO authDTO){
+        var usernamePassword = new UsernamePasswordAuthenticationToken(
+                authDTO.getEmail(), authDTO.getPassword());
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+
+        String token = this.tokenService.generateToken((User) auth.getPrincipal());
+
+        return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
+    }
+
 }
