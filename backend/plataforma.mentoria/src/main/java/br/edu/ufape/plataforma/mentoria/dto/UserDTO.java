@@ -1,10 +1,23 @@
 package br.edu.ufape.plataforma.mentoria.dto;
 import br.edu.ufape.plataforma.mentoria.util.UserRole;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 public class UserDTO {
 
+    @NotBlank(message = "Nome não pode ser vazio")
     private String name;
+
+    @NotBlank(message = "O e-mail não pode ser vazio")
+    @Email(message = "Formato de e-mail inválido")
     private String email;
+
+    @NotBlank(message = "A senha é obrigatória")
+    @Size(min = 8, message = "A senha deve possuir pelo menos 8 caracteres")
     private String password;
+    
     private UserRole role;
 
     public UserDTO() {

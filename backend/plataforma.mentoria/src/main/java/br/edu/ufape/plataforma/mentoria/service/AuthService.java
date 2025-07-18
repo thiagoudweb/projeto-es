@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,6 +21,9 @@ public class AuthService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByEmail(username);
@@ -29,10 +33,9 @@ public class AuthService implements UserDetailsService {
         UserDetails userDetails = this.userRepository.findByEmail(userDTO.getEmail());
 
         if(userDetails != null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Email already taken!");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Email já existe no banco de dados!");
         }
-
-        String encriptedPassword = new BCryptPasswordEncoder().encode(userDTO.getPassword());
+        String encriptedPassword = this.passwordEncoder.encode(userDTO.getPassword());
 
         User user = new User(userDTO.getName(), userDTO.getEmail(), encriptedPassword, userDTO.getRole());
         return this.userRepository.save(user);
