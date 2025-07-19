@@ -1,14 +1,12 @@
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
+import { HomeComponent } from './home/home';
+import { UnauthorizedComponent } from './auth/unauthorized/unauthorized';
 import { RegisterComponent } from './auth/register/register.component';
-import { AppComponent } from './app.component';
 
 export const routes: Routes = [
-    {
-        path: 'register', component: RegisterComponent,
-        title: 'Cadastro'
-    },
-    {
-        path: '', component: AppComponent,
-        title: 'Plataforma de Mentoria'
-    }
+  { path: '', component: HomeComponent, title: 'Plataforma de Mentoria' },
+  { path: 'register', component: RegisterComponent, title: 'Cadastro' },
+  { path: 'unauthorized', component: UnauthorizedComponent },
+  { path: '**', redirectTo: '' }
 ];
