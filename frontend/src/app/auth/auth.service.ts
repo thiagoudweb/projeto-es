@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { User } from './user';
-import { jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/auth';
+  
+  private apiUrl = 'http://localhost:8080/auth'; // 
 
   async login(email: string, password: string): Promise<boolean> {
     try {
@@ -29,10 +30,6 @@ export class AuthService {
     }
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
-  }
-
   async register(newUser: User): Promise<User | null> {
     try {
       const response = await fetch(this.apiUrl, {
@@ -42,9 +39,13 @@ export class AuthService {
       });
       return await response.json();
     } catch (error) {
-      console.error('Error registering user:', error);
+      console.error('Erro ao registrar usuário:', error);
       return null;
     }
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
   }
 
   isAuthenticated(): boolean {
@@ -60,7 +61,7 @@ export class AuthService {
       const decodedToken: any = jwtDecode(token);
       return decodedToken.role === requiredRole;
     } catch (error) {
-      console.error('Token error:', error);
+      console.error('Erro ao decodificar token:', error);
       return false;
     }
   }
