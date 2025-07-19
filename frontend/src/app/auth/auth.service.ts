@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
 
 export interface User {
   email: string;
@@ -7,10 +6,14 @@ export interface User {
   [key: string]: any;
 }
 
+import { User } from './user';
+import { jwtDecode } from 'jwt-decode';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+  
   private apiUrl = 'http://localhost:8080/auth';
 
   async login(email: string, password: string): Promise<boolean> {
@@ -34,10 +37,6 @@ export class AuthService {
     }
   }
 
-  logout(): void {
-    localStorage.removeItem('token');
-  }
-
   async register(newUser: User): Promise<User | null> {
     try {
       const response = await fetch(this.apiUrl, {
@@ -50,6 +49,10 @@ export class AuthService {
       console.error('Erro ao registrar usuário:', error);
       return null;
     }
+  }
+
+  logout(): void {
+    localStorage.removeItem('token');
   }
 
   isAuthenticated(): boolean {
