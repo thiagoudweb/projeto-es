@@ -7,7 +7,6 @@ import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.security.TokenService;
 import br.edu.ufape.plataforma.mentoria.service.AuthService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,4 +50,8 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.OK).body(new LoginResponseDTO(token));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout() {
+        return ResponseEntity.noContent().build();
+    }
 }

@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
+import { AuthService } from './auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -12,4 +13,16 @@ import { RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'Mentoria';
+  
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
 }
