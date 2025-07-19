@@ -15,14 +15,17 @@ import { CommonModule } from '@angular/common';
         <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
           <label>Email</label>
           <input type="email" formControlName="email" placeholder="Digite seu email" />
-          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-            Invalid email.
-          </div>
+           <div *ngIf="loginForm.get('email')?.touched && loginForm.get('email')?.errors" class="error">
+              <div *ngIf="loginForm.get('email')?.hasError('required')">O e-mail é obrigatório.</div>
+              <div *ngIf="loginForm.get('email')?.hasError('email')">Por favor, insira um e-mail válido.</div>
+           </div>
+
           <label>Password</label>
-          <input type="password" formControlName="password" placeholder="Digite sua senha" required />
-          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-            Password is mandatory.
-          </div>
+          <input type="password" formControlName="password" placeholder="Digite sua senha" />
+           <div *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.errors" class="error">
+              <div *ngIf="loginForm.get('password')?.hasError('required')">A senha é obrigatória.</div>
+           </div>
+
           <button type="submit" [disabled]="loginForm.invalid">Login</button>
         </form>
         <p>No account?  <a [routerLink]="['/register']">Register</a></p>
