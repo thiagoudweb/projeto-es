@@ -6,7 +6,7 @@ export interface User {
   [key: string]: any;
 }
 
-import { User } from './user';
+// import { User } from './user';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
