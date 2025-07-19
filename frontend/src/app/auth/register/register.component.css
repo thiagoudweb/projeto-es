@@ -4,6 +4,12 @@
   font-family: "Segoe UI", sans-serif;
 }
 
+.error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
 .signup-left,
 .signup-right {
   flex: 1;

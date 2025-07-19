@@ -1,4 +1,11 @@
 import { Injectable } from '@angular/core';
+
+export interface User {
+  email: string;
+  password: string;
+  [key: string]: any;
+}
+
 import { User } from './user';
 import { jwtDecode } from 'jwt-decode';
 
@@ -6,7 +13,7 @@ import { jwtDecode } from 'jwt-decode';
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/auth'; //
+  private apiUrl = 'http://localhost:8080/auth';
 
   async login(email: string, password: string): Promise<boolean> {
     try {
