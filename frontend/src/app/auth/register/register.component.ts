@@ -15,7 +15,6 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent {
   title = 'Cadastro';
-
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
