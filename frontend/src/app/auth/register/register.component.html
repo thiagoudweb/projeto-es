@@ -10,7 +10,7 @@
 
 <body>
   <div class="signup-container">
-    
+
     <!-- Lado esquerdo com logo e título -->
     <div class="signup-left">
       <div class="platform-title">
@@ -21,51 +21,69 @@
 
     <!-- Lado direito com formulário -->
     <div class="signup-right">
-      <form class="signup-form">
+      <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <h2>Cadastre-se</h2>
 
         <!-- Nome e Sobrenome -->
         <div class="input-row">
           <div class="input-box">
             <label for="nome">Nome</label>
-            <input id="nome" type="text" placeholder="Nome" required />
+            <input id="nome" type="text" formControlName="nome" placeholder="Nome" />
+            <div *ngIf="signupForm.get('nome')?.invalid && signupForm.get('nome')?.touched" class="error">
+              O nome é obrigatório e deve ter pelo menos 3 caracteres.
+            </div>
           </div>
           <div class="input-box">
             <label for="lastName">Sobrenome</label>
-            <input id="lastName" type="text" placeholder="Sobrenome" required />
+            <input id="lastName" type="text" formControlName="lastName" placeholder="Sobrenome" />
+            <div *ngIf="signupForm.get('lastName')?.invalid && signupForm.get('lastName')?.touched" class="error">
+              O sobrenome é obrigatório e deve ter pelo menos 3 caracteres.
+            </div>
           </div>
         </div>
 
         <!-- Email -->
         <div class="input-box">
           <label for="email">Email</label>
-          <input id="email" type="email" placeholder="Email" required />
+          <input id="email" type="email" formControlName="email" placeholder="Email" />
+          <div *ngIf="signupForm.get('email')?.invalid && signupForm.get('email')?.touched" class="error">
+            Insira um e-mail válido.
+          </div>
         </div>
 
         <!-- Senha -->
         <div class="input-box">
           <label for="senha">Senha</label>
-          <input id="senha" type="password" placeholder="Senha" required />
+          <input id="senha" type="password" formControlName="password" placeholder="Senha" />
+          <div *ngIf="signupForm.get('password')?.invalid && signupForm.get('password')?.touched" class="error">
+            A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.
+          </div>
         </div>
 
         <!-- Confirmação de Senha -->
         <div class="input-box">
           <label for="confirmPassword">Confirmação de senha</label>
-          <input id="confirmPassword" type="password" placeholder="Confirme sua senha" required />
+          <input id="confirmPassword" type="password" formControlName="confirmPassword" placeholder="Confirme sua senha" />
+          <div *ngIf="signupForm.hasError('passwordsMismatch') && signupForm.get('confirmPassword')?.touched" class="error">
+            As senhas não coincidem.
+          </div>
         </div>
 
         <!-- Função -->
         <div class="input-box">
           <label for="role">Função</label>
-          <select id="role" required>
+          <select id="role" formControlName="role">
             <option value="" disabled selected>Selecione um papel</option>
             <option value="Mentor">Mentor</option>
             <option value="Mentorado">Mentorado</option>
           </select>
+          <div *ngIf="signupForm.get('role')?.invalid && signupForm.get('role')?.touched" class="error">
+            A função é obrigatória.
+          </div>
         </div>
 
         <!-- Botão -->
-        <button class="primary-btn" type="submit">Cadastrar</button>
+        <button class="primary-btn" type="submit" [disabled]="signupForm.invalid">Cadastrar</button>
 
         <!-- Link para login -->
         <p class="login-link">
