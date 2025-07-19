@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 public class UserDTO {
 
+    @Size(min = 3, message = "O nome deve possuir no mínimo 3 caracteres")
     @NotBlank(message = "Nome não pode ser vazio")
     private String name;
 
