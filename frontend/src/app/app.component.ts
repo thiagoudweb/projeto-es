@@ -9,11 +9,11 @@ import { Router } from '@angular/router';
   selector: 'app-root',
   imports: [RouterModule, CommonModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  // styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'Mentoria';
-  
+
   private authService = inject(AuthService);
   private router = inject(Router);
 
