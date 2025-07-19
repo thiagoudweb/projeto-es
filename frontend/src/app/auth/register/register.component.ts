@@ -3,9 +3,9 @@ import { Component, inject } from '@angular/core';
 import { REACTIVE_NODE } from '@angular/core/primitives/signals';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -15,7 +15,6 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent {
   title = 'Cadastro';
-
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
