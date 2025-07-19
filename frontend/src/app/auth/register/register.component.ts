@@ -3,7 +3,6 @@ import { Component, inject } from '@angular/core';
 import { REACTIVE_NODE } from '@angular/core/primitives/signals';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 @Component({
