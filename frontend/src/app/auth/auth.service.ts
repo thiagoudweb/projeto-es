@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { jwtDecode } from 'jwt-decode';
-
 export interface User {
   email: string;
   password: string;
   [key: string]: any;
 }
+import { User } from './user';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/auth';
+  
+  private apiUrl = 'http://localhost:8080/auth'; // 
 
   async login(email: string, password: string): Promise<boolean> {
     try {
@@ -31,6 +32,20 @@ export class AuthService {
     } catch (error) {
       console.error('Erro ao fazer login:', error);
       return false;
+    }
+  }
+
+  async register(newUser: User): Promise<User | null> {
+    try {
+      const response = await fetch(this.apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newUser)
+      });
+      return await response.json();
+    } catch (error) {
+      console.error('Erro ao registrar usuário:', error);
+      return null;
     }
   }
 
