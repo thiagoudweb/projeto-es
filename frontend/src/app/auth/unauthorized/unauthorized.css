@@ -1,16 +1,51 @@
 .unauthorized-container {
-  text-align: center;
-  padding: 2rem;
-  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  padding: 4rem;
+  height: 100vh;
+  background: linear-gradient(to right, #F0F1F2, #F0F1F2);
+  font-family: 'Segoe UI',sans-serif;
+  text-align: left;
 }
 
-button {
-  padding: 10px 20px;
-  font-size: 16px;
-  margin-top: 1rem;
-  background-color: #007bff;
+.unauthorized-image img {
+  width: 600px;
+  height: auto;
+}
+
+.unauthorized-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.unauthorized-content h1 {
+  font-size: 5rem;
+  color: #2b3035;
+  margin-bottom: -15px;
+}
+
+.unauthorized-content p {
+  font-size: 1.5rem;
+  color: #2b3035;
+  margin-bottom: 25px;
+}
+
+.unauthorized-content button {
+  align-self: flex-start;
+  background-color: #1976d2;
   color: white;
+  padding: 18px 36px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  font-size: 2rem;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.unauthorized-content button:hover {
+  background-color: #1565c0;
 }
