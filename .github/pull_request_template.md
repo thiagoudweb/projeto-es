@@ -1,6 +1,6 @@
 ## Descrição
 
-<!-- Explique de forma objetiva o que foi feito neste PR e o motivo da mudança. Exemplo abaixo: -->
+<!-- Explique de forma objetiva o que foi feito neste PR e o motivo da mudança. -->
 
 ---
 
@@ -40,8 +40,8 @@
 
 ## Issues relacionadas
 
-> Use `Closes #XX` se o PR resolve completamente a issue e ela deve ser fechada quando o PR for mergeado.  
-> Use `Refers to #YY` se o PR apenas se relaciona à issue (ex: complementa, discute, mas não resolve).
+<!-- Use `Closes #XX` se o PR resolve completamente a issue e ela deve ser fechada quando o PR for mergeado. -->
+<!-- Use `Refers to #YY` se o PR apenas se relaciona à issue (ex: complementa, discute, mas não resolve). -->
 
 - Closes #XX  
 - Refers to #YY

@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
-
-export interface User {
-  email: string;
-  password: string;
-  [key: string]: any;
-}
-
-// import { User } from './user';
+import { User } from './user';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
