@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 
 public class UserDTO {
 
+    @Size(min = 3, message = "O nome deve possuir no mínimo 3 caracteres")
     @NotBlank(message = "Nome não pode ser vazio")
     private String name;
 
@@ -16,8 +17,10 @@ public class UserDTO {
 
     @NotBlank(message = "A senha é obrigatória")
     @Size(min = 8, message = "A senha deve possuir pelo menos 8 caracteres")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$",
+            message = "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial")
     private String password;
-    
+
     private UserRole role;
 
     public UserDTO() {
