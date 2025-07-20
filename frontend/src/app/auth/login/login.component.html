@@ -6,16 +6,16 @@
     </div>
   </div>
   <div class="right-side">
-    <form class="login-form">
+    <form class="login-form"  [formGroup]="loginForm" (ngSubmit)="onSubmit()">
       <h2>Login</h2>
       <div class="form-group">
         <div>
-          <label class="form-label">Email</label>
-          <input type="email" class="form-input" placeholder="Email" />
+          <label for="email" class="form-label">Email</label>
+          <input id="email" type="email" class="form-input" placeholder="Email" formControlName="email" />
         </div>
         <div>
-          <label class="form-label">Senha</label>
-          <input type="password" class="form-input" placeholder="Senha" />
+          <label for="password" class="form-label">Senha</label>
+          <input id="password" type="password" class="form-input" placeholder="Senha" formControlName="password"/>
         </div>
       </div>
       <div class="remember-me-container">
@@ -25,7 +25,7 @@
         </div>
         <a class="forgot-password-link"> Esqueci minha senha </a>
       </div>
-      <button class="login-button">Entrar</button>
+      <button type="submit" class="login-button">Entrar</button>
       <hr class="divider" />
       <a class="register-link" routerLink="/register"
         >Ainda não possui conta? Registre-se</a

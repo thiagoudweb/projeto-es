@@ -10,7 +10,7 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<boolean> {
     try {
-      const response = await fetch(this.apiUrl, {
+      const response = await fetch(this.apiUrl+"/login", {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
@@ -19,7 +19,7 @@ export class AuthService {
       if (!response.ok) {
         throw new Error('Login falhou');
       }
-
+      
       const data = await response.json();
       localStorage.setItem('token', data.token);
       return true;
