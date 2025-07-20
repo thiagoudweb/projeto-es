@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { User } from '../user';
 
 @Component({
   selector: 'app-register',
@@ -15,9 +16,11 @@ import { AuthService } from '../auth.service';
 })
 export class RegisterComponent {
   title = 'Cadastro';
+
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+
   private passwordsMatchValidator(): ValidatorFn {
     return (group: AbstractControl): ValidationErrors | null => {
       const password = group.get('password')?.value;
@@ -37,7 +40,19 @@ export class RegisterComponent {
 
   onSubmit() {
     if (this.signupForm.valid) {
-      console.log('Formulário válido:', this.signupForm.value);
+      // Juntando o primeiro nome e o ultimo em um só
+      const name = `${this.signupForm.value.nome} ${this.signupForm.value.lastName}`;
+
+      // Atribuindo os valores do formulário
+      const { email, password, role } = this.signupForm.value;
+
+      // Criando o novo usuário
+      const newUser: User = { name, email, password, role};
+
+      this.authService.register(newUser).then(
+        () =>  this.router.navigate(['/login']))
+        .catch(error => console.error('Erro ao registrar usuário:', error));
+
     } else {
       console.log('Formulário inválido');
     }
