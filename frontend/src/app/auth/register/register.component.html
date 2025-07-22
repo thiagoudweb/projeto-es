@@ -23,6 +23,10 @@
     <div class="signup-right">
       <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
         <h2>Cadastre-se</h2>
+<div *ngIf="errorMessage" class="error">
+  {{ errorMessage }}
+</div>
+
 
         <!-- Nome e Sobrenome -->
         <div class="input-row">

@@ -16,6 +16,9 @@ import { User } from '../user';
 export class RegisterComponent {
   title = 'Cadastro';
 
+  // Mensagem de erro geral exibida ao usuário
+  errorMessage: string | null = null;
+
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
@@ -38,6 +41,8 @@ export class RegisterComponent {
   }, { validators: this.passwordsMatchValidator() });
 
   onSubmit() {
+    this.errorMessage = null; // limpa mensagem anterior
+
     if (this.signupForm.valid) {
       // Juntando o primeiro nome e o ultimo em um só
       const name = `${this.signupForm.value.nome} ${this.signupForm.value.lastName}`;
@@ -46,14 +51,26 @@ export class RegisterComponent {
       const { email, password, role } = this.signupForm.value;
 
       // Criando o novo usuário
-      const newUser: User = { name, email, password, role};
+      const newUser: User = { name, email, password, role };
 
       this.authService.register(newUser).then(
-        () =>  this.router.navigate(['/login']))
-        .catch(error => console.error('Erro ao registrar usuário:', error));
+        () => this.router.navigate(['/login']))
+        .catch(error => {
+          console.error('Erro ao registrar usuário:', error);
+
+          // Mensagens específicas com base no status
+          if (error.status === 409) {
+            this.errorMessage = 'Este e-mail já está em uso.';
+          } else if (error.status === 400) {
+            this.errorMessage = 'Os dados fornecidos são inválidos.';
+          } else {
+            this.errorMessage = 'Erro ao se conectar com o servidor. Tente novamente mais tarde.';
+          }
+        });
 
     } else {
       console.log('Formulário inválido');
+      this.errorMessage = 'Por favor, corrija os erros no formulário.';
     }
   }
 
