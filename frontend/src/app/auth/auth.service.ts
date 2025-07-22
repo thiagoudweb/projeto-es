@@ -10,36 +10,51 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<boolean> {
     try {
-      const response = await fetch(this.apiUrl+"/login", {
+      const response = await fetch(this.apiUrl + '/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
       if (!response.ok) {
-        throw new Error('Login falhou');
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: 'Erro desconhecido' }));
+        const error = new Error(errorData.message || 'Login falhou');
+        (error as any).status = response.status;
+        throw error;
       }
-      
+
       const data = await response.json();
       localStorage.setItem('token', data.token);
       return true;
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      return false;
+      console.error('Erro ao fazer login no AuthService:', error);
+      throw error;
     }
   }
 
   async register(newUser: User): Promise<User | null> {
     try {
-      const response = await fetch(this.apiUrl+"/register", {
+      const response = await fetch(this.apiUrl + '/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newUser),
       });
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: 'Erro desconhecido' }));
+        const error = new Error(errorData.message || 'Registro falhou');
+        (error as any).status = response.status;
+        throw error;
+      }
+
       return await response.json();
     } catch (error) {
-      console.error('Erro ao registrar usuário:', error);
-      return null;
+      console.error('Erro ao registrar usuário no AuthService:', error);
+      throw error;
     }
   }
 

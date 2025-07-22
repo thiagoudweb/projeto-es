@@ -20,6 +20,7 @@ export class LoginComponent {
   private authService = inject(AuthService);
   private router = inject(Router);
   private fb = inject(FormBuilder);
+  errorMessage: string | null = null;
 
   loginForm: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
@@ -31,8 +32,28 @@ export class LoginComponent {
       const { email, password } = this.loginForm.value;
       this.authService
         .login(email, password)
-        .then((user) => this.router.navigate(['/home']))
-        .catch((err) => alert('Login error: ' + err));
+        .then((user) => {
+          console.log('Login successful:', user);
+          this.router.navigate(['/home']);
+        })
+        .catch((err) => {
+          console.error('Erro ao fazer login:', err);
+
+          // Handle different HTTP status codes
+          if (err.status === 403) {
+            this.errorMessage = 'Acesso negado. Verifique suas credenciais.';
+          } else if (err.status === 401) {
+            this.errorMessage = 'Email ou senha inválidos';
+          } else if (err.status === 0) {
+            this.errorMessage = 'Erro de conexão com o servidor';
+          } else {
+            this.errorMessage =
+              'Erro ao tentar fazer login. Tente novamente mais tarde.';
+          }
+
+          console.log('Status do erro:', err.status);
+          console.log('Mensagem de erro:', this.errorMessage);
+        });
     }
   }
 }
