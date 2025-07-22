@@ -5,9 +5,19 @@ import { Component } from '@angular/core';
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule],
-  template: '<p>home works!</p>',
-//  styleUrl: './home.css'
+  template: `
+    <style>
+      .welcome-message {
+        display: block;
+        text-align: center;
+        margin-top: 2rem;
+        font-size: 2rem;
+        font-weight: bold;
+        font-family: 'Segoe UI', sans-serif;
+      }
+    </style>
+    <p class="welcome-message">Bem vindo!</p>
+  `,
+  //  styleUrl: './home.css'
 })
-export class HomeComponent {
-
-}
+export class HomeComponent {}
