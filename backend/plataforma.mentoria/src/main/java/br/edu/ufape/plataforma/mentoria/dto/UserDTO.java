@@ -1,6 +1,6 @@
 package br.edu.ufape.plataforma.mentoria.dto;
-import br.edu.ufape.plataforma.mentoria.util.UserRole;
 import jakarta.validation.constraints.NotBlank;
+import br.edu.ufape.plataforma.mentoria.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
