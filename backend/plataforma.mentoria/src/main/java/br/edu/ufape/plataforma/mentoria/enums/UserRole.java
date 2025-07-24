@@ -1,4 +1,4 @@
-package br.edu.ufape.plataforma.mentoria.util;
+package br.edu.ufape.plataforma.mentoria.enums;
 
 public enum UserRole {
     
