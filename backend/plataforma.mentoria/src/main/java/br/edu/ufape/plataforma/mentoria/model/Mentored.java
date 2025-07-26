@@ -1,8 +1,11 @@
 package br.edu.ufape.plataforma.mentoria.model;
 
-import jakarta.persistence.Column;
+import java.time.LocalDate;
+
+import br.edu.ufape.plataforma.mentoria.enums.Course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
@@ -10,21 +13,27 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 public class Mentored extends Person {
 
     @Id
-    @Column(name = "user_id")
-    private Long userId;
-    
-    private String academicSummary;
-    
+    private Long id;
+
     @OneToOne
+    @MapsId
     @PrimaryKeyJoinColumn
     private User user;
+
+    private String academicSummary;
     
-    public Long getUserId() {
-        return userId;
+    public Mentored(String fullName, String cpf, LocalDate birthDate, Course course, User user, String academicSummary) {
+        super(fullName, cpf, birthDate, course);
+        this.user = user;
+        this.academicSummary = academicSummary;
+    }
+
+    public Mentored(){
+
     }
     
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public Long getId() {
+        return this.id;
     }
     
     public String getAcademicSummary() {

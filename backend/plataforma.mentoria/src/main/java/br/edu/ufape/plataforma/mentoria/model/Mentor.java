@@ -1,7 +1,9 @@
 package br.edu.ufape.plataforma.mentoria.model;
 
+import java.time.LocalDate;
 import java.util.List;
 import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
+import br.edu.ufape.plataforma.mentoria.enums.Course;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -11,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
@@ -18,8 +21,12 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 public class Mentor extends Person {
 
     @Id
-    @Column(name = "user_id")
-    private Long userId;
+    private Long id;
+
+    @OneToOne
+    @MapsId
+    @PrimaryKeyJoinColumn
+    private User user;
 
     private String professionalSummary;
     
@@ -31,17 +38,21 @@ public class Mentor extends Person {
     @CollectionTable(name = "mentor_specializations", joinColumns = @JoinColumn(name = "mentor_id"))
     @Column(name = "specialization")
     private List<String> specializations;
-    
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    private User user;
-    
-    public Long getUserId() {
-        return userId;
+
+    public Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, String professionalSummary, AffiliationType affiliationType, List<String> specializations) {
+        super(fullName, cpf, birthDate, course);
+        this.user = user;
+        this.professionalSummary = professionalSummary;
+        this.affiliationType = affiliationType;
+        this.specializations = specializations;
     }
-    
-    public void setUserId(Long userId) {
-        this.userId = userId;
+
+    public Mentor(){
+
+    }
+
+    public Long getId() {
+        return this.id;
     }
 
     public String getProfessionalSummary() {
