@@ -38,14 +38,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private UserRole role;
 
-    @Column (nullable = false)
-    private String name;
-
     public User() {
     }
 
-    public User(String name, String email, String password, UserRole role) {
-        this.name = name;
+    public User(String email, String password, UserRole role) {
         this.email = email;
         this.password = password;
         this.role = role;
@@ -53,10 +49,6 @@ public class User implements UserDetails {
 
     public Long getId() {
         return id;
-    }
-
-    public String getName(){
-        return name;
     }
 
     @Override
@@ -89,10 +81,6 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public void setName(String name){
-        this.name = name;
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.role == UserRole.MENTOR) {
@@ -104,7 +92,7 @@ public class User implements UserDetails {
 
     @Override
     public String toString() {
-        return "User [nome=" + name + "email=" + email + ", id=" + id + ", password=" + password + ", role=" + role + "]";
+        return "User [email=" + email + ", id=" + id + ", password=" + password + ", role=" + role + "]";
     }
 }
 

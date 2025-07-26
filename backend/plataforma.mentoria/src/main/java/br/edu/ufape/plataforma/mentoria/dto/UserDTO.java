@@ -7,10 +7,6 @@ import jakarta.validation.constraints.Size;
 
 public class UserDTO {
 
-    @Size(min = 3, message = "O nome deve possuir no mínimo 3 caracteres")
-    @NotBlank(message = "Nome não pode ser vazio")
-    private String name;
-
     @NotBlank(message = "O e-mail não pode ser vazio")
     @Email(message = "Formato de e-mail inválido")
     private String email;
@@ -26,8 +22,7 @@ public class UserDTO {
     public UserDTO() {
         }
 
-    public UserDTO(String name, String email, String password, UserRole role) {
-            this.name = name;
+    public UserDTO(String email, String password, UserRole role) {
             this.email = email;
             this.password = password;
             this.role = role;
@@ -47,14 +42,6 @@ public class UserDTO {
 
     public void setRole(UserRole role) {
         this.role = role;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getPassword() {
