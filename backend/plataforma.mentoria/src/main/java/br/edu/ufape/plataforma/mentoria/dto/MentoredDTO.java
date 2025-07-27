@@ -78,14 +78,4 @@ public class MentoredDTO {
     public void setAcademicSummary(String academicSummary) {
         this.academicSummary = academicSummary;
     }
-
-    public static Mentored dtoToMentored(MentoredDTO mentoredDTO) {
-        Mentored mentored = new Mentored();
-        mentored.setFullName(mentoredDTO.getFullName());
-        mentored.setCpf(mentoredDTO.getCpf());
-        mentored.setBirthDate(mentoredDTO.getBirthDate());
-        mentored.setCourse(mentoredDTO.getCourse());
-        mentored.setAcademicSummary(mentoredDTO.getAcademicSummary());
-        return mentored;
-    }
 }
