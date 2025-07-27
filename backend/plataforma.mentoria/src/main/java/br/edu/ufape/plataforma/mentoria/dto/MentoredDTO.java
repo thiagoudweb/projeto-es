@@ -2,6 +2,7 @@ package br.edu.ufape.plataforma.mentoria.dto;
 
 import java.time.LocalDate;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
+import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -26,10 +27,11 @@ public class MentoredDTO {
     @Size(max = 1000, message = "O resumo acadêmico deve ter no máximo 1000 caracteres")
     private String academicSummary;
 
-    public MentoredDTO() {}
+    public MentoredDTO() {
+    }
 
     public MentoredDTO(String fullName, String cpf, LocalDate birthDate, Course course,
-                       String academicSummary) {
+            String academicSummary) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
@@ -77,5 +79,13 @@ public class MentoredDTO {
         this.academicSummary = academicSummary;
     }
 
+    public static Mentored dtoToMentored(MentoredDTO mentoredDTO) {
+        Mentored mentored = new Mentored();
+        mentored.setFullName(mentoredDTO.getFullName());
+        mentored.setCpf(mentoredDTO.getCpf());
+        mentored.setBirthDate(mentoredDTO.getBirthDate());
+        mentored.setCourse(mentoredDTO.getCourse());
+        mentored.setAcademicSummary(mentoredDTO.getAcademicSummary());
+        return mentored;
+    }
 }
-
