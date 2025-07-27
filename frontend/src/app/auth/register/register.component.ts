@@ -51,7 +51,7 @@ export class RegisterComponent {
       const { email, password, role } = this.signupForm.value;
 
       // Criando o novo usuário
-      const newUser: User = { name, email, password, role };
+      const newUser: User = { fullName: name, email, password, role };
 
       this.authService.register(newUser).then(
         () => this.router.navigate(['/login']))
