@@ -63,18 +63,18 @@ public enum InterestAreas {
     ));
 
     private final String nome;
-    private final List<String> especializacoes;
+    private final List<String> subareas;
 
-    InterestAreas(String nome, List<String> especializacoes) {
+    InterestAreas(String nome, List<String> subareas) {
         this.nome = nome;
-        this.especializacoes = especializacoes;
+        this.subareas = subareas;
     }
 
     public String getNome() {
         return nome;
     }
 
-    public List<String> getEspecializacoes() {
-        return especializacoes;
+    public List<String> getSubareas() {
+        return subareas;
     }
 }
