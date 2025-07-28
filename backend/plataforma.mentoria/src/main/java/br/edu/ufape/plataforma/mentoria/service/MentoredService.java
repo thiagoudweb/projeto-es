@@ -33,6 +33,9 @@ public class MentoredService {
         if (mentoredRepository.existsByCpf(mentored.getCpf())) {
             throw new AttributeAlreadyInUseException("CPF", mentored.getCpf(), Mentored.class);
         }
+        if (mentoredRepository.existsByEmail(mentored.getEmail())) {
+            throw new AttributeAlreadyInUseException("Email", mentored.getEmail(), Mentored.class);
+        }
         return mentoredRepository.save(mentored);
     }
 
@@ -40,6 +43,9 @@ public class MentoredService {
         Mentored mentored = mentoredMapper.toEntity(mentoredDTO);
         if (mentoredRepository.existsByCpf(mentored.getCpf())) {
             throw new AttributeAlreadyInUseException("CPF", mentored.getCpf(), Mentored.class);
+        }
+        if (mentoredRepository.existsByEmail(mentored.getEmail())) {
+            throw new AttributeAlreadyInUseException("Email", mentored.getEmail(), Mentored.class);
         }
         return mentoredRepository.save(mentored);
     }

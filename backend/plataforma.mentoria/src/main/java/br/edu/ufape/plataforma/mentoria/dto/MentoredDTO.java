@@ -2,7 +2,7 @@ package br.edu.ufape.plataforma.mentoria.dto;
 
 import java.time.LocalDate;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
-import br.edu.ufape.plataforma.mentoria.model.Mentored;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -12,6 +12,11 @@ public class MentoredDTO {
 
     @NotBlank(message = "O nome completo é obrigatório")
     private String fullName;
+
+    @NotBlank(message = "O email é obrigatório")
+    // @Size(max = 255, message = "O email deve ter no máximo 255 caracteres")
+    @Email(message = "O email deve ser válido")
+    private String email;
 
     @NotBlank(message = "O CPF é obrigatório")
     @Size(min = 11, max = 14, message = "O CPF deve ter entre 11 e 14 caracteres")
@@ -45,6 +50,14 @@ public class MentoredDTO {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getCpf() {

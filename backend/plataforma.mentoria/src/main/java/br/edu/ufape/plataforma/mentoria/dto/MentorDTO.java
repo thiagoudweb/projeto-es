@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -14,6 +15,11 @@ public class MentorDTO {
 
     @NotBlank(message = "O nome completo é obrigatório")
     private String fullName;
+
+    @NotBlank(message = "O email é obrigatório")
+    // @Size(max = 255, message = "O email deve ter no máximo 255 caracteres")
+    @Email(message = "O email deve ser válido")
+    private String email;
 
     @NotBlank(message = "O CPF é obrigatório")
     @Size(min = 11, max = 14, message = "O CPF deve ter entre 11 e 14 caracteres")
@@ -35,11 +41,11 @@ public class MentorDTO {
     @NotEmpty(message = "Pelo menos uma especialização deve ser informada")
     private List<@NotBlank(message = "Especializações não podem estar em branco") String> specializations;
 
-
-    public MentorDTO() {}
+    public MentorDTO() {
+    }
 
     public MentorDTO(String fullName, String cpf, LocalDate birthDate, Course course, String professionalSummary,
-                     AffiliationType affiliationType, List<String> specializations) {
+            AffiliationType affiliationType, List<String> specializations) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
