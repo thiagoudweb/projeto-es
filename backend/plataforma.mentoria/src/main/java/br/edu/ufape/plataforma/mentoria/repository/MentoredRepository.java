@@ -8,5 +8,4 @@ import br.edu.ufape.plataforma.mentoria.model.Mentored;
 public interface MentoredRepository extends JpaRepository<Mentored, Long> {
     public boolean existsByCpf(String cpf);
 
-    public boolean existsByEmail(String email);
 }

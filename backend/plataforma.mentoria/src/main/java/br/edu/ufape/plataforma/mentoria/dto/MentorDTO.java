@@ -16,11 +16,6 @@ public class MentorDTO {
     @NotBlank(message = "O nome completo é obrigatório")
     private String fullName;
 
-    @NotBlank(message = "O email é obrigatório")
-    // @Size(max = 255, message = "O email deve ter no máximo 255 caracteres")
-    @Email(message = "O email deve ser válido")
-    private String email;
-
     @NotBlank(message = "O CPF é obrigatório")
     @Size(min = 11, max = 14, message = "O CPF deve ter entre 11 e 14 caracteres")
     private String cpf;

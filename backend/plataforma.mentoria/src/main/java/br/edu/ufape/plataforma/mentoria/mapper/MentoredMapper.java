@@ -10,7 +10,6 @@ public class MentoredMapper {
     public Mentored toEntity(MentoredDTO mentoredDTO) {
         Mentored mentored = new Mentored();
         mentored.setFullName(mentoredDTO.getFullName());
-        mentored.setEmail(mentoredDTO.getEmail());
         mentored.setCpf(mentoredDTO.getCpf());
         mentored.setBirthDate(mentoredDTO.getBirthDate());
         mentored.setCourse(mentoredDTO.getCourse());
@@ -21,7 +20,6 @@ public class MentoredMapper {
     public MentoredDTO toDto(Mentored mentored) {
         MentoredDTO mentoredDTO = new MentoredDTO();
         mentoredDTO.setFullName(mentored.getFullName());
-        mentoredDTO.setEmail(mentored.getEmail());
         mentoredDTO.setCpf(mentored.getCpf());
         mentoredDTO.setBirthDate(mentored.getBirthDate());
         mentoredDTO.setCourse(mentored.getCourse());

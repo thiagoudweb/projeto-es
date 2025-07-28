@@ -23,9 +23,6 @@ public abstract class Person {
     private String fullName;
 
     @Column(nullable = false, unique = true)
-    private String email;
-
-    @Column(nullable = false, unique = true)
     private String cpf;
 
     @Column(nullable = false)
@@ -59,14 +56,6 @@ public abstract class Person {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getCpf() {
