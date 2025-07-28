@@ -13,7 +13,7 @@ export const routes: Routes = [
 
   { path: 'login', component: LoginComponent, title: 'Login' },
   { path: 'register', component: RegisterComponent, title: 'Cadastro' },
-  { path: 'perfil', component: PerfilComponent },
+  { path: 'perfil', component: PerfilComponent,  title: 'Perfil' },
   { path: 'home', component: HomeComponent, title: 'Plataforma de Mentoria', canActivate: [authGuard] },
   { path: 'unauthorized', component: UnauthorizedComponent, title: 'Não autorizado' },
 
