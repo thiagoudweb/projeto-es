@@ -35,11 +35,11 @@ public class MentorDTO {
     @NotEmpty(message = "Pelo menos uma especialização deve ser informada")
     private List<@NotBlank(message = "Especializações não podem estar em branco") String> specializations;
 
-
-    public MentorDTO() {}
+    public MentorDTO() {
+    }
 
     public MentorDTO(String fullName, String cpf, LocalDate birthDate, Course course, String professionalSummary,
-                     AffiliationType affiliationType, List<String> specializations) {
+            AffiliationType affiliationType, List<String> specializations) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
