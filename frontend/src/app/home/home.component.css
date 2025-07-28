@@ -1,0 +1,34 @@
+.welcome-message {
+        display: block;
+        text-align: center;
+        margin-top: 2rem;
+        font-size: 2rem;
+        font-weight: bold;
+        font-family: 'Segoe UI', sans-serif;
+}
+
+.logout {
+  background-color: #2563eb;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  text-decoration: none;
+  font-weight: bold;
+  margin-right: 5px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.logout:hover {
+  background-color: #1d4ed8;
+}
+
+.brand-name {
+  /* background-color: bisque; */
+  display: flex;
+  justify-content: flex-end; /* aligns content to the right */
+  align-items: center;
+  padding: 0rem;
+}

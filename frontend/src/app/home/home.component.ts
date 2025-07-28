@@ -1,23 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [CommonModule],
-  template: `
-    <style>
-      .welcome-message {
-        display: block;
-        text-align: center;
-        margin-top: 2rem;
-        font-size: 2rem;
-        font-weight: bold;
-        font-family: 'Segoe UI', sans-serif;
-      }
-    </style>
-    <p class="welcome-message">Bem vindo!</p>
-  `,
-  //  styleUrl: './home.css'
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.css'
 })
-export class HomeComponent {}
+export class HomeComponent {
+   title = 'Mentoria';
+
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+}
