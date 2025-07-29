@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { Component, inject } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
@@ -6,7 +7,10 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    RouterLink
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -25,3 +29,4 @@ export class HomeComponent {
     return this.authService.isAuthenticated();
   }
 }
+

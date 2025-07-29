@@ -1,3 +1,32 @@
+.profile-link {
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+}
+
+.profile-link:hover {
+  background-color: #f0f0f0;
+}
+
+.profile-icon {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+.welcome-message {
+  display: block;
+  text-align: center;
+  padding-top: 5rem;
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .welcome-message {
         display: block;
         text-align: center;
@@ -26,9 +55,9 @@
 }
 
 .brand-name {
-  /* background-color: bisque; */
+  /* background-color: bisque; /
   display: flex;
-  justify-content: flex-end; /* aligns content to the right */
+  justify-content: flex-end; / aligns content to the right */
   align-items: center;
   padding: 0rem;
 }
