@@ -24,7 +24,7 @@ public class MentorMapper {
         return mentor;
     }
 
-    public MentorDTO toDto(Mentor mentor) {
+    public MentorDTO toDTO(Mentor mentor) {
         if (mentor == null) {
             return null;
         }

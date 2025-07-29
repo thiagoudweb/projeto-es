@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
+import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -34,6 +35,9 @@ public class MentorDTO {
 
     @NotEmpty(message = "Pelo menos uma especialização deve ser informada")
     private List<@NotBlank(message = "Especializações não podem estar em branco") String> specializations;
+
+    @NotNull(message = "A área de interesse é obrigatória")
+    private InterestAreas interestArea;
 
     public MentorDTO() {
     }
@@ -103,6 +107,14 @@ public class MentorDTO {
 
     public void setSpecializations(List<String> specializations) {
         this.specializations = specializations;
+    }
+
+    public InterestAreas getInterestArea() {
+        return interestArea;
+    }
+
+    public void setInterestArea(InterestAreas interestArea) {
+        this.interestArea = interestArea;
     }
 
 }
