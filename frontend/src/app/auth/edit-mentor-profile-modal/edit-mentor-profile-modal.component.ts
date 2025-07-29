@@ -1,7 +1,7 @@
 
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Mentor } from '../mentor';
+import { Mentor } from '../../entity/mentor';
 
 @Component({
   selector: 'app-edit-mentor-profile-modal',

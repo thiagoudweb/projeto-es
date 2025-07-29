@@ -56,19 +56,30 @@ export class RegisterComponent {
       const newUser: User = { fullName: name, email, password, role };
 
       this.authService.register(newUser).then(
-        () => this.router.navigate(['/login']))
-        .catch(error => {
-          console.error('Erro ao registrar usuário:', error);
-
-          // Mensagens específicas com base no status
-          if (error.status === 409) {
-            this.errorMessage = 'Este e-mail já está em uso.';
-          } else if (error.status === 400) {
-            this.errorMessage = 'Os dados fornecidos são inválidos.';
-          } else {
-            this.errorMessage = 'Erro ao se conectar com o servidor. Tente novamente mais tarde.';
+        () => {
+          if (role === 'MENTOR') {
+            this.router.navigate(['/register-mentor'], { 
+              state: { userData: newUser } 
+            });
+          } else if (role === 'MENTORADO') {
+            this.router.navigate(['/register-mentored'], { 
+              state: { userData: newUser } 
+            });
           }
-        });
+        }
+      )
+      .catch(error => {
+        console.error('Erro ao registrar usuário:', error);
+
+        // Mensagens específicas com base no status
+        if (error.status === 409) {
+          this.errorMessage = 'Este e-mail já está em uso.';
+        } else if (error.status === 400) {
+          this.errorMessage = 'Os dados fornecidos são inválidos.';
+        } else {
+          this.errorMessage = 'Erro ao se conectar com o servidor. Tente novamente mais tarde.';
+        }
+      });
 
     } else {
       console.log('Formulário inválido');
