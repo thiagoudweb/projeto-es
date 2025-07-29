@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
+import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.exceptions.MentoredNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
+import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 
 public class MentoredService {
 
@@ -28,11 +30,17 @@ public class MentoredService {
     }
 
     public Mentored createMentored(Mentored mentored) {
+        if (mentoredRepository.existsByCpf(mentored.getCpf())) {
+            throw new AttributeAlreadyInUseException("CPF", mentored.getCpf(), Mentored.class);
+        }
         return mentoredRepository.save(mentored);
     }
 
     public Mentored createMentored(MentoredDTO mentoredDTO) {
         Mentored mentored = mentoredMapper.toEntity(mentoredDTO);
+        if (mentoredRepository.existsByCpf(mentored.getCpf())) {
+            throw new AttributeAlreadyInUseException("CPF", mentored.getCpf(), Mentored.class);
+        }
         return mentoredRepository.save(mentored);
     }
 
@@ -50,12 +58,12 @@ public class MentoredService {
             mentored.setId(id);
             return mentoredRepository.save(mentored);
         }
-        throw new MentoredNotFoundException(id);
+        throw new EntityNotFoundException(Mentored.class, id);
     }
 
     public void deleteById(Long id) throws Exception {
         if (!mentoredRepository.existsById(id)) {
-            throw new MentoredNotFoundException(id);
+            throw new EntityNotFoundException(Mentored.class, id);
         }
         mentoredRepository.deleteById(id);
     }
