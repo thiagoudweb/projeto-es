@@ -50,6 +50,7 @@ public class Mentor extends Person {
     public Mentor(){
 
     }
+    public void setId(Long id) { this.id = id;}
 
     public Long getId() {
         return this.id;
