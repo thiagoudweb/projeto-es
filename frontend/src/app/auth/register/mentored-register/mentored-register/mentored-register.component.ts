@@ -23,7 +23,7 @@ export class MentoredRegisterComponent implements OnInit {
 
   signupForm: FormGroup = this.fb.group({
     course: ['', [Validators.required, Validators.minLength(3)]],
-    academicSummary: ['', [Validators.required, Validators.minLength(3)]],
+    academicSummary: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(500)]],
     interestList: ['', [Validators.required]],
   })
 
@@ -44,7 +44,7 @@ export class MentoredRegisterComponent implements OnInit {
         ...this.userData,
         ...this.signupForm.value
       };
-      
+
       //integrar o cadastro do mentor ao backend
     }
   }

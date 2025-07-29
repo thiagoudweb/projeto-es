@@ -1,6 +1,6 @@
 <div class="mentored-register-container">
   <h2>Finalize seu cadastro</h2>
-  
+
   <div class="mentored-form-container">
     <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <!-- Resumo academico -->
@@ -13,6 +13,9 @@
           rows="3"
           class="auto-grow"
         ></textarea>
+          <div *ngIf="signupForm.get('academicSummary')?.invalid && signupForm.get('academicSummary')?.touched" class="error">
+            <div *ngIf="signupForm.get('academicSummary')?.errors?.['maxlength']">O resumo acadêmico deve ter no máximo 500 caracteres.</div>
+          </div>
       </div>
 
       <!-- Curso -->
@@ -37,6 +40,9 @@
           <option value="Psicologia">Bacharelado em Psicologia</option>
           <option value="Zootecnia">Bacharelado em Zootecnia</option>
         </select>
+          <div *ngIf="signupForm.get('course')?.invalid && signupForm.get('course')?.touched" class="error">
+            O curso é obrigatório.
+          </div>
       </div>
 
       <!-- Lista de areas de interesse -->
@@ -55,8 +61,11 @@
           <option value="Marketing e Comunicação">Marketing e Comunicação</option>
           <option value="Tecnologia da Informação">Tecnologia da Informação</option>
         </select>
+          <div *ngIf="signupForm.get('interestList')?.invalid && signupForm.get('interestList')?.touched" class="error">
+            A área de interesse é obrigatória.
+          </div>
       </div>
-     
+
       <button type="submit" class="btn-finalizar">Finalizar Cadastro</button>
     </form>
   </div>
