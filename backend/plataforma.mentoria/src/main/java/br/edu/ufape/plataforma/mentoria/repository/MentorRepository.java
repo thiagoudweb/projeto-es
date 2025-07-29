@@ -7,4 +7,6 @@ import br.edu.ufape.plataforma.mentoria.model.Mentor;
 @Repository
 public interface MentorRepository extends JpaRepository<Mentor, Long> {
 
+    boolean existsByCpf(String cpf);
+
 }
