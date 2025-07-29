@@ -21,7 +21,7 @@ public interface MentorRepository extends JpaRepository<Mentor, Long> {
 
     @Query("SELECT m FROM Mentor m LEFT JOIN m.specializations s WHERE " +
             "(:interestArea IS NULL OR :interestArea MEMBER OF m.interestAreas) AND " +
-            "(:specializations IS NULL OR s IN :specializations)")
+            "(:specializations IS NULL OR :specializations IS EMPTY OR s IN :specializations)")
     List<Mentor> findByInterestAreaAndSpecializations(
             @Param("interestArea") InterestAreas interestArea,
             @Param("specializations") List<String> specializations);

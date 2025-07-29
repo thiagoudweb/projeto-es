@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
-import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
