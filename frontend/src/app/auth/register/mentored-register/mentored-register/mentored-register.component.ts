@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth.service';
+import { Mentored } from '../../../../entity/mentored';
+import { User } from '../../../../entity/user';
 
 @Component({
   selector: 'app-mentored-register',
@@ -11,8 +13,9 @@ import { AuthService } from '../../../auth.service';
   templateUrl: './mentored-register.component.html',
   styleUrl: './mentored-register.component.css'
 })
-export class MentoredRegisterComponent {
+export class MentoredRegisterComponent implements OnInit {
   title = 'Finalizar Cadastro';
+  userData: User | null = null;
 
   private authService = inject(AuthService);
   private router = inject(Router);
@@ -24,8 +27,25 @@ export class MentoredRegisterComponent {
     interestList: ['', [Validators.required]],
   })
 
-  onSubmit() {
+  ngOnInit() {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras.state) {
+      this.userData = navigation.extras.state['userData'];
+    }
 
-  
+    if (!this.userData) { //caso queira entrar direto na tela de mentores comentar esse bloco
+      this.router.navigate(['/register']);
+    }
+  }
+
+  onSubmit() {
+    if (this.signupForm.valid && this.userData) {
+      const mentoredData: Mentored = {
+        ...this.userData,
+        ...this.signupForm.value
+      };
+      
+      //integrar o cadastro do mentor ao backend
+    }
   }
 }
