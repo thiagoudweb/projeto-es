@@ -50,24 +50,29 @@ export class RegisterComponent {
       const name = `${this.signupForm.value.nome} ${this.signupForm.value.lastName}`;
 
       // Atribuindo os valores do formulário
-      const { email, password, role } = this.signupForm.value;
+      const { email, cpf, birthDate, password, role } = this.signupForm.value;
 
       // Criando o novo usuário
-      const newUser: User = { fullName: name, email, password, role };
-
+      const newUser: User = { fullName: name, email, cpf, birthDate, password, role };
+      
       this.authService.register(newUser).then(
         () => {
-          if (role === 'MENTOR') {
-            this.router.navigate(['/register-mentor'], { 
-              state: { userData: newUser } 
-            });
-          } else if (role === 'MENTORADO') {
-            this.router.navigate(['/register-mentored'], { 
-              state: { userData: newUser } 
-            });
+          this.authService.login(newUser.email, newUser.password).then(() => {
+            if (role === 'MENTOR') {
+              this.router.navigate(['/register-mentor'], { 
+                state: { userData: newUser } 
+              });
+            } else if (role === 'MENTORADO') {
+              this.router.navigate(['/register-mentored'], { 
+                state: { userData: newUser } 
+              });
+            }
           }
-        }
-      )
+          ).catch(error => {
+            console.error('Erro ao fazer login após registro:', error);
+            this.errorMessage = 'Erro ao fazer login. Tente novamente.';
+          });
+      })
       .catch(error => {
         console.error('Erro ao registrar usuário:', error);
 
