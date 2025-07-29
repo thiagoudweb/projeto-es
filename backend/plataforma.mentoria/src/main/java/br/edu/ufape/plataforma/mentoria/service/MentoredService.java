@@ -11,7 +11,9 @@ import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class MentoredService {
 
     @Autowired

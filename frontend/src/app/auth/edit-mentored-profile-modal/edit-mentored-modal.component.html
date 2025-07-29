@@ -1,0 +1,28 @@
+<div class="modal-overlay">
+  <div class="modal">
+    <h2>Editar Mentorado</h2>
+    <form [formGroup]="mentoredForm">
+      <label>
+        CPF:
+        <input formControlName="cpf" />
+      </label>
+      <label>
+        Data de Nascimento:
+        <input type="date" formControlName="birthDate" />
+      </label>
+      <label>
+        Curso:
+        <input formControlName="course" />
+      </label>
+      <label>
+        Resumo Acadêmico:
+        <textarea formControlName="academicSummary"></textarea>
+      </label>
+    </form>
+
+    <div class="modal-actions">
+      <button (click)="onClose()">Cancelar</button>
+      <button [disabled]="!mentoredForm.valid" (click)="onSave()">Salvar</button>
+    </div>
+  </div>
+</div>
