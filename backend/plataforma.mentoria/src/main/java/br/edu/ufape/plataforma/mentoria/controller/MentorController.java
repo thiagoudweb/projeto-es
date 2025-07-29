@@ -1,77 +1,77 @@
-// package br.edu.ufape.plataforma.mentoria.controller;
+package br.edu.ufape.plataforma.mentoria.controller;
 
-// import java.util.Collections;
-// import java.util.List;
+import java.util.Collections;
+import java.util.List;
 
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.http.HttpStatus;
-// import org.springframework.http.ResponseEntity;
-// import org.springframework.web.bind.annotation.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-// import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
-// import br.edu.ufape.plataforma.mentoria.service.MentorService;
-// import jakarta.validation.Valid;
+import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
+import br.edu.ufape.plataforma.mentoria.service.MentorService;
+import jakarta.validation.Valid;
 
-// @RestController
-// @RequestMapping("/mentor")
-// public class MentorController {
+@RestController
+@RequestMapping("/mentor")
+public class MentorController {
 
-//     @Autowired
-//     private MentorService mentorService;
+    @Autowired
+    private MentorService mentorService;
 
-//     @GetMapping("/get/{idMentor}")
-//     public ResponseEntity<MentorDTO> getMentorDetails(@PathVariable Long idMentor) {
-//         MentorDTO mentorDTO = mentorService.getMentorDetailsDTO(idMentor);
-//         if (mentorDTO == null) {
-//             return ResponseEntity.notFound().build();
-//         }
-//         return ResponseEntity.ok(mentorDTO);
-//     }
+    @GetMapping("/get/{idMentor}")
+    public ResponseEntity<MentorDTO> getMentorDetails(@PathVariable Long idMentor) {
+        MentorDTO mentorDTO = mentorService.getMentorDetailsDTO(idMentor);
+        if (mentorDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(mentorDTO);
+    }
 
-//     @PostMapping("/create")
-//     public ResponseEntity<MentorDTO> createMentor(@Valid @RequestBody MentorDTO mentorDTO) {
-//         MentorDTO savedMentorDTO = mentorService.createMentor(mentorDTO);
-//         return ResponseEntity.status(HttpStatus.CREATED).body(savedMentorDTO);
-//     }
+    @PostMapping("/create")
+    public ResponseEntity<MentorDTO> createMentor(@Valid @RequestBody MentorDTO mentorDTO) {
+        MentorDTO savedMentorDTO = mentorService.createMentor(mentorDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedMentorDTO);
+    }
 
-//     @PutMapping("/update/{idMentor}")
-//     public ResponseEntity<MentorDTO> updateMentor(@PathVariable Long idMentor,
-//                                                   @Valid @RequestBody MentorDTO mentorDTO) {
-//         MentorDTO updatedMentorDTO = mentorService.updateMentor(idMentor, mentorDTO);
-//         if (updatedMentorDTO == null) {
-//             return ResponseEntity.notFound().build();
-//         }
-//         return ResponseEntity.ok(updatedMentorDTO);
-//     }
+    @PutMapping("/update/{idMentor}")
+    public ResponseEntity<MentorDTO> updateMentor(@PathVariable Long idMentor,
+                                                  @Valid @RequestBody MentorDTO mentorDTO) {
+        MentorDTO updatedMentorDTO = mentorService.updateMentor(idMentor, mentorDTO);
+        if (updatedMentorDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(updatedMentorDTO);
+    }
 
-//     @DeleteMapping("/delete/{idMentor}")
-//     public ResponseEntity<String> deleteMentor(@PathVariable Long idMentor) {
-//         boolean deleted = mentorService.deleteMentor(idMentor);
-//         if (!deleted) {
-//             return ResponseEntity.notFound().build();
-//         }
-//         return ResponseEntity.ok("Mentor(a) removido(a) com sucesso!");
-//     }
+    @DeleteMapping("/delete/{idMentor}")
+    public ResponseEntity<String> deleteMentor(@PathVariable Long idMentor) {
+        boolean deleted = mentorService.deleteMentor(idMentor);
+        if (!deleted) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok("Mentor(a) removido(a) com sucesso!");
+    }
 
-//     @GetMapping("/search")
-//     public ResponseEntity<List<MentorDTO>> searchMentor(
-//             @RequestParam(required = false) String fullName,
-//             @RequestParam(required = false) String interestArea) {
+    @GetMapping("/search")
+    public ResponseEntity<List<MentorDTO>> searchMentor(
+            @RequestParam(required = false) String fullName,
+            @RequestParam(required = false) String interestArea) {
 
-//         if (fullName == null && interestArea == null) {
-//             return ResponseEntity.ok(Collections.emptyList());
-//         }
+        if (fullName == null && interestArea == null) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
 
-//         List<MentorDTO> results = mentorService.findByNameAndInterestArea(fullName, interestArea);
-//         return ResponseEntity.ok(results);
-//     }
+        List<MentorDTO> results = mentorService.findByNameAndInterestArea(fullName, interestArea);
+        return ResponseEntity.ok(results);
+    }
 
-//     @GetMapping("/me")
-//     public ResponseEntity<MentorDTO> getCurrentMentor() {
-//         MentorDTO mentor = mentorService.getCurrentMentor();
-//         if (mentor == null) {
-//             return ResponseEntity.notFound().build();
-//         }
-//         return ResponseEntity.ok(mentor);
-//     }
-// }
+    @GetMapping("/me")
+    public ResponseEntity<MentorDTO> getCurrentMentor() {
+        MentorDTO mentor = mentorService.getCurrentMentor();
+        if (mentor == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(mentor);
+    }
+}
