@@ -2,6 +2,7 @@ package br.edu.ufape.plataforma.mentoria.dto;
 
 import java.time.LocalDate;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
+import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
@@ -25,6 +26,9 @@ public class MentoredDTO {
 
     @Size(max = 1000, message = "O resumo acadêmico deve ter no máximo 1000 caracteres")
     private String academicSummary;
+
+    @NotNull(message = "A área de interesse é obrigatória")
+    private InterestAreas interestArea;
 
     public MentoredDTO() {
     }
@@ -76,5 +80,12 @@ public class MentoredDTO {
 
     public void setAcademicSummary(String academicSummary) {
         this.academicSummary = academicSummary;
+    }
+    public InterestAreas getInterestArea() {
+        return interestArea;
+    }
+
+    public void setInterestArea(InterestAreas interestArea) {
+        this.interestArea = interestArea;
     }
 }
