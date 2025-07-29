@@ -118,4 +118,12 @@ public class MentorService {
                 .map(mentorMapper::toDTO)
                 .orElseThrow(() -> new MentorNotFoundException("Mentor não encontrado"));
     }
+
+
+    public List<MentorDTO> findMentors(InterestAreas interestArea, List<String> specializations) {
+        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializations(interestArea, specializations);
+        return mentors.stream()
+                .map(mentorMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }
