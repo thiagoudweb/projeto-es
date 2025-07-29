@@ -1,3 +1,4 @@
+/* ===== Container Principal ===== */
 .mentor-register-container {
   max-width: 400px;
   margin: 40px auto;
@@ -9,14 +10,16 @@
   margin-bottom: 20px;
 }
 
+/* ===== Cartão do formulário ===== */
 .mentor-form-container {
-  background: #fff;
-  border: 2px solid #2563eb; 
+  background: #ffffff;
+  border: 2px solid #2563eb;
   border-radius: 8px;
   box-shadow: 0 2px 8px #0001;
   padding: 32px 24px;
 }
 
+/* ===== Bloco de cada campo ===== */
 .form-group {
   margin-bottom: 18px;
   text-align: left;
@@ -28,20 +31,42 @@
   font-weight: 500;
 }
 
-.form-group input {
+/* ===== Campos de entrada e selects ===== */
+input,
+select,
+textarea {
+  background-color: #f9fafb;
   width: 100%;
-  padding: 8px 10px;
+  height: 44px;
+  padding: 10px 12px;
+  font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 4px;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #374151;
 }
 
+/* ===== Textarea que cresce ===== */
+.auto-grow {
+  min-height: 44px;
+  max-height: 200px;
+  resize: vertical;
+}
+
+/* ===== Botão principal ===== */
 .btn-finalizar {
   width: 100%;
   padding: 10px;
   background: #2563eb;
   color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px; 
   font-weight: bold;
+  font-size: 15px;
   cursor: pointer;
+}
+
+.mentor-register-container,
+.mentor-register-container * {
+  font-family: "Segoe UI", sans-serif;
 }
