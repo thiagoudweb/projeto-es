@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
+import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.exceptions.MentorNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentorMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
@@ -30,11 +30,17 @@ public class MentorService {
     }
 
     public Mentor createMentor(Mentor mentor) {
+        if (mentorRepository.existsByCpf(mentor.getCpf())) {
+            throw new AttributeAlreadyInUseException("CPF", mentor.getCpf(), Mentor.class);
+        }
         return mentorRepository.save(mentor);
     }
 
     public Mentor createMentor(MentorDTO mentorDTO) {
         Mentor mentor = mentorMapper.toEntity(mentorDTO);
+        if (mentorRepository.existsByCpf(mentor.getCpf())) {
+            throw new AttributeAlreadyInUseException("CPF", mentor.getCpf(), Mentor.class);
+        }
         return mentorRepository.save(mentor);
     }
 
