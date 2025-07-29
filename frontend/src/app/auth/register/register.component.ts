@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../auth.service';
-import { User } from '../user';
+import { User } from '../../entity/user';
 
 @Component({
   selector: 'app-register',
@@ -35,6 +35,8 @@ export class RegisterComponent {
     nome: ['', [Validators.required, Validators.minLength(3)]],
     lastName: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
+    cpf: ['', [Validators.required]],
+    birthDate: ['', [Validators.required]],
     password: ['', [Validators.required, Validators.minLength(8), this.passwordStrengthValidator()]],
     confirmPassword: ['', [Validators.required]],
     role: ['', Validators.required]

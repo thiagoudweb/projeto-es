@@ -90,6 +90,65 @@
             </div>
           </div>
 
+          <!-- CPF -->
+          <div class="input-box">
+            <label for="cpf">CPF</label>
+            <input
+              id="cpf"
+              type="text"
+              formControlName="cpf"
+              placeholder="CPF"
+            />
+            <div
+              *ngIf="
+                signupForm.get('email')?.invalid &&
+                signupForm.get('email')?.touched
+              "
+              class="error"
+            >
+              Insira um e-mail válido.
+            </div>
+          </div>
+
+          <!-- Data de Nascimento -->
+          <div class="input-box">
+            <label for="birthDate">Data de Nascimento</label>
+            <input
+              id="birthDate"
+              type="date"
+              formControlName="birthDate"
+              placeholder="Data de Nascimento"
+            />
+            <div
+              *ngIf="
+                signupForm.get('birthDate')?.invalid &&
+                signupForm.get('birthDate')?.touched
+              "
+              class="error"
+            >
+              A data de nascimento é obrigatória.
+            </div>
+          </div>
+
+             <!-- Função -->
+          <div class="input-box">
+            <label for="role">Função</label>
+            <select id="role" formControlName="role">
+              <option value="" disabled selected>Selecione um papel</option>
+              <option value="MENTOR">Mentor</option>
+              <option value="MENTORADO">Mentorado</option>
+            </select>
+            <div
+              *ngIf="
+                signupForm.get('role')?.invalid &&
+                signupForm.get('role')?.touched
+              "
+              class="error"
+            >
+              A função é obrigatória.
+            </div>
+          </div>
+
           <!-- Senha -->
           <div class="input-box">
             <label for="senha">Senha</label>
@@ -128,25 +187,6 @@
               class="error"
             >
               As senhas não coincidem.
-            </div>
-          </div>
-
-          <!-- Função -->
-          <div class="input-box">
-            <label for="role">Função</label>
-            <select id="role" formControlName="role">
-              <option value="" disabled selected>Selecione um papel</option>
-              <option value="MENTOR">Mentor</option>
-              <option value="MENTORADO">Mentorado</option>
-            </select>
-            <div
-              *ngIf="
-                signupForm.get('role')?.invalid &&
-                signupForm.get('role')?.touched
-              "
-              class="error"
-            >
-              A função é obrigatória.
             </div>
           </div>
 
