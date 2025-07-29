@@ -1,6 +1,6 @@
 <div class="mentor-register-container">
   <h2>Finalize seu cadastro</h2>
-  
+
   <div class="mentor-form-container">
     <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
       <!-- Resumo profissional -->
@@ -13,6 +13,11 @@
           rows="3"
           class="auto-grow"
         ></textarea>
+        <div *ngIf="signupForm.get('professionalSummary')?.invalid && signupForm.get('professionalSummary')?.touched" class="error">
+          <div *ngIf="signupForm.get('professionalSummary')?.errors?.['required']">O resumo profissional é obrigatório.</div>
+          <div *ngIf="signupForm.get('professionalSummary')?.errors?.['minlength']">O resumo deve ter no mínimo 3 caracteres.</div>
+          <div *ngIf="signupForm.get('professionalSummary')?.errors?.['maxlength']">O resumo deve ter no máximo 1000 caracteres.</div>
+        </div>
       </div>
 
       <!-- Curso -->
@@ -37,6 +42,9 @@
           <option value="Psicologia">Bacharelado em Psicologia</option>
           <option value="Zootecnia">Bacharelado em Zootecnia</option>
         </select>
+        <div *ngIf="signupForm.get('course')?.invalid && signupForm.get('course')?.touched" class="error">
+        O curso é obrigatório.
+        </div>
       </div>
 
       <!-- Especializações -->
@@ -46,8 +54,11 @@
           id="specializations"
           type="text"
           formControlName="specializations"
-          placeholder="Especializações" 
+          placeholder="Especializações"
         />
+        <div *ngIf="signupForm.get('specializations')?.invalid && signupForm.get('specializations')?.touched" class="error">
+          As especializações são obrigatórias.
+        </div>
       </div>
 
       <!-- Áreas de Interesse -->
@@ -66,6 +77,9 @@
           <option value="Marketing e Comunicação">Marketing e Comunicação</option>
           <option value="Tecnologia da Informação">Tecnologia da Informação</option>
         </select>
+          <div *ngIf="signupForm.get('interestList')?.invalid && signupForm.get('interestList')?.touched" class="error">
+            A área de interesse é obrigatória.
+          </div>
       </div>
 
       <!-- affiliationType -->
@@ -77,6 +91,9 @@
           <option value="Técnico Administrativo">Técnico</option>
           <option value="Aluno de Pós-Graduação">Aluno de Pós-Graduação</option>
         </select>
+          <div *ngIf="signupForm.get('affiliationType')?.invalid && signupForm.get('affiliationType')?.touched" class="error">
+            O cargo é obrigatório.
+          </div>
       </div>
       <!-- Adicione mais campos conforme necessário -->
       <button type="submit" class="btn-finalizar">Finalizar Cadastro</button>
