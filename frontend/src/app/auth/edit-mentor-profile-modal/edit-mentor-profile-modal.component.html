@@ -1,0 +1,29 @@
+<div class="modal-backdrop">
+  <div class="modal">
+    <h2>Editar Perfil do Mentor</h2>
+    <form [formGroup]="mentorForm" (ngSubmit)="onSave()">
+      <label>CPF:
+        <input formControlName="cpf" />
+      </label>
+      <label>Data de Nascimento:
+        <input type="date" formControlName="birthDate" />
+      </label>
+      <label>Curso:
+        <input formControlName="course" />
+      </label>
+      <label>Resumo Profissional:
+        <textarea formControlName="professionalSummary"></textarea>
+      </label>
+      <label>Tipo de Vínculo:
+        <input formControlName="affiliationType" />
+      </label>
+      <label>Especializações (separadas por vírgula):
+        <input formControlName="specializations" />
+      </label>
+      <div class="modal-actions">
+        <button type="submit" [disabled]="!mentorForm.valid">Salvar</button>
+        <button type="button" (click)="onClose()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+</div>

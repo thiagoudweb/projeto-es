@@ -1,0 +1,17 @@
+<div class="mentor-profile">
+  <h2>Perfil do Mentor</h2>
+  <div><strong>CPF:</strong> {{ mentor.cpf }}</div>
+  <div><strong>Data de Nascimento:</strong> {{ mentor.birthDate }}</div>
+  <div><strong>Curso:</strong> {{ mentor.course }}</div>
+  <div><strong>Resumo Profissional:</strong> {{ mentor.professionalSummary }}</div>
+  <div><strong>Tipo de Vínculo:</strong> {{ mentor.affiliationType }}</div>
+  <div><strong>Especializações:</strong> {{ mentor.specializations.join(', ') }}</div>
+  <button (click)="openEditModal()">Editar Perfil</button>
+
+  <app-edit-mentor-profile-modal
+    *ngIf="showEditModal"
+    [mentor]="mentor"
+    (save)="saveMentorProfile($event)"
+    (close)="closeEditModal()">
+  </app-edit-mentor-profile-modal>
+</div>
