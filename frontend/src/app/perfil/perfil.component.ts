@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
 @Component({
-  selector: 'app-home',
+  selector: 'app-perfil',
   standalone: true,
   imports: [
     CommonModule,
     RouterLink
   ],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  templateUrl: './perfil.component.html',
+  styleUrl: './perfil.component.css'
 })
-export class HomeComponent {
+export class PerfilComponent {
 }
