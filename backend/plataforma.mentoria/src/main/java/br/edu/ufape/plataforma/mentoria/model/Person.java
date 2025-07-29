@@ -3,17 +3,15 @@ package br.edu.ufape.plataforma.mentoria.model;
 import java.time.LocalDate;
 
 import br.edu.ufape.plataforma.mentoria.enums.Course;
-// import java.util.List;
-// import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
-// import jakarta.persistence.CollectionTable;
+import java.util.List;
+import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-// import jakarta.persistence.JoinColumn;
-// import jakarta.persistence.ElementCollection;
-// import jakarta.persistence.EnumType;
-// import jakarta.persistence.Enumerated;
-// import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
@@ -32,12 +30,12 @@ public abstract class Person {
     @Column(nullable = false)
     private Course course;
 
-    // @ElementCollection(fetch = FetchType.EAGER)
-    // @Enumerated(EnumType.STRING)
-    // @CollectionTable(name = "person_interest_areas", joinColumns =
-    // @JoinColumn(name = "person_id"))
-    // @Column(name = "interest_area")
-    // private List<InterestArea> interestAreas;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "person_interest_areas", joinColumns =
+    @JoinColumn(name = "person_id"))
+    @Column(name = "interest_area")
+    private List<InterestAreas> interestAreas;
 
     public Person() {
 
@@ -82,11 +80,11 @@ public abstract class Person {
         this.course = course;
     }
 
-    // public List<InterestArea> getInterestAreas() {
-    // return interestAreas;
-    // }
+    public List<InterestAreas> getInterestAreas() {
+        return interestAreas;
+    }
 
-    // public void setInterestAreas(List<InterestArea> interestAreas) {
-    // this.interestAreas = interestAreas;
-    // }
+    public void setInterestAreas(List<InterestAreas> interestAreas) {
+        this.interestAreas = interestAreas;
+    }
 }
