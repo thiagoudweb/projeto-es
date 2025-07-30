@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
-import br.edu.ufape.plataforma.mentoria.exceptions.MentoredNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
@@ -24,7 +23,7 @@ public class MentoredService {
 
     public Mentored getMentoredById(Long id) throws Exception {
         return mentoredRepository.findById(id)
-                .orElseThrow(() -> new MentoredNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(Mentored.class, id));
     }
 
     public List<Mentored> getAllMentored() {
@@ -51,7 +50,7 @@ public class MentoredService {
             mentored.setId(id);
             return mentoredRepository.save(mentored);
         }
-        throw new MentoredNotFoundException(id);
+        throw new EntityNotFoundException(Mentored.class, id);
     }
 
     public Mentored updateMentored(Long id, MentoredDTO mentoredDTO) throws Exception {
