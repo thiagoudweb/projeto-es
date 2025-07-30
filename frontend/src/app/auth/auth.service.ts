@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../entity/user';
 import { jwtDecode } from 'jwt-decode';
 import { Mentor } from '../entity/mentor';
-import {Mentored} from '../entity/mentored';
+import { Mentored } from '../entity/mentored';
 
 @Injectable({
   providedIn: 'root',
@@ -68,7 +68,7 @@ export class AuthService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify(newMentor),
       });
@@ -95,7 +95,7 @@ export class AuthService {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
         body: JSON.stringify(newMentored),
       });
@@ -131,7 +131,7 @@ export class AuthService {
     }
     try {
       const decodedToken: any = jwtDecode(token);
-      return decodedToken.roles?.includes(role) || false;
+      return decodedToken.role?.includes(role) || false;
     } catch (error) {
       console.error('Erro ao decodificar o token:', error);
       return false;
