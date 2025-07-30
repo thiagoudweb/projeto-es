@@ -10,7 +10,7 @@ import {Mentored} from '../entity/mentored';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
   private apiUrlMentor = 'http://localhost:8080/mentor';
-  private apiUrlMentored = 'http://localhost:8080/api/mentored';
+  private apiUrlMentored = 'http://localhost:8080/mentored';
 
   async login(email: string, password: string): Promise<boolean> {
     try {
