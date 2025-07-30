@@ -100,7 +100,7 @@ public class MentoredService {
         String email = auth.getName();
 
         return mentoredRepository.findByUserEmail(email)
-                .map(mentoredMapper::toDTO)
+                .map(mentoredMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException(Mentored.class, email));
     }
 }
