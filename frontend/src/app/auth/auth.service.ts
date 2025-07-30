@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../entity/user';
 import { jwtDecode } from 'jwt-decode';
 import { Mentor } from '../entity/mentor';
+import {Mentored} from '../entity/mentored';
 
 @Injectable({
   providedIn: 'root',
@@ -9,6 +10,7 @@ import { Mentor } from '../entity/mentor';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
   private apiUrlMentor = 'http://localhost:8080/mentor';
+  private apiUrlMentored = 'http://localhost:8080/api/mentored';
 
   async login(email: string, password: string): Promise<boolean> {
     try {
@@ -83,6 +85,33 @@ export class AuthService {
       return await response.json();
     } catch (error) {
       console.error('Erro ao registrar Mentor no AuthService:', error);
+      throw error;
+    }
+  }
+
+  async registerMentoroed(newMentored: Mentored): Promise<Mentor | null> {
+    try {
+      const response = await fetch(this.apiUrlMentored, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify(newMentored),
+      });
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: 'Erro desconhecido' }));
+        const error = new Error(errorData.message || 'Registro falhou');
+        (error as any).status = response.status;
+        throw error;
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Erro ao registrar Mentored no AuthService:', error);
       throw error;
     }
   }
