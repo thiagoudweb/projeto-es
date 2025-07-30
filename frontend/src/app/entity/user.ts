@@ -1,6 +1,4 @@
 export interface User {
-
-
     id?: number; //Nao obrigatório mandar, pois o backend gera automaticamente
     cpf: string;
     birthDate: Date;
@@ -9,4 +7,3 @@ export interface User {
     password: string;
     role: string;
 }
-
