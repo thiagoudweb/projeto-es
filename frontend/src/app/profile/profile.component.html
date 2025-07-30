@@ -19,6 +19,9 @@
         <button (click)="editProfile()" class="edit-btn">
           <i class="edit-icon">✏️</i> Editar Perfil
         </button>
+        <button (click)="showDeleteModal = true" class="delete-btn">
+          🗑️ Excluir Perfil
+        </button>
       </div>
 
       <div class="profile-info">
@@ -73,6 +76,9 @@
         <button (click)="editProfile()" class="edit-btn">
           <i class="edit-icon">✏️</i> Editar Perfil
         </button>
+        <button (click)="showDeleteModal = true" class="delete-btn">
+          🗑️ Excluir Perfil
+        </button>
       </div>
 
       <div class="profile-info">
@@ -110,18 +116,34 @@
 
     <!-- Modais de Edição -->
     <app-edit-mentor-profile-modal
-      *ngIf="showEditModal"
+      *ngIf="showEditModal && profileData?.type === 'MENTOR'"
       [mentor]="profileData.data"
       (save)="saveMentorProfile($event)"
       (close)="closeEditModal()">
     </app-edit-mentor-profile-modal>
 
     <app-edit-mentored-modal
-      *ngIf="profileData?.type === 'MENTORADO'"
+      *ngIf="showEditModal && profileData?.type === 'MENTORADO'"
       [mentored]="profileData.data"
       (save)="saveMentoredProfile($event)"
       (close)="closeEditModal()">
     </app-edit-mentored-modal>
+
+    <!-- Modal de Exclusão do Mentor -->
+    <app-delete-mentor-modal
+      *ngIf="showDeleteModal && profileData?.type === 'MENTOR'"
+      [mentor]="profileData.data"
+      (confirmDelete)="confirmDelete()"
+      (cancelDelete)="cancelDelete()">
+    </app-delete-mentor-modal>
+
+    <!-- Modal de Exclusão do Mentorado -->
+    <app-delete-mentored-modal
+      *ngIf="showDeleteModal && profileData?.type === 'MENTORADO'"
+      [mentored]="profileData.data"
+      (confirmDelete)="confirmDelete()"
+      (cancelDelete)="cancelDelete()">
+    </app-delete-mentored-modal>
   </div>
 
   <!-- Caso não seja nem mentor nem mentorado -->

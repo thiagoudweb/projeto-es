@@ -89,7 +89,7 @@ export class AuthService {
     }
   }
 
-  async registerMentoroed(newMentored: Mentored): Promise<Mentor | null> {
+  async registerMentored(newMentored: Mentored): Promise<Mentor | null> {
     try {
       const response = await fetch(this.apiUrlMentored, {
         method: 'POST',
@@ -112,6 +112,108 @@ export class AuthService {
       return await response.json();
     } catch (error) {
       console.error('Erro ao registrar Mentored no AuthService:', error);
+      throw error;
+    }
+  }
+
+  async deleteMentor(id: number): Promise<void> {
+    try {
+      const response = await fetch(`${this.apiUrlMentor}/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${this.getToken()}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: 'Erro desconhecido' }));
+        const error = new Error(errorData.message || 'Erro ao deletar Mentor');
+        (error as any).status = response.status;
+        throw error;
+      }
+    } catch (error) {
+      console.error('Erro ao deletar Mentor no AuthService:', error);
+      throw error;
+    }
+  }
+
+  async getCurrentMentor(): Promise<Mentor | null> {
+    try {
+      console.log('Buscando mentor atual...');
+      const response = await fetch(`${this.apiUrlMentor}/me`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${this.getToken()}`,
+          'Content-Type': 'application/json'
+        },
+      });
+
+      console.log('Response status:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Erro na resposta:', errorText);
+        throw new Error(`Erro ao buscar perfil do mentor: ${response.status}`);
+      }
+
+      const mentor = await response.json();
+      console.log('Mentor recebido do backend:', mentor);
+      return mentor;
+    } catch (error) {
+      console.error('Erro ao buscar perfil do mentor:', error);
+      throw error;
+    }
+  }
+
+    async deleteMentored(id: number): Promise<void> {
+    try {
+      const response = await fetch(`${this.apiUrlMentored}/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${this.getToken()}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: 'Erro desconhecido' }));
+        const error = new Error(errorData.message || 'Erro ao deletar Mentored');
+        (error as any).status = response.status;
+        throw error;
+      }
+    } catch (error) {
+      console.error('Erro ao deletar Mentored no AuthService:', error);
+      throw error;
+    }
+  }
+
+  async getCurrentMentored(): Promise<Mentored | null> {
+    try {
+      console.log('Buscando mentored atual...');
+      const response = await fetch(`${this.apiUrlMentored}/me`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${this.getToken()}`,
+          'Content-Type': 'application/json'
+        },
+      });
+
+      console.log('Response status:', response.status);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Erro na resposta:', errorText);
+        throw new Error(`Erro ao buscar perfil do mentored: ${response.status}`);
+      }
+
+      const mentored = await response.json();
+      console.log('Mentored recebido do backend:', mentored);
+      return mentored;
+    } catch (error) {
+      console.error('Erro ao buscar perfil do mentored:', error);
       throw error;
     }
   }

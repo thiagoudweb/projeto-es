@@ -30,6 +30,7 @@ public class MentorMapper {
         }
 
         MentorDTO mentorDTO = new MentorDTO();
+        mentorDTO.setId(mentor.getId());
         mentorDTO.setFullName(mentor.getFullName());
         mentorDTO.setCpf(mentor.getCpf());
         mentorDTO.setBirthDate(mentor.getBirthDate());

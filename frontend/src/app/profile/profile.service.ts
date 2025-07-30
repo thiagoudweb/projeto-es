@@ -48,7 +48,7 @@ export class ProfileService {
         })
       );
     } else if (userRole === 'MENTORADO') {
-      return this.http.get(`${this.apiUrl}/api/mentored/me`, { headers }).pipe(
+      return this.http.get(`${this.apiUrl}/mentored/me`, { headers }).pipe(
         map((data: any) => ({ type: 'MENTORADO' as const, data })),
         catchError((error: any) => {
           console.error('Erro ao buscar perfil do mentorado:', error);
@@ -67,9 +67,9 @@ export class ProfileService {
  }
 
   updateMentoredProfile(data: any): Observable<any> {
-    return this.http.get(`${this.apiUrl}/api/mentored/me`).pipe(
+    return this.http.get(`${this.apiUrl}/mentored/me`).pipe(
       switchMap((currentMentored: any) => {
-        return this.http.put(`${this.apiUrl}/api/mentored/${currentMentored.id}`, data);
+        return this.http.put(`${this.apiUrl}/mentored/${currentMentored.id}`, data);
       })
     );
   }

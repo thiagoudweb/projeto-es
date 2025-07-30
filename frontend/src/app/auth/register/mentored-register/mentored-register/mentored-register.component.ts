@@ -57,7 +57,7 @@ export class MentoredRegisterComponent implements OnInit {
         role: 'MENTORED'
       };
 
-      this.authService.registerMentoroed(mentoredData).then(
+      this.authService.registerMentored(mentoredData).then(
         () => {
           this.router.navigate(['/home'], )
             .catch(error => {

@@ -84,7 +84,7 @@ public class MentoredController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MentoredDTO> getCurrentMentor() throws EntityNotFoundException {
+    public ResponseEntity<MentoredDTO> getCurrentMentored() throws EntityNotFoundException {
         MentoredDTO mentored = mentoredService.getCurrentMentored();
         if (mentored == null) {
             return ResponseEntity.notFound().build();

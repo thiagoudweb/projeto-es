@@ -9,6 +9,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
 public class MentoredDTO {
+    private Long id;
 
     @NotBlank(message = "O nome completo é obrigatório")
     private String fullName;
@@ -40,6 +41,14 @@ public class MentoredDTO {
         this.birthDate = birthDate;
         this.course = course;
         this.academicSummary = academicSummary;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFullName() {
