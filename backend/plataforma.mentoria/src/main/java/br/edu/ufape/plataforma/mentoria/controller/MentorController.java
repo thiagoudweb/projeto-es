@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
-import br.edu.ufape.plataforma.mentoria.exceptions.MentorNotFoundException;
+import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
 import jakarta.validation.Valid;
 
@@ -38,7 +38,7 @@ public class MentorController {
 
     @PutMapping("/{idMentor}")
     public ResponseEntity<MentorDTO> updateMentor(@PathVariable Long idMentor,
-                                                  @Valid @RequestBody MentorDTO mentorDTO) throws Exception {
+            @Valid @RequestBody MentorDTO mentorDTO) throws Exception {
         MentorDTO updatedMentorDTO = mentorService.updateMentor(idMentor, mentorDTO);
         if (updatedMentorDTO == null) {
             return ResponseEntity.notFound().build();
@@ -51,7 +51,7 @@ public class MentorController {
         try {
             mentorService.deleteMentor(idMentor);
             return ResponseEntity.ok("Mentor(a) removido(a) com sucesso!");
-        } catch (MentorNotFoundException e) {
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
@@ -70,7 +70,7 @@ public class MentorController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MentorDTO> getCurrentMentor() throws MentorNotFoundException {
+    public ResponseEntity<MentorDTO> getCurrentMentor() throws EntityNotFoundException {
         MentorDTO mentor = mentorService.getCurrentMentor();
         if (mentor == null) {
             return ResponseEntity.notFound().build();

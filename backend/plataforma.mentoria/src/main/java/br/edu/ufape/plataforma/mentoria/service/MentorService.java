@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
-import br.edu.ufape.plataforma.mentoria.exceptions.MentorNotFoundException;
+import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentorMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.model.User;
@@ -20,7 +20,7 @@ import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 public class MentorService {
     @Autowired
     private MentorRepository mentorRepository;
-    
+
     @Autowired
     private MentorMapper mentorMapper;
 
@@ -29,14 +29,13 @@ public class MentorService {
 
     public Mentor getMentorById(Long id) throws Exception {
         return mentorRepository.findById(id)
-                .orElseThrow(() -> new MentorNotFoundException(id));
+                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, id));
     }
 
     public MentorDTO getMentorDetailsDTO(Long id) throws Exception {
-        Mentor mentor = getMentorById(id); 
+        Mentor mentor = getMentorById(id);
         return mentorMapper.toDTO(mentor);
     }
-
 
     public List<Mentor> getAllMentors() {
         return mentorRepository.findAll();
@@ -52,16 +51,16 @@ public class MentorService {
     public MentorDTO createMentor(MentorDTO mentorDTO) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String userEmail = authentication.getName(); 
-        
+        String userEmail = authentication.getName();
+
         User user = userRepository.findByEmail(userEmail);
 
         Mentor mentor = mentorMapper.toEntity(mentorDTO);
-        
+
         if (mentorRepository.existsByCpf(mentor.getCpf())) {
             throw new AttributeAlreadyInUseException("CPF", mentor.getCpf(), Mentor.class);
         }
-        
+
         mentor.setUser(user);
 
         Mentor savedMentor = mentorRepository.save(mentor);
@@ -73,7 +72,7 @@ public class MentorService {
             mentor.setId(id);
             return mentorRepository.save(mentor);
         }
-        throw new MentorNotFoundException(id);
+        throw new EntityNotFoundException(Mentor.class, id);
     }
 
     public MentorDTO updateMentor(Long id, MentorDTO mentorDTO) throws Exception {
@@ -81,41 +80,49 @@ public class MentorService {
             Mentor mentor = mentorMapper.toEntity(mentorDTO);
             mentor.setId(id);
             User user = userRepository.findById(mentor.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + mentor.getUser().getId()));
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + mentor.getUser().getId()));
             mentor.setUser(user);
             Mentor updatedMentor = mentorRepository.save(mentor);
             return mentorMapper.toDTO(updatedMentor);
         }
-        throw new MentorNotFoundException(id);
+        throw new EntityNotFoundException(Mentor.class, id);
     }
 
     public void deleteById(Long id) throws Exception {
         if (!mentorRepository.existsById(id)) {
-            throw new MentorNotFoundException(id);
+            throw new EntityNotFoundException(Mentor.class, id);
         }
         mentorRepository.deleteById(id);
     }
 
-    public void deleteMentor(Long id) throws MentorNotFoundException {
+    public void deleteMentor(Long id) throws EntityNotFoundException {
         if (!mentorRepository.existsById(id)) {
-            throw new MentorNotFoundException(id);
+            throw new EntityNotFoundException(Mentor.class, id);
         }
         mentorRepository.deleteById(id);
     }
 
     public List<MentorDTO> findByNameAndInterestArea(String fullName, InterestAreas interestArea) {
-        List<Mentor> mentors = mentorRepository.findByFullNameContainingIgnoreCaseAndInterestAreas(fullName, interestArea);
+        List<Mentor> mentors = mentorRepository.findByFullNameContainingIgnoreCaseAndInterestAreas(fullName,
+                interestArea);
         return mentors.stream()
                 .map(mentorMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public MentorDTO getCurrentMentor() throws MentorNotFoundException {
+    public MentorDTO getCurrentMentor() throws EntityNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
         return mentorRepository.findByUserEmail(email)
                 .map(mentorMapper::toDTO)
-                .orElseThrow(() -> new MentorNotFoundException("Mentor não encontrado"));
+                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, email));
+    }
+
+    public List<MentorDTO> findMentors(InterestAreas interestArea, List<String> specializations) {
+        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializations(interestArea, specializations);
+        return mentors.stream()
+                .map(mentorMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

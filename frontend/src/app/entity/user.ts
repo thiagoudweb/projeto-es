@@ -1,10 +1,12 @@
 export interface User {
-  id?: number;
-  fullName: string;
-  email: string;
-  password: string;
-  role: string;
-  cpf: string;
-  birthDate: string;
-  course: string;
+
+
+    id?: number; //Nao obrigatório mandar, pois o backend gera automaticamente
+    cpf: string;
+    birthDate: Date;
+    fullName: string;
+    email: string;
+    password: string;
+    role: string;
 }
+

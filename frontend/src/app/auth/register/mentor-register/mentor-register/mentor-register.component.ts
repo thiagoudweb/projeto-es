@@ -23,8 +23,10 @@ export class MentorRegisterComponent implements OnInit {
 
   signupForm: FormGroup = this.fb.group({
     course: ['', [Validators.required, Validators.minLength(3)]],
+
     professionalSummary: ['', [Validators.required, Validators.minLength(3)]],
-    interestList: ['', [Validators.required]],
+    interestArea: ['', [Validators.required]],
+
     affiliationType: ['', [Validators.required]],
     specializations: ['', [Validators.required]],
   })
@@ -33,21 +35,39 @@ export class MentorRegisterComponent implements OnInit {
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras.state) {
       this.userData = navigation.extras.state['userData'];
+    }else if (history.state && history.state.userData) {
+      this.userData = history.state.userData;
     }
-
-    if (!this.userData) { //caso queira entrar direto na tela de mentores comentar esse bloco
+    else{
+      console.error('Nenhum dado recebido do cadastro inicial.');
+    }
+    if (!this.userData) {
       this.router.navigate(['/register']);
     }
   }
 
   onSubmit() {
-    if (this.signupForm.valid && this.userData) { 
+    if (this.signupForm.valid && this.userData) {
       const mentorData: Mentor = {
-        ...this.userData,
-        ...this.signupForm.value
+        fullName: this.userData.fullName,
+        cpf: this.userData.cpf,
+        birthDate: this.userData.birthDate,
+        course: this.signupForm.value.course,
+        professionalSummary: this.signupForm.value.professionalSummary,
+        affiliationType: this.signupForm.value.affiliationType,
+        specializations: this.signupForm.value.specializations ? this.signupForm.value.specializations.split(',').map((s: string) => s.trim()): [],
+        interestArea: this.signupForm.value.interestArea,
+        email: this.userData.email,
+        password: this.userData.password,
+        role: 'MENTOR'
       };
 
-      //integrar o cadastro do mentor ao backend
+      this.authService.registerMentor(mentorData).then(
+          () => this.router.navigate(['/home']),
+        )
+        .catch(error => {
+          console.error('Erro ao registrar Mentor:', error);
+        });
     }
   }
 
