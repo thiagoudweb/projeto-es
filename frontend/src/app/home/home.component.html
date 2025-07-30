@@ -6,10 +6,18 @@
   </header>
   <section class="content">
     <p class="welcome-message">Bem vindo!</p>
-    <div class="search-section-mentor" *ngIf="hasMentorRole()">
+    <div class="search-section-mentor">
       <div class="search-container">
-        <p class="description">Encontre o mentorado ideal para você!</p>
-        <h2 class="search-title">Buscar Mentorado</h2>
+        <p class="description">
+          {{
+            hasMentorRole()
+              ? "Encontre o mentorado ideal para você!"
+              : "Encontre o mentor ideal para você!"
+          }}
+        </p>
+        <h2 class="search-title">
+          {{ hasMentorRole() ? "Buscar Mentorado" : "Buscar Mentor" }}
+        </h2>
         <input
           #searchInput
           type="text"
