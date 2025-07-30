@@ -21,18 +21,13 @@
         <div class="search-results">
           <div *ngFor="let result of results" class="search-item">
             <span class="search-item-name">{{ result.name }} </span><br />
-            <span class="search-item-description">{{ result.description }}</span
+            <span class="search-item-course">{{ result.course }}</span
             ><br />
             <span class="search-item-interests">{{
               result.interests.join(", ")
             }}</span>
           </div>
         </div>
-        <!-- <ul>
-          <li *ngFor="let result of results" class="search-item">
-            {{ result.name }}
-          </li>
-        </ul> -->
       </div>
     </div>
   </section>
