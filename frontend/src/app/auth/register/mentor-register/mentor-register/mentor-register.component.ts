@@ -23,8 +23,10 @@ export class MentorRegisterComponent implements OnInit {
 
   signupForm: FormGroup = this.fb.group({
     course: ['', [Validators.required, Validators.minLength(3)]],
+
     professionalSummary: ['', [Validators.required, Validators.minLength(3)]],
     interestArea: ['', [Validators.required]],
+
     affiliationType: ['', [Validators.required]],
     specializations: ['', [Validators.required]],
   })
@@ -46,7 +48,7 @@ export class MentorRegisterComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.signupForm.valid && this.userData) { 
+    if (this.signupForm.valid && this.userData) {
       const mentorData: Mentor = {
         fullName: this.userData.fullName,
         cpf: this.userData.cpf,
