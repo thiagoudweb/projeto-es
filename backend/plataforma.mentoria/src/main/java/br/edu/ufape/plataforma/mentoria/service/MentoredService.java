@@ -104,6 +104,6 @@ public class MentoredService {
     }
 
     public List<Mentored> searchMentoredByInterest(String interestName) {
-        return mentoredRepository.findByInterestsNameContainingIgnoreCase(interestName);
+        return mentoredRepository.findByInterestAreaContaining(interestName);
     }
 }

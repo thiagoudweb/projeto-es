@@ -1,6 +1,8 @@
 package br.edu.ufape.plataforma.mentoria.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 
@@ -15,5 +17,6 @@ public interface MentoredRepository extends JpaRepository<Mentored, Long> {
 
     public Optional<Mentored> findByUserEmail(String email);
 
-    List<Mentored> findByInterestsNameContainingIgnoreCase(String interestName);
+    @Query("SELECT m FROM Mentored m JOIN m.interestAreas ia WHERE UPPER(CAST(ia AS string)) LIKE UPPER(CONCAT('%', :interest, '%'))")
+    List<Mentored> findByInterestAreaContaining(@Param("interest") String interest);
 }

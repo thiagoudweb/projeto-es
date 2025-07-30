@@ -4,6 +4,7 @@ import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { MentorService } from './mentor/mentor.component';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private authService = inject(AuthService);
   private router = inject(Router);
+  private mentorService = inject(MentorService);
 
   logout() {
     this.authService.logout();
@@ -52,13 +54,29 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.results = [];
       return;
     }
-    this.results = this.mentoredMockList.filter((mentored) =>
-      mentored.interests.some((i: string) =>
-        i.toLowerCase().includes(interest.toLowerCase())
-      )
-    );
-    this.results.sort((a, b) => a.name.localeCompare(b.name));
-    console.log('Search results:', this.results);
+    this.mentorService.searchMentoredByInterest(interest).subscribe({
+      next: (response) => {
+        this.results = response;
+        this.results.sort((a, b) => a.fullName.localeCompare(b.fullName));
+        console.log('Search results from API:', this.results);
+      },
+      error: (error) => {
+        console.error('Error searching mentored:', error);
+        this.results = this.mentoredMockList.filter((mentored) =>
+          mentored.interests.some((i: string) =>
+            i.toLowerCase().includes(interest.toLowerCase())
+          )
+        );
+        this.results.sort((a, b) => a.name.localeCompare(b.name));
+      },
+      // this.results = this.mentoredMockList.filter((mentored) =>
+      //   mentored.interests.some((i: string) =>
+      //     i.toLowerCase().includes(interest.toLowerCase())
+      //   )
+      // );
+      // this.results.sort((a, b) => a.name.localeCompare(b.name));
+      // console.log('Search results:', this.results);
+    });
   }
 
   results: any[] = [];
