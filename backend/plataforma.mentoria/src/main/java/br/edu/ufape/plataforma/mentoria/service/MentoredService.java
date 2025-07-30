@@ -2,7 +2,6 @@ package br.edu.ufape.plataforma.mentoria.service;
 
 import java.util.List;
 
-import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
@@ -102,5 +101,9 @@ public class MentoredService {
         return mentoredRepository.findByUserEmail(email)
                 .map(mentoredMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException(Mentored.class, email));
+    }
+
+    public List<Mentored> searchMentoredByInterest(String interestName) {
+        return mentoredRepository.findByInterestAreaContaining(interestName);
     }
 }
