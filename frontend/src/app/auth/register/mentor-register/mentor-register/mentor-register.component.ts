@@ -41,7 +41,6 @@ export class MentorRegisterComponent implements OnInit {
     else{
       console.error('Nenhum dado recebido do cadastro inicial.');
     }
-
     if (!this.userData) {
       this.router.navigate(['/register']);
     }
@@ -59,16 +58,16 @@ export class MentorRegisterComponent implements OnInit {
         specializations: this.signupForm.value.specializations ? this.signupForm.value.specializations.split(',').map((s: string) => s.trim()): [],
         interestArea: this.signupForm.value.interestArea,
         email: this.userData.email,
-        password: this.userData.password, 
+        password: this.userData.password,
         role: 'MENTOR'
       };
 
       this.authService.registerMentor(mentorData).then(
-        () => this.router.navigate(['/home']),
-      )
-      .catch(error => {
-        console.error('Erro ao registrar Mentor:', error);
-      });
+          () => this.router.navigate(['/home']),
+        )
+        .catch(error => {
+          console.error('Erro ao registrar Mentor:', error);
+        });
     }
   }
 

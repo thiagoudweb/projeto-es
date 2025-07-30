@@ -5,4 +5,5 @@ export interface Mentored extends User {
     birthDate: Date;
     course: string;
     academicSummary: string;
+    interestArea: string[];
 }

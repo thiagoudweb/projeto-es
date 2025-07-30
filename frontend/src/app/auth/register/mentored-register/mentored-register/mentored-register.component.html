@@ -49,7 +49,7 @@
       <!-- Lista de areas de interesse -->
       <div class="form-group">
         <label for="interestList">Lista de areas de interesse</label>
-        <select id="interestList" formControlName="interestList">
+        <select id="interestList" formControlName="interestArea">
           <option value="" disabled selected>Selecione sua Lista de areas de interesse</option>
           <option value="ADMINISTRACAO_E_GESTAO">Administração e Gestão</option>
           <option value="CIENCIAS_BIOLOGICAS_E_SAUDE">Ciências Biológicas e Saúde</option>
@@ -62,7 +62,7 @@
           <option value="MARKETING_E_COMUNICACAO">Marketing e Comunicação</option>
           <option value="TECNOLOGIA_DA_INFORMACAO">Tecnologia da Informação</option>
         </select>
-          <div *ngIf="signupForm.get('interestList')?.invalid && signupForm.get('interestList')?.touched" class="error">
+          <div *ngIf="signupForm.get('interestArea')?.invalid && signupForm.get('interestArea')?.touched" class="error">
             A área de interesse é obrigatória.
           </div>
       </div>
