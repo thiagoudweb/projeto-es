@@ -4,6 +4,10 @@ import { RouterModule } from '@angular/router';
 import { ProfileService, ProfileData } from './profile.service';
 import { EditMentoredModalComponent } from '../auth/edit-mentored-profile-modal/edit-mentored-modal.component';
 import { EditMentorProfileModalComponent } from '../auth/edit-mentor-profile-modal/edit-mentor-profile-modal.component';
+import { DeleteMentorModalComponent } from '../auth/delete-mentor-modal/delete-mentor-modal.component';
+import { DeleteMentoredModalComponent } from '../auth/delete-mentored-modal/delete-mentored-modal.component';
+import { AuthService } from '../auth/auth.service';
+
 @Component({
   selector: 'app-perfil',
   standalone: true,
@@ -11,7 +15,9 @@ import { EditMentorProfileModalComponent } from '../auth/edit-mentor-profile-mod
     CommonModule,
     RouterModule,
     EditMentorProfileModalComponent,
-    EditMentoredModalComponent
+    EditMentoredModalComponent,
+    DeleteMentorModalComponent,
+    DeleteMentoredModalComponent
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
@@ -21,8 +27,9 @@ export class ProfileComponent implements OnInit {
   loading = true;
   error: string | null = null;
   showEditModal = false;
+  showDeleteModal = false;
 
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.loadProfile();
@@ -50,9 +57,9 @@ export class ProfileComponent implements OnInit {
     this.showEditModal = true;
   }
 
- closeEditModal(): void {
-   this.showEditModal = false;
- }
+  closeEditModal(): void {
+    this.showEditModal = false;
+  }
 
   saveMentorProfile(updatedData: any): void {
     if (!this.profileData || this.profileData.type !== 'MENTOR') return;
@@ -85,5 +92,37 @@ export class ProfileComponent implements OnInit {
         this.error = 'Erro ao atualizar perfil';
       }
     });
+  }
+
+  openDeleteModal(): void {
+    if (this.profileData?.type === 'MENTOR' || this.profileData?.type === 'MENTORADO') {
+      this.showDeleteModal = true;
+    } else {
+      console.error('Tipo de perfil não suportado para exclusão.');
+    }
+  }
+
+  async confirmDelete(): Promise<void> {
+    if (!this.profileData) return;
+
+    const id = this.profileData.data.id;
+    try {
+      if (this.profileData.type === 'MENTOR') {
+        await this.authService.deleteMentor(id);
+      } else if (this.profileData.type === 'MENTORADO') {
+        await this.authService.deleteMentored(id);
+      }
+
+      this.showDeleteModal = false;
+      this.authService.logout();
+      window.location.href = '/login'; 
+    } catch (error) {
+      console.error('Erro ao deletar conta:', error);
+      this.error = 'Erro ao deletar conta';
+    }
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
   }
 }

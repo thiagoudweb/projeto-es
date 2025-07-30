@@ -19,6 +19,7 @@ public class MentoredMapper {
 
     public MentoredDTO toDto(Mentored mentored) {
         MentoredDTO mentoredDTO = new MentoredDTO();
+        mentoredDTO.setId(mentored.getId());
         mentoredDTO.setFullName(mentored.getFullName());
         mentoredDTO.setCpf(mentored.getCpf());
         mentoredDTO.setBirthDate(mentored.getBirthDate());

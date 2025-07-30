@@ -13,6 +13,8 @@ import jakarta.validation.constraints.Size;
 
 public class MentorDTO {
 
+    private Long id;
+
     @NotBlank(message = "O nome completo é obrigatório")
     private String fullName;
 
@@ -51,6 +53,13 @@ public class MentorDTO {
         this.professionalSummary = professionalSummary;
         this.affiliationType = affiliationType;
         this.specializations = specializations;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFullName() {
