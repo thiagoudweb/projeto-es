@@ -6,10 +6,46 @@
   </header>
   <section class="content">
     <p class="welcome-message">Bem vindo!</p>
+    <div class="search-section-mentor" *ngIf="hasMentorRole()">
+      <div class="search-container">
+        <p class="description">Encontre o mentorado ideal para você!</p>
+        <h2 class="search-title">Buscar Mentorado</h2>
+        <input
+          #searchInput
+          type="text"
+          class="search-input"
+          placeholder="Área de Interesse..."
+          (input)="onSearchInput(searchInput.value)"
+        />
+
+        <div class="search-results">
+          <div *ngFor="let result of results" class="search-item">
+            <span class="search-item-name">{{ result.name }} </span><br />
+            <span class="search-item-description">{{ result.description }}</span
+            ><br />
+            <span class="search-item-interests">{{
+              result.interests.join(", ")
+            }}</span>
+          </div>
+        </div>
+        <!-- <ul>
+          <li *ngFor="let result of results" class="search-item">
+            {{ result.name }}
+          </li>
+        </ul> -->
+      </div>
+    </div>
   </section>
 </main>
 <a routerLink="/profile" class="profile-link" title="Ver Perfil">
-  <svg class="profile-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+  <svg
+    class="profile-icon"
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+  >
+    <path
+      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"
+    />
   </svg>
 </a>
