@@ -9,9 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
+import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
+import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
+import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
+import br.edu.ufape.plataforma.mentoria.service.MentoredService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -20,6 +24,12 @@ public class MentorController {
 
     @Autowired
     private MentorService mentorService;
+
+    @Autowired
+    private MentoredService mentoredService;
+
+    @Autowired
+    private MentoredMapper mentoredMapper;
 
     @GetMapping("/{idMentor}")
     public ResponseEntity<MentorDTO> getMentorDetails(@PathVariable Long idMentor) throws Exception {
@@ -67,6 +77,15 @@ public class MentorController {
 
         List<MentorDTO> results = mentorService.findByNameAndInterestArea(fullName, interestArea);
         return ResponseEntity.ok(results);
+    }
+
+    @GetMapping("/interests/mentored/{interestName}")
+    public ResponseEntity<List<MentoredDTO>> searchMentoredByInterest(@PathVariable String interestName) {
+        List<Mentored> results = mentoredService.searchMentoredByInterest(interestName);
+        List<MentoredDTO> resultsDTO = results.stream()
+                .map(mentoredMapper::toDto)
+                .toList();
+        return ResponseEntity.ok(resultsDTO);
     }
 
     @GetMapping("/me")
