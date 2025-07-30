@@ -1,0 +1,139 @@
+<div class="profile-container">
+  <h1>Meu Perfil</h1>
+
+  <div *ngIf="loading" class="loading">
+    <p>Carregando perfil...</p>
+    <div class="spinner"></div>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+    <button (click)="loadProfile()" class="retry-btn">Tentar novamente</button>
+  </div>
+
+  <div *ngIf="!loading && profileData && profileData.type !== 'UNKNOWN'">
+    <!-- Perfil do Mentor -->
+    <div *ngIf="profileData.type === 'MENTOR'" class="mentor-profile">
+      <div class="profile-header">
+        <h2>Perfil do Mentor</h2>
+        <button (click)="editProfile()" class="edit-btn">
+          <i class="edit-icon">✏️</i> Editar Perfil
+        </button>
+      </div>
+
+      <div class="profile-info">
+        <div class="info-group">
+          <div class="info-item">
+            <strong>Nome Completo:</strong>
+            <span>{{ profileData.data.fullName }}</span>
+          </div>
+          <div class="info-item">
+            <strong>CPF:</strong>
+            <span>{{ profileData.data.cpf }}</span>
+          </div>
+          <div class="info-item">
+            <strong>Data de Nascimento:</strong>
+            <span>{{ profileData.data.birthDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="info-item">
+            <strong>Curso:</strong>
+            <span>{{ profileData.data.course }}</span>
+          </div>
+        </div>
+
+        <div class="info-group">
+          <div class="info-item full-width">
+            <strong>Resumo Profissional:</strong>
+            <p>{{ profileData.data.professionalSummary }}</p>
+          </div>
+          <div class="info-item">
+            <strong>Tipo de Vínculo:</strong>
+            <span>{{ profileData.data.affiliationType }}</span>
+          </div>
+          <div class="info-item full-width">
+            <strong>Especializações:</strong>
+            <div class="tags">
+              <span *ngFor="let spec of profileData.data.specializations" class="tag">
+                {{ spec }}
+              </span>
+            </div>
+          </div>
+          <div class="info-item">
+            <strong>Área de Interesse:</strong>
+            <span>{{ profileData.data.interestArea }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Perfil do Mentorado -->
+    <div *ngIf="profileData.type === 'MENTORADO'" class="mentored-profile">
+      <div class="profile-header">
+        <h2>Perfil do Mentorado</h2>
+        <button (click)="editProfile()" class="edit-btn">
+          <i class="edit-icon">✏️</i> Editar Perfil
+        </button>
+      </div>
+
+      <div class="profile-info">
+        <div class="info-group">
+          <div class="info-item">
+            <strong>Nome Completo:</strong>
+            <span>{{ profileData.data.fullName }}</span>
+          </div>
+          <div class="info-item">
+            <strong>CPF:</strong>
+            <span>{{ profileData.data.cpf }}</span>
+          </div>
+          <div class="info-item">
+            <strong>Data de Nascimento:</strong>
+            <span>{{ profileData.data.birthDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+          <div class="info-item">
+            <strong>Curso:</strong>
+            <span>{{ profileData.data.course }}</span>
+          </div>
+        </div>
+
+        <div class="info-group">
+          <div class="info-item full-width">
+            <strong>Resumo Acadêmico:</strong>
+            <p>{{ profileData.data.academicSummary }}</p>
+          </div>
+          <div class="info-item">
+            <strong>Área de Interesse:</strong>
+            <span>{{ profileData.data.interestArea }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modais de Edição -->
+    <app-edit-mentor-profile-modal
+      *ngIf="showEditModal"
+      [mentor]="profileData.data"
+      (save)="saveMentorProfile($event)"
+      (close)="closeEditModal()">
+    </app-edit-mentor-profile-modal>
+
+    <app-edit-mentored-modal
+      *ngIf="profileData?.type === 'MENTORADO'"
+      [mentored]="profileData.data"
+      (save)="saveMentoredProfile($event)"
+      (close)="closeEditModal()">
+    </app-edit-mentored-modal>
+  </div>
+
+  <!-- Caso não seja nem mentor nem mentorado -->
+  <div *ngIf="!loading && profileData?.type === 'UNKNOWN'" class="unknown-profile">
+    <h2>Perfil não identificado</h2>
+    <p>Não foi possível identificar seu tipo de perfil. Entre em contato com o suporte.</p>
+    <button (click)="loadProfile()" class="retry-btn">Tentar novamente</button>
+  </div>
+
+  <div class="actions">
+    <a routerLink="/home" class="back-link">
+      <i class="back-icon">← </i>Voltar para a Home
+    </a>
+  </div>
+</div>

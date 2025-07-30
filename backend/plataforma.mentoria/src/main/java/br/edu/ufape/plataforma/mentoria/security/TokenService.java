@@ -24,6 +24,7 @@ public class TokenService {
             String token = JWT.create()
                 .withIssuer("Mentoria")
                 .withSubject(user.getUsername())
+                .withClaim("role", user.getRole().name())
                 .withExpiresAt(this.getExpirationAt())
                 .sign(algorithm);
             return token;
