@@ -44,8 +44,8 @@ public class MentoredController {
     }
 
     @GetMapping("/{idMentored}")
-    public ResponseEntity<MentoredDTO> getMentoredById(@PathVariable Long id) throws Exception {
-        Mentored mentored = mentoredService.getMentoredById(id);
+    public ResponseEntity<MentoredDTO> getMentoredById(@PathVariable Long idMentored) throws Exception {
+        Mentored mentored = mentoredService.getMentoredById(idMentored);
         return ResponseEntity.ok(mentoredMapper.toDto(mentored));
     }
 
@@ -65,8 +65,8 @@ public class MentoredController {
     }
 
     @DeleteMapping("/{idMentored}")
-    public ResponseEntity<Void> deleteMentored(@PathVariable Long id) throws Exception {
-        mentoredService.deleteById(id);
+    public ResponseEntity<Void> deleteMentored(@PathVariable Long idMentored) throws Exception {
+        mentoredService.deleteById(idMentored);
         return ResponseEntity.noContent().build();
     }
 

@@ -3,6 +3,7 @@ package br.edu.ufape.plataforma.mentoria.model;
 import java.time.LocalDate;
 
 import br.edu.ufape.plataforma.mentoria.enums.Course;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
@@ -15,7 +16,7 @@ public class Mentored extends Person {
     @Id
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @PrimaryKeyJoinColumn
     private User user;
