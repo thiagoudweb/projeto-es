@@ -1,13 +1,11 @@
 package br.edu.ufape.plataforma.mentoria.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
-import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentorMapper;

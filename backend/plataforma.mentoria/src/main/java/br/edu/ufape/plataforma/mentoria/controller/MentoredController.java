@@ -1,11 +1,7 @@
 package br.edu.ufape.plataforma.mentoria.controller;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
-import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
 import jakarta.validation.Valid;
@@ -13,10 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
-import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.service.MentoredService;
 
 @RestController
@@ -25,7 +19,6 @@ public class MentoredController {
 
     private final MentoredService mentoredService;
     private final MentoredMapper mentoredMapper;
-
     private final MentorService mentorService;
 
     @Autowired
