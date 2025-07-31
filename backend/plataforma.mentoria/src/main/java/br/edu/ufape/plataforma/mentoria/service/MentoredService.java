@@ -62,7 +62,7 @@ public class MentoredService {
         }
 
         mentored.setUser(user);
-        Mentored savedMentored = mentoredMapper.toEntity(mentoredDTO);
+        Mentored savedMentored = mentoredRepository.save(mentored);
         return mentoredMapper.toDto(savedMentored);
     }
 

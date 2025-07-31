@@ -8,6 +8,7 @@ import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,14 +46,17 @@ public class MentoredController {
 
     @GetMapping("/{idMentored}")
     public ResponseEntity<MentoredDTO> getMentoredById(@PathVariable Long id) throws Exception {
-        Mentored mentored = mentoredService.getMentoredById(id);
-        return ResponseEntity.ok(mentoredMapper.toDto(mentored));
+        MentoredDTO mentoredDTO = mentoredService.getMentoredDetailsDTO(id);
+        if (mentoredDTO == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(mentoredDTO);
     }
 
     @PostMapping
-    public ResponseEntity<MentoredDTO> createMentored(@RequestBody MentoredDTO mentoredDTO) {
-        MentoredDTO savedMentored = mentoredService.createMentored(mentoredDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedMentored);
+    public ResponseEntity<MentoredDTO> createMentored(@Valid @RequestBody MentoredDTO mentoredDTO) {
+        MentoredDTO savedMentoredDTO = mentoredService.createMentored(mentoredDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedMentoredDTO);
     }
 
     @PutMapping("/{idMentored}")
