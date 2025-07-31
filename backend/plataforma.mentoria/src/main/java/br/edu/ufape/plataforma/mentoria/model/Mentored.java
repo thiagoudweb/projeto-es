@@ -1,8 +1,10 @@
 package br.edu.ufape.plataforma.mentoria.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import br.edu.ufape.plataforma.mentoria.enums.Course;
+import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
@@ -23,8 +25,8 @@ public class Mentored extends Person {
     private String academicSummary;
 
     public Mentored(String fullName, String cpf, LocalDate birthDate, Course course, User user,
-            String academicSummary) {
-        super(fullName, cpf, birthDate, course);
+                    String academicSummary, List<InterestAreas> interestAreas) {
+        super(fullName, cpf, birthDate, course, interestAreas);
         this.user = user;
         this.academicSummary = academicSummary;
     }
