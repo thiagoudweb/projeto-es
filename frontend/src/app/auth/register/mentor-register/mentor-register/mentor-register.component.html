@@ -68,16 +68,40 @@
         <label for="interestArea">Lista de areas de interesse</label>
         <select id="interestArea" formControlName="interestArea">
           <option value="" disabled selected>Selecione sua Lista de areas de interesse</option>
-          <option value="ADMINISTRACAO_E_GESTAO">Administração e Gestão</option>
-          <option value="CIENCIAS_BIOLOGICAS_E_SAUDE">Ciências Biológicas e Saúde</option>
-          <option value="CIENCIAS_EXATAS">Ciências Exatas</option>
-          <option value="CIENCIAS_HUMANAS">Ciências Humanas</option>
-          <option value="EDUCACAO">Educação</option>
-          <option value="ENGENHARIA">Engenharia</option>
-          <option value="FINANCAS">Finanças</option>
-          <option value="JURIDICO">Jurídico</option>
-          <option value="MARKETING_E_COMUNICACAO">Marketing e Comunicação</option>
           <option value="TECNOLOGIA_DA_INFORMACAO">Tecnologia da Informação</option>
+          <option value="DESENVOLVIMENTO_DE_SOFTWARE">Desenvolvimento de Software</option>
+          <option value="CIENCIA_DE_DADOS_E_IA">Ciência de Dados e Inteligência Artificial</option>
+          <option value="CIBERSEGURANCA">Cibersegurança</option>
+          <option value="UX_UI_DESIGN">UX/UI Design</option>
+          <option value="ENGENHARIA_GERAL">Engenharia</option>
+          <option value="ENGENHARIA_CIVIL">Engenharia Civil</option>
+          <option value="ENGENHARIA_DE_PRODUCAO">Engenharia de Produção</option>
+          <option value="MATEMATICA_E_ESTATISTICA">Matemática e Estatística</option>
+          <option value="FISICA">Física</option>
+          <option value="ADMINISTRACAO_E_GESTAO">Administração e Gestão</option>
+          <option value="EMPREENDEDORISMO_E_INOVACAO">Empreendedorismo e Inovação</option>
+          <option value="FINANCAS_E_CONTABILIDADE">Finanças e Contabilidade</option>
+          <option value="RECURSOS_HUMANOS">Recursos Humanos</option>
+          <option value="LOGISTICA_E_CADEIA_DE_SUPRIMENTOS">Logística e Cadeia de Suprimentos</option>
+          <option value="MARKETING_E_COMUNICACAO">Marketing e Comunicação</option>
+          <option value="MARKETING_DIGITAL">Marketing Digital</option>
+          <option value="JORNALISMO">Jornalismo</option>
+          <option value="PUBLICIDADE_E_PROPAGANDA">Publicidade e Propaganda</option>
+          <option value="COMUNICACAO_INSTITUCIONAL">Comunicação Institucional</option>
+          <option value="CIENCIAS_BIOLOGICAS_E_SAUDE">Ciências Biológicas e Saúde</option>
+          <option value="MEDICINA">Medicina</option>
+          <option value="PSICOLOGIA">Psicologia</option>
+          <option value="NUTRICAO">Nutrição</option>
+          <option value="BIOTECNOLOGIA">Biotecnologia</option>
+          <option value="EDUCACAO">Educação</option>
+          <option value="CIENCIAS_HUMANAS_E_SOCIAIS">Ciências Humanas e Sociais</option>
+          <option value="LETRAS">Letras</option>
+          <option value="HISTORIA">História</option>
+          <option value="GEOGRAFIA">Geografia</option>
+          <option value="SOCIOLOGIA">Sociologia</option>
+          <option value="JURIDICO">Jurídico</option>
+          <option value="DIREITO_DIGITAL">Direito Digital</option>
+          <option value="MEIO_AMBIENTE_E_SUSTENTABILIDADE">Meio Ambiente e Sustentabilidade</option>
         </select>
           <div *ngIf="signupForm.get('interestList')?.invalid && signupForm.get('interestList')?.touched" class="error">
             A área de interesse é obrigatória.

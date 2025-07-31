@@ -3,6 +3,7 @@ package br.edu.ufape.plataforma.mentoria.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
+import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,11 +41,11 @@ public class MentoredController {
     @GetMapping("/{idMentored}")
 
     public ResponseEntity<MentoredDTO> getMentoredById(@PathVariable Long idMentored) throws Exception {
-        Mentored mentored = mentoredService.getMentoredById(idMentored);
+        Mentored mentoredDTO = mentoredService.getMentoredById(idMentored);
         if (mentoredDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(mentoredMapper.toDto(mentored));
+        return ResponseEntity.ok(mentoredMapper.toDto(mentoredDTO));
 
     }
 

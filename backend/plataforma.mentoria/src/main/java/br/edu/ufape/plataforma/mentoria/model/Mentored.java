@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.CascadeType;
 
 @Entity
 public class Mentored extends Person {
