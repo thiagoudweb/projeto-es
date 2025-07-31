@@ -1,8 +1,7 @@
 package br.edu.ufape.plataforma.mentoria.enums;
-import java.util.List;
 
 
-public enum InterestAreas {
+public enum InterestArea {
 
     TECNOLOGIA_DA_INFORMACAO("Tecnologia da Informação"),
     ENGENHARIA("Engenharia"),
@@ -18,7 +17,7 @@ public enum InterestAreas {
     private final String nome;
 
 
-    InterestAreas(String nome) {
+    InterestArea(String nome) {
         this.nome = nome;
     }
 
