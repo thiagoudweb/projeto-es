@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
-import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -40,8 +40,8 @@ public class Mentor extends Person {
     @Column(name = "specialization")
     private List<String> specializations;
 
-    public Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, String professionalSummary, AffiliationType affiliationType, List<String> specializations,List<InterestAreas> interestAreas) {
-        super(fullName, cpf, birthDate, course, interestAreas);
+    public Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, String professionalSummary, AffiliationType affiliationType, List<String> specializations,InterestArea interestArea) {
+        super(fullName, cpf, birthDate, course, interestArea);
         this.user = user;
         this.professionalSummary = professionalSummary;
         this.affiliationType = affiliationType;

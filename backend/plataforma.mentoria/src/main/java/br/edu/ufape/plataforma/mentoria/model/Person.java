@@ -3,15 +3,10 @@ package br.edu.ufape.plataforma.mentoria.model;
 import java.time.LocalDate;
 
 import br.edu.ufape.plataforma.mentoria.enums.Course;
-import java.util.List;
-import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
-import jakarta.persistence.CollectionTable;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
@@ -30,23 +25,20 @@ public abstract class Person {
     @Column(nullable = false)
     private Course course;
 
-    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "person_interest_areas", joinColumns =
-    @JoinColumn(name = "person_id"))
     @Column(name = "interest_area")
-    private List<InterestAreas> interestAreas;
+    private InterestArea interestArea;
 
     public Person() {
 
     }
 
-    public Person(String fullName, String cpf, LocalDate birthDate, Course course, List<InterestAreas> interestAreas) {
+    public Person(String fullName, String cpf, LocalDate birthDate, Course course, InterestArea interestArea) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
         this.course = course;
-        this.interestAreas = interestAreas;
+        this.interestArea = interestArea;
     }
 
     public String getFullName() {
@@ -81,11 +73,11 @@ public abstract class Person {
         this.course = course;
     }
 
-    public List<InterestAreas> getInterestAreas() {
-        return interestAreas;
+    public InterestArea getInterestArea() {
+        return interestArea;
     }
 
-    public void setInterestAreas(List<InterestAreas> interestAreas) {
-        this.interestAreas = interestAreas;
+    public void setInterestArea(InterestArea interestArea) {
+        this.interestArea = interestArea;
     }
 }

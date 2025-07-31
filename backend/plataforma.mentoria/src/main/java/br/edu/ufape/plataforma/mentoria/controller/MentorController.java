@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
-import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
@@ -66,27 +66,27 @@ public class MentorController {
         }
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<List<MentorDTO>> searchMentor(
-            @RequestParam(required = false) String fullName,
-            @RequestParam(required = false) InterestAreas interestArea) {
+//    @GetMapping("/search")
+//    public ResponseEntity<List<MentorDTO>> searchMentor(
+//            @RequestParam(required = false) String fullName,
+//            @RequestParam(required = false) InterestArea interestArea) {
+//
+//        if (fullName == null && interestArea == null) {
+//            return ResponseEntity.ok(Collections.emptyList());
+//        }
+//
+//        List<MentorDTO> results = mentorService.findByNameAndInterestArea(fullName, interestArea);
+//        return ResponseEntity.ok(results);
+//    }
 
-        if (fullName == null && interestArea == null) {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
-
-        List<MentorDTO> results = mentorService.findByNameAndInterestArea(fullName, interestArea);
-        return ResponseEntity.ok(results);
-    }
-
-    @GetMapping("/interests/mentored/{interestName}")
-    public ResponseEntity<List<MentoredDTO>> searchMentoredByInterest(@PathVariable String interestName) {
-        List<Mentored> results = mentoredService.searchMentoredByInterest(interestName);
-        List<MentoredDTO> resultsDTO = results.stream()
-                .map(mentoredMapper::toDto)
-                .toList();
-        return ResponseEntity.ok(resultsDTO);
-    }
+//    @GetMapping("/interests/mentored/{interestName}")
+//    public ResponseEntity<List<MentoredDTO>> searchMentoredByInterest(@PathVariable String interestName) {
+//        List<Mentored> results = mentoredService.searchMentoredByInterest(interestName);
+//        List<MentoredDTO> resultsDTO = results.stream()
+//                .map(mentoredMapper::toDto)
+//                .toList();
+//        return ResponseEntity.ok(resultsDTO);
+//    }
 
     @GetMapping("/me")
     public ResponseEntity<MentorDTO> getCurrentMentor() throws EntityNotFoundException {

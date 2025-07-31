@@ -7,7 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
-import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentorMapper;
@@ -102,13 +102,13 @@ public class MentorService {
         mentorRepository.deleteById(id);
     }
 
-    public List<MentorDTO> findByNameAndInterestArea(String fullName, InterestAreas interestArea) {
-        List<Mentor> mentors = mentorRepository.findByFullNameContainingIgnoreCaseAndInterestAreas(fullName,
-                interestArea);
-        return mentors.stream()
-                .map(mentorMapper::toDTO)
-                .collect(Collectors.toList());
-    }
+//    public List<MentorDTO> findByNameAndInterestArea(String fullName, InterestArea interestArea) {
+//        List<Mentor> mentors = mentorRepository.findByFullNameContainingIgnoreCaseAndInterestAreas(fullName,
+//                interestArea);
+//        return mentors.stream()
+//                .map(mentorMapper::toDTO)
+//                .collect(Collectors.toList());
+//    }
 
     public MentorDTO getCurrentMentor() throws EntityNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -119,10 +119,10 @@ public class MentorService {
                 .orElseThrow(() -> new EntityNotFoundException(Mentor.class, email));
     }
 
-    public List<MentorDTO> findMentors(InterestAreas interestArea, List<String> specializations) {
-        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializations(interestArea, specializations);
-        return mentors.stream()
-                .map(mentorMapper::toDTO)
-                .collect(Collectors.toList());
-    }
+//    public List<MentorDTO> findMentors(InterestArea interestArea, List<String> specializations) {
+//        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializations(interestArea, specializations);
+//        return mentors.stream()
+//                .map(mentorMapper::toDTO)
+//                .collect(Collectors.toList());
+//    }
 }
