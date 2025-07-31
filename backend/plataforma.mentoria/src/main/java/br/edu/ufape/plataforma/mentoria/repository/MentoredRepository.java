@@ -17,6 +17,6 @@ public interface MentoredRepository extends JpaRepository<Mentored, Long> {
 
     public Optional<Mentored> findByUserEmail(String email);
 
-    @Query("SELECT m FROM Mentored m JOIN m.interestAreas ia WHERE UPPER(CAST(ia AS string)) LIKE UPPER(CONCAT('%', :interest, '%'))")
-    List<Mentored> findByInterestAreaContaining(@Param("interest") String interest);
+//    @Query("SELECT m FROM Mentored m JOIN m.interestAreas ia WHERE UPPER(CAST(ia AS string)) LIKE UPPER(CONCAT('%', :interest, '%'))")
+//    List<Mentored> findByInterestAreaContaining(@Param("interest") String interest);
 }

@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
-import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,18 +70,18 @@ public class MentoredController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/mentors/search")
-    public ResponseEntity<List<MentorDTO>> searchMentor(
-            @RequestParam(required = false) InterestAreas interestArea,
-            @RequestParam(required = false) List<String> specializations) {
-
-        if (interestArea == null && (specializations == null || specializations.isEmpty())) {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
-
-        List<MentorDTO> results = mentorService.findMentors(interestArea, specializations);
-        return ResponseEntity.ok(results);
-    }
+//    @GetMapping("/mentors/search")
+//    public ResponseEntity<List<MentorDTO>> searchMentor(
+//            @RequestParam(required = false) InterestArea interestArea,
+//            @RequestParam(required = false) List<String> specializations) {
+//
+//        if (interestArea == null && (specializations == null || specializations.isEmpty())) {
+//            return ResponseEntity.ok(Collections.emptyList());
+//        }
+//
+//        List<MentorDTO> results = mentorService.findMentors(interestArea, specializations);
+//        return ResponseEntity.ok(results);
+//    }
 
     @GetMapping("/me")
     public ResponseEntity<MentoredDTO> getCurrentMentored() throws EntityNotFoundException {

@@ -103,7 +103,7 @@ public class MentoredService {
                 .orElseThrow(() -> new EntityNotFoundException(Mentored.class, email));
     }
 
-    public List<Mentored> searchMentoredByInterest(String interestName) {
-        return mentoredRepository.findByInterestAreaContaining(interestName);
-    }
+//    public List<Mentored> searchMentoredByInterest(String interestName) {
+//        return mentoredRepository.findByInterestAreaContaining(interestName);
+//    }
 }

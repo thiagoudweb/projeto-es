@@ -58,13 +58,12 @@ export class MentoredRegisterComponent implements OnInit {
       };
 
       this.authService.registerMentored(mentoredData).then(
-        () => {
-          this.router.navigate(['/home'], )
-            .catch(error => {
-              console.error('Erro ao registrar Mentor:', error);
-            });
-        }
+        () => this.router.navigate(['/home']),
       )
+        .catch(error => {
+          console.error('Erro ao registrar Mentor:', error);
+        });
+
     }
   }
 }
