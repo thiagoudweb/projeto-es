@@ -51,7 +51,6 @@ public class MentoredService {
     }
 
     public MentoredDTO createMentored(MentoredDTO mentoredDTO) {
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String userEmail = authentication.getName();
         User user = userRepository.findByEmail(userEmail);
@@ -62,7 +61,7 @@ public class MentoredService {
         }
 
         mentored.setUser(user);
-        Mentored savedMentored = mentoredRepository.save(mentored);
+        Mentored savedMentored = mentoredRepository.save(mentored); // Salva o objeto já configurado
         return mentoredMapper.toDto(savedMentored);
     }
 
