@@ -45,12 +45,14 @@ public class MentoredController {
     }
 
     @GetMapping("/{idMentored}")
-    public ResponseEntity<MentoredDTO> getMentoredById(@PathVariable Long id) throws Exception {
-        MentoredDTO mentoredDTO = mentoredService.getMentoredDetailsDTO(id);
+
+    public ResponseEntity<MentoredDTO> getMentoredById(@PathVariable Long idMentored) throws Exception {
+        Mentored mentored = mentoredService.getMentoredById(idMentored);
         if (mentoredDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(mentoredDTO);
+        return ResponseEntity.ok(mentoredMapper.toDto(mentored));
+
     }
 
     @PostMapping
@@ -69,8 +71,8 @@ public class MentoredController {
     }
 
     @DeleteMapping("/{idMentored}")
-    public ResponseEntity<Void> deleteMentored(@PathVariable Long id) throws Exception {
-        mentoredService.deleteById(id);
+    public ResponseEntity<Void> deleteMentored(@PathVariable Long idMentored) throws Exception {
+        mentoredService.deleteById(idMentored);
         return ResponseEntity.noContent().build();
     }
 

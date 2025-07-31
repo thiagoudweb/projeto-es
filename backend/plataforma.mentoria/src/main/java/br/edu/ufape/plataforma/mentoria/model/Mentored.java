@@ -17,7 +17,7 @@ public class Mentored extends Person {
     @Id
     private Long id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @MapsId
     @PrimaryKeyJoinColumn
     private User user;
