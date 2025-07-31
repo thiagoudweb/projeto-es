@@ -14,16 +14,19 @@ public class MentoredMapper {
         mentored.setBirthDate(mentoredDTO.getBirthDate());
         mentored.setCourse(mentoredDTO.getCourse());
         mentored.setAcademicSummary(mentoredDTO.getAcademicSummary());
+        mentored.setInterestArea(mentoredDTO.getInterestArea());
         return mentored;
     }
 
     public MentoredDTO toDto(Mentored mentored) {
         MentoredDTO mentoredDTO = new MentoredDTO();
+        mentoredDTO.setId(mentored.getId());
         mentoredDTO.setFullName(mentored.getFullName());
         mentoredDTO.setCpf(mentored.getCpf());
         mentoredDTO.setBirthDate(mentored.getBirthDate());
         mentoredDTO.setCourse(mentored.getCourse());
         mentoredDTO.setAcademicSummary(mentored.getAcademicSummary());
+        mentoredDTO.setInterestArea(mentored.getInterestArea());
         return mentoredDTO;
     }
 }

@@ -20,7 +20,7 @@ public class MentorMapper {
         mentor.setProfessionalSummary(mentorDTO.getProfessionalSummary());
         mentor.setAffiliationType(mentorDTO.getAffiliationType());
         mentor.setSpecializations(mentorDTO.getSpecializations());
-
+        mentor.setInterestArea(mentorDTO.getInterestArea());
         return mentor;
     }
 
@@ -30,6 +30,7 @@ public class MentorMapper {
         }
 
         MentorDTO mentorDTO = new MentorDTO();
+        mentorDTO.setId(mentor.getId());
         mentorDTO.setFullName(mentor.getFullName());
         mentorDTO.setCpf(mentor.getCpf());
         mentorDTO.setBirthDate(mentor.getBirthDate());
@@ -37,6 +38,7 @@ public class MentorMapper {
         mentorDTO.setProfessionalSummary(mentor.getProfessionalSummary());
         mentorDTO.setAffiliationType(mentor.getAffiliationType());
         mentorDTO.setSpecializations(mentor.getSpecializations());
+        mentorDTO.setInterestArea(mentor.getInterestArea());
         return mentorDTO;
     }
 }

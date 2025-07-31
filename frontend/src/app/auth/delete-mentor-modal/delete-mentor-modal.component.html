@@ -1,0 +1,10 @@
+<div class="modal">
+  <div class="modal-content">
+    <h2>Confirmar exclusão</h2>
+    <p>Tem certeza que deseja excluir o mentor <strong>{{ mentor.fullName }}</strong>?</p>
+    
+    <!-- Certifique-se de que os eventos estão corretos -->
+    <button class="confirm-btn" (click)="onConfirm()">Excluir</button>
+    <button class="cancel-btn" (click)="onCancel()">Cancelar</button>
+  </div>
+</div>

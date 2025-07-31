@@ -2,13 +2,14 @@ package br.edu.ufape.plataforma.mentoria.dto;
 
 import java.time.LocalDate;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
-import br.edu.ufape.plataforma.mentoria.enums.InterestAreas;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
 public class MentoredDTO {
+    private Long id;
 
     @NotBlank(message = "O nome completo é obrigatório")
     private String fullName;
@@ -28,18 +29,27 @@ public class MentoredDTO {
     private String academicSummary;
 
     @NotNull(message = "A área de interesse é obrigatória")
-    private InterestAreas interestArea;
+    private InterestArea interestArea;
 
     public MentoredDTO() {
     }
 
     public MentoredDTO(String fullName, String cpf, LocalDate birthDate, Course course,
-            String academicSummary) {
+            String academicSummary, InterestArea interestArea) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
         this.course = course;
         this.academicSummary = academicSummary;
+        this.interestArea = interestArea;
+    }
+
+    public Long getId() {
+        return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFullName() {
@@ -81,11 +91,11 @@ public class MentoredDTO {
     public void setAcademicSummary(String academicSummary) {
         this.academicSummary = academicSummary;
     }
-    public InterestAreas getInterestArea() {
+    public InterestArea getInterestArea() {
         return interestArea;
     }
 
-    public void setInterestArea(InterestAreas interestArea) {
+    public void setInterestArea(InterestArea interestArea) {
         this.interestArea = interestArea;
     }
 }
