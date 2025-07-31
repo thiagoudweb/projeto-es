@@ -41,11 +41,12 @@ public abstract class Person {
 
     }
 
-    public Person(String fullName, String cpf, LocalDate birthDate, Course course) {
+    public Person(String fullName, String cpf, LocalDate birthDate, Course course, List<InterestAreas> interestAreas) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
         this.course = course;
+        this.interestAreas = interestAreas;
     }
 
     public String getFullName() {
