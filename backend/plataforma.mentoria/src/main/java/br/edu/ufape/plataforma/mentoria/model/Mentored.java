@@ -1,8 +1,6 @@
 package br.edu.ufape.plataforma.mentoria.model;
 
 import java.time.LocalDate;
-import java.util.List;
-
 import br.edu.ufape.plataforma.mentoria.enums.Course;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import jakarta.persistence.Entity;
@@ -10,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.CascadeType;
 
 @Entity
 public class Mentored extends Person {
