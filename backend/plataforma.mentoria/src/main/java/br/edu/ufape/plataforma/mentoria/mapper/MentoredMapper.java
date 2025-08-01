@@ -18,7 +18,7 @@ public class MentoredMapper {
         return mentored;
     }
 
-    public MentoredDTO toDto(Mentored mentored) {
+    public MentoredDTO toDTO(Mentored mentored) {
         MentoredDTO mentoredDTO = new MentoredDTO();
         mentoredDTO.setId(mentored.getId());
         mentoredDTO.setFullName(mentored.getFullName());
