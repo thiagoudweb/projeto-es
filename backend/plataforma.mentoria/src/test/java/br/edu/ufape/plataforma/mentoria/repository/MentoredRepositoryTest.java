@@ -27,7 +27,7 @@ public class MentoredRepositoryTest {
         user.setPassword("senhaSegura123");
         user.setRole(UserRole.MENTORADO);
 
-        // Dado: criar e salvar um Mentor com interesse em CIBERSEGURANCA
+        // Dado: criar e salvar um Mentorado com interesse em CIBERSEGURANCA
         Mentored mentored = new Mentored();
         mentored.setFullName("Maria Souza");
         mentored.setCpf("12345678900");
