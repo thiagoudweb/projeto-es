@@ -56,7 +56,7 @@ public class MentoredRepositoryTest {
 
         List<Mentored> encontrados = mentoredRepository.findByInterestArea(InterestArea.CIBERSEGURANCA);
 
-        // Então: deve conter o mentor criado
+        // Então: deve conter o mentorado criado
         assertFalse(encontrados.isEmpty());
         assertEquals(2, encontrados.size());
     }
