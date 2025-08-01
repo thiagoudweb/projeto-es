@@ -52,3 +52,22 @@
     />
   </svg>
 </a>
+<input
+  #mentorSearch
+  type="text"
+  placeholder="Buscar mentores por área de interesse ou especialização"
+  (input)="onSearchInput(mentorSearch.value)"
+  class="search-input"
+/>
+<div *ngIf="mentorResults.length > 0">
+  <h3>Mentores encontrados:</h3>
+  <ul>
+    <li *ngFor="let mentor of mentorResults">
+      <strong>{{ mentor.name }}</strong> - {{ mentor.specialization }}<br>
+      <small>Áreas de interesse: {{ mentor.interests.join(', ') }}</small>
+    </li>
+  </ul>
+</div>
+<div *ngIf="mentorResults.length === 0">
+  <p>Nenhum mentor encontrado.</p>
+</div>
