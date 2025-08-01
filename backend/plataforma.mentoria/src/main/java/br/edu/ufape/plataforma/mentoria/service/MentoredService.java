@@ -7,6 +7,7 @@ import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
@@ -36,7 +37,7 @@ public class MentoredService {
 
     public MentoredDTO getMentoredDetailsDTO(Long id) throws Exception {
         Mentored mentored = getMentoredById(id);
-        return mentoredMapper.toDto(mentored);
+        return mentoredMapper.toDTO(mentored);
     }
 
     public List<Mentored> getAllMentored() {
@@ -62,7 +63,7 @@ public class MentoredService {
 
         mentored.setUser(user);
         Mentored savedMentored = mentoredRepository.save(mentored); // Salva o objeto já configurado
-        return mentoredMapper.toDto(savedMentored);
+        return mentoredMapper.toDTO(savedMentored);
     }
 
     public Mentored updateMentored(Long id, Mentored mentored) throws Exception {
@@ -74,16 +75,17 @@ public class MentoredService {
     }
 
     public MentoredDTO updateMentored(Long id, MentoredDTO mentoredDTO) throws Exception {
-        if (mentoredRepository.existsById(id)) {
-            Mentored mentored = mentoredMapper.toEntity(mentoredDTO);
-            mentored.setId(id);
-            User user = userRepository.findById(mentored.getUser().getId())
-                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + mentored.getUser().getId()));
-            mentored.setUser(user);
-            Mentored updatedMentored = mentoredRepository.save(mentored);
-            return mentoredMapper.toDto(updatedMentored);
-        }
-        throw new EntityNotFoundException(Mentor.class, id);
+        Mentored existingMentored = mentoredRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Mentored.class, id));
+        
+        Mentored mentoredToUpdate = mentoredMapper.toEntity(mentoredDTO);
+        
+        mentoredToUpdate.setId(id);
+        mentoredToUpdate.setUser(existingMentored.getUser());
+        
+        Mentored updatedMentored = mentoredRepository.save(mentoredToUpdate);
+        
+        return mentoredMapper.toDTO(updatedMentored);
     }
 
     public void deleteById(Long id) throws Exception {
@@ -98,7 +100,7 @@ public class MentoredService {
         String email = auth.getName();
 
         return mentoredRepository.findByUserEmail(email)
-                .map(mentoredMapper::toDto)
+                .map(mentoredMapper::toDTO)
                 .orElseThrow(() -> new EntityNotFoundException(Mentored.class, email));
     }
 

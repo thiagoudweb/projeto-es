@@ -1,52 +1,33 @@
 package br.edu.ufape.plataforma.mentoria.controller;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
-import br.edu.ufape.plataforma.mentoria.model.Mentored;
-import br.edu.ufape.plataforma.mentoria.service.MentorService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
+import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.service.MentoredService;
+import br.edu.ufape.plataforma.mentoria.service.MentoredService;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/mentored")
 public class MentoredController {
 
-    private final MentoredService mentoredService;
-    private final MentoredMapper mentoredMapper;
-    private final MentorService mentorService;
+    @Autowired
+    private MentoredService mentoredService;
 
     @Autowired
-    public MentoredController(MentoredService mentoredService, MentoredMapper mentoredMapper, MentorService mentorService) {
-        this.mentoredService = mentoredService;
-        this.mentoredMapper = mentoredMapper;
-        this.mentorService = mentorService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<MentoredDTO>> getAllMentored() {
-        List<MentoredDTO> mentoreds = mentoredService.getAllMentored()
-                .stream()
-                .map(mentoredMapper::toDto)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(mentoreds);
-    }
+    private MentoredMapper mentoredMapper;
 
     @GetMapping("/{idMentored}")
-
-    public ResponseEntity<MentoredDTO> getMentoredById(@PathVariable Long idMentored) throws Exception {
-        Mentored mentoredDTO = mentoredService.getMentoredById(idMentored);
+    public ResponseEntity<MentoredDTO> getMentoredDetails(@PathVariable Long idMentored) throws Exception {
+        MentoredDTO mentoredDTO = mentoredService.getMentoredDetailsDTO(idMentored);
         if (mentoredDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(mentoredMapper.toDto(mentoredDTO));
-
+        return ResponseEntity.ok(mentoredDTO);
     }
 
     @PostMapping
@@ -56,31 +37,45 @@ public class MentoredController {
     }
 
     @PutMapping("/{idMentored}")
-    public ResponseEntity<MentoredDTO> updateMentored(@PathVariable Long id, @RequestBody MentoredDTO mentoredDTO) throws Exception {
-        MentoredDTO updatedMentored = mentoredService.updateMentored(id, mentoredDTO);
-        if (updatedMentored == null) {
+    public ResponseEntity<MentoredDTO> updateMentored(@PathVariable Long idMentored,
+            @Valid @RequestBody MentoredDTO mentoredDTO) throws Exception {
+        MentoredDTO updatedMentoredDTO = mentoredService.updateMentored(idMentored, mentoredDTO);
+        if (updatedMentoredDTO == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(updatedMentored);
+        return ResponseEntity.ok(updatedMentoredDTO);
     }
 
     @DeleteMapping("/{idMentored}")
-    public ResponseEntity<Void> deleteMentored(@PathVariable Long idMentored) throws Exception {
-        mentoredService.deleteById(idMentored);
-        return ResponseEntity.noContent().build();
+    public ResponseEntity<String> deleteMentored(@PathVariable Long idMentored) throws Exception {
+        try {
+            mentoredService.deleteById(idMentored);
+            return ResponseEntity.ok("Mentored(a) removido(a) com sucesso!");
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
-//    @GetMapping("/mentors/search")
-//    public ResponseEntity<List<MentorDTO>> searchMentor(
-//            @RequestParam(required = false) InterestArea interestArea,
-//            @RequestParam(required = false) List<String> specializations) {
+//    @GetMapping("/search")
+//    public ResponseEntity<List<MentoredDTO>> searchMentored(
+//            @RequestParam(required = false) String fullName,
+//            @RequestParam(required = false) InterestArea interestArea) {
 //
-//        if (interestArea == null && (specializations == null || specializations.isEmpty())) {
+//        if (fullName == null && interestArea == null) {
 //            return ResponseEntity.ok(Collections.emptyList());
 //        }
 //
-//        List<MentorDTO> results = mentorService.findMentors(interestArea, specializations);
+//        List<MentoredDTO> results = mentoredService.findByNameAndInterestArea(fullName, interestArea);
 //        return ResponseEntity.ok(results);
+//    }
+
+//    @GetMapping("/interests/mentored/{interestName}")
+//    public ResponseEntity<List<MentorededDTO>> searchMentorededByInterest(@PathVariable String interestName) {
+//        List<Mentoreded> results = mentoredService.searchMentoredByInterest(interestName);
+//        List<MentoredDTO> resultsDTO = results.stream()
+//                .map(mentoredMapper::toDto)
+//                .toList();
+//        return ResponseEntity.ok(resultsDTO);
 //    }
 
     @GetMapping("/me")
