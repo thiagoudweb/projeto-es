@@ -67,13 +67,15 @@ public class MentorController {
     public ResponseEntity<List<MentoredDTO>> searchMentored(
             @RequestParam(required = false) String interestArea){
 
+        if (interestArea == null || interestArea.isBlank()) {
+            return ResponseEntity.ok(Collections.emptyList());
+        }
+
         InterestArea interestAreaEnum = null;
-        if (interestArea != null && !interestArea.isBlank()) {
-            try {
-                interestAreaEnum = InterestArea.valueOf(interestArea);
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(Collections.emptyList());
-            }
+        try {
+            interestAreaEnum = InterestArea.valueOf(interestArea);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Collections.emptyList());
         }
 
         List<MentoredDTO> results = mentoredService.findByInterestArea(interestAreaEnum);
