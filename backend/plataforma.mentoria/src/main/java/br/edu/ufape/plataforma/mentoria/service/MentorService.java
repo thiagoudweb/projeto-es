@@ -1,6 +1,8 @@
 package br.edu.ufape.plataforma.mentoria.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -105,14 +107,6 @@ public class MentorService {
         mentorRepository.deleteById(id);
     }
 
-//    public List<MentorDTO> findByNameAndInterestArea(String fullName, InterestArea interestArea) {
-//        List<Mentor> mentors = mentorRepository.findByFullNameContainingIgnoreCaseAndInterestAreas(fullName,
-//                interestArea);
-//        return mentors.stream()
-//                .map(mentorMapper::toDTO)
-//                .collect(Collectors.toList());
-//    }
-
     public MentorDTO getCurrentMentor() throws EntityNotFoundException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
@@ -122,10 +116,10 @@ public class MentorService {
                 .orElseThrow(() -> new EntityNotFoundException(Mentor.class, email));
     }
 
-//    public List<MentorDTO> findMentors(InterestArea interestArea, List<String> specializations) {
-//        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializations(interestArea, specializations);
-//        return mentors.stream()
-//                .map(mentorMapper::toDTO)
-//                .collect(Collectors.toList());
-//    }
+    public List<MentorDTO> findByInterestAreaAndSpecializations(InterestArea interestArea, String specialization) {
+        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializationsContaining(interestArea, specialization);
+        return mentors.stream()
+                .map(mentorMapper::toDTO)
+                .collect(Collectors.toList());
+    }
 }

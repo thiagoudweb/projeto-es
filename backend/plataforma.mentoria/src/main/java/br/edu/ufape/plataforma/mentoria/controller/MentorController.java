@@ -1,5 +1,7 @@
 package br.edu.ufape.plataforma.mentoria.controller;
 
+import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +12,8 @@ import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
 import br.edu.ufape.plataforma.mentoria.service.MentoredService;
 import jakarta.validation.Valid;
+import java.util.Collections;
+import java.util.List;
 
 @RestController
 @RequestMapping("/mentor")
@@ -59,27 +63,22 @@ public class MentorController {
         }
     }
 
-//    @GetMapping("/search")
-//    public ResponseEntity<List<MentorDTO>> searchMentor(
-//            @RequestParam(required = false) String fullName,
-//            @RequestParam(required = false) InterestArea interestArea) {
-//
-//        if (fullName == null && interestArea == null) {
-//            return ResponseEntity.ok(Collections.emptyList());
-//        }
-//
-//        List<MentorDTO> results = mentorService.findByNameAndInterestArea(fullName, interestArea);
-//        return ResponseEntity.ok(results);
-//    }
+    @GetMapping("/mentoreds/search")
+    public ResponseEntity<List<MentoredDTO>> searchMentored(
+            @RequestParam(required = false) String interestArea){
 
-//    @GetMapping("/interests/mentored/{interestName}")
-//    public ResponseEntity<List<MentoredDTO>> searchMentoredByInterest(@PathVariable String interestName) {
-//        List<Mentored> results = mentoredService.searchMentoredByInterest(interestName);
-//        List<MentoredDTO> resultsDTO = results.stream()
-//                .map(mentoredMapper::toDto)
-//                .toList();
-//        return ResponseEntity.ok(resultsDTO);
-//    }
+        InterestArea interestAreaEnum = null;
+        if (interestArea != null && !interestArea.isBlank()) {
+            try {
+                interestAreaEnum = InterestArea.valueOf(interestArea);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body(Collections.emptyList());
+            }
+        }
+
+        List<MentoredDTO> results = mentoredService.findByInterestArea(interestAreaEnum);
+        return ResponseEntity.ok(results);
+    }
 
     @GetMapping("/me")
     public ResponseEntity<MentorDTO> getCurrentMentor() throws EntityNotFoundException {
