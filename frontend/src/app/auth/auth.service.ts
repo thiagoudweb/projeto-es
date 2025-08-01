@@ -139,6 +139,33 @@ export class AuthService {
     }
   }
 
+    async updateMentored(id: number, mentored: Mentored): Promise<Mentored | null> {
+    try {
+      const response = await fetch(`${this.apiUrlMentored}/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.getToken()}`,
+        },
+        body: JSON.stringify(mentored),
+      });
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: 'Erro desconhecido' }));
+        const error = new Error(errorData.message || 'Atualização falhou');
+        (error as any).status = response.status;
+        throw error;
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Erro ao atualizar Mentored no AuthService:', error);
+      throw error;
+    }
+  }
+
   async getCurrentMentor(): Promise<Mentor | null> {
     try {
       console.log('Buscando mentor atual...');

@@ -74,16 +74,21 @@ public class MentorService {
     }
 
     public MentorDTO updateMentor(Long id, MentorDTO mentorDTO) throws Exception {
-        if (mentorRepository.existsById(id)) {
-            Mentor mentor = mentorMapper.toEntity(mentorDTO);
-            mentor.setId(id);
-            User user = userRepository.findById(mentor.getUser().getId())
-                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado: " + mentor.getUser().getId()));
-            mentor.setUser(user);
-            Mentor updatedMentor = mentorRepository.save(mentor);
-            return mentorMapper.toDTO(updatedMentor);
-        }
-        throw new EntityNotFoundException(Mentor.class, id);
+        // Buscar o mentor existente para obter o User
+        Mentor existingMentor = mentorRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, id));
+        
+        // Converter DTO para Entity
+        Mentor mentorToUpdate = mentorMapper.toEntity(mentorDTO);
+        
+        // Definir o ID e o User existente
+        mentorToUpdate.setId(id);
+        mentorToUpdate.setUser(existingMentor.getUser());
+        
+        // Salvar o mentor atualizado
+        Mentor updatedMentor = mentorRepository.save(mentorToUpdate);
+        
+        return mentorMapper.toDTO(updatedMentor);
     }
 
     public void deleteById(Long id) throws Exception {
