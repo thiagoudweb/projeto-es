@@ -66,13 +66,15 @@ export class ProfileService {
    return this.http.put(`${this.apiUrl}/mentor/${idMentor}`, data, { headers });
  }
 
-  updateMentoredProfile(data: any): Observable<any> {
-    return this.http.get(`${this.apiUrl}/mentored/me`).pipe(
-      switchMap((currentMentored: any) => {
-        return this.http.put(`${this.apiUrl}/mentored/${currentMentored.id}`, data);
-      })
-    );
-  }
+updateMentoredProfile(data: any): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = { Authorization: `Bearer ${token}` };
+  return this.http.get(`${this.apiUrl}/mentored/me`, { headers }).pipe(
+    switchMap((currentMentored: any) => {
+      return this.http.put(`${this.apiUrl}/mentored/${currentMentored.id}`, data, { headers });
+    })
+  );
+}
 
   getCurrentProfileType(): string {
     return this.profileTypeSubject.value;
