@@ -2,15 +2,12 @@ package br.edu.ufape.plataforma.mentoria.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
-import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
+import br.edu.ufape.plataforma.mentoria.dto.UpdateMentoredDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
@@ -32,13 +29,13 @@ public class MentoredService {
     @Autowired
     private UserRepository userRepository;
 
-    public Mentored getMentoredById(Long id) throws Exception {
+    public Mentored getMentoredById(Long id){
         return mentoredRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Mentored.class, id));
     }
 
-    public MentoredDTO getMentoredDetailsDTO(Long id) throws Exception {
-        Mentored mentored = getMentoredById(id);
+    public MentoredDTO getMentoredDetailsDTO(Long id) {
+        Mentored mentored = this.getMentoredById(id);
         return mentoredMapper.toDTO(mentored);
     }
 
@@ -68,7 +65,7 @@ public class MentoredService {
         return mentoredMapper.toDTO(savedMentored);
     }
 
-    public Mentored updateMentored(Long id, Mentored mentored) throws Exception {
+    public Mentored updateMentored(Long id, Mentored mentored) {
         if (mentoredRepository.existsById(id)) {
             mentored.setId(id);
             return mentoredRepository.save(mentored);
@@ -76,9 +73,8 @@ public class MentoredService {
         throw new EntityNotFoundException(Mentored.class, id);
     }
 
-    public MentoredDTO updateMentored(Long id, MentoredDTO mentoredDTO) throws Exception {
-        Mentored existingMentored = mentoredRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Mentored.class, id));
+    public MentoredDTO updateMentored(Long id, MentoredDTO mentoredDTO) {
+        Mentored existingMentored = this.getMentoredById(id);
         
         Mentored mentoredToUpdate = mentoredMapper.toEntity(mentoredDTO);
         
@@ -90,14 +86,40 @@ public class MentoredService {
         return mentoredMapper.toDTO(updatedMentored);
     }
 
-    public void deleteById(Long id) throws Exception {
+    public Mentored updateMentored(Long id, UpdateMentoredDTO dto) {
+        Mentored mentored = this.getMentoredById(id);
+
+        if (dto.getFullName() != null) {
+            mentored.setFullName(dto.getFullName());
+        }
+
+        if (dto.getBirthDate() != null) {
+            mentored.setBirthDate(dto.getBirthDate());
+        }
+
+        if (dto.getCourse() != null) {
+            mentored.setCourse(dto.getCourse());
+        }
+
+        if (dto.getAcademicSummary() != null) {
+            mentored.setAcademicSummary(dto.getAcademicSummary());
+        }
+
+        if (dto.getInterestArea() != null) {
+            mentored.setInterestArea(dto.getInterestArea());
+        }
+
+        return mentoredRepository.save(mentored);
+    }
+
+    public void deleteById(Long id) {
         if (!mentoredRepository.existsById(id)) {
             throw new EntityNotFoundException(Mentored.class, id);
         }
         mentoredRepository.deleteById(id);
     }
 
-    public MentoredDTO getCurrentMentored() throws EntityNotFoundException {
+    public MentoredDTO getCurrentMentored() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
