@@ -27,13 +27,13 @@ public class MentorService {
     @Autowired
     private UserRepository userRepository;
 
-    public Mentor getMentorById(Long id) throws Exception {
+    public Mentor getMentorById(Long id) {
         return mentorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Mentor.class, id));
     }
 
-    public MentorDTO getMentorDetailsDTO(Long id) throws Exception {
-        Mentor mentor = getMentorById(id);
+    public MentorDTO getMentorDetailsDTO(Long id) {
+        Mentor mentor = this.getMentorById(id);
         return mentorMapper.toDTO(mentor);
     }
 
@@ -67,7 +67,7 @@ public class MentorService {
         return mentorMapper.toDTO(savedMentor);
     }
 
-    public Mentor updateMentor(Long id, Mentor mentor) throws Exception {
+    public Mentor updateMentor(Long id, Mentor mentor) {
         if (mentorRepository.existsById(id)) {
             mentor.setId(id);
             return mentorRepository.save(mentor);
@@ -75,10 +75,9 @@ public class MentorService {
         throw new EntityNotFoundException(Mentor.class, id);
     }
 
-    public MentorDTO updateMentor(Long id, MentorDTO mentorDTO) throws Exception {
+    public MentorDTO updateMentor(Long id, MentorDTO mentorDTO) {
         // Buscar o mentor existente para obter o User
-        Mentor existingMentor = mentorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, id));
+        Mentor existingMentor = this.getMentorById(id);
         
         // Converter DTO para Entity
         Mentor mentorToUpdate = mentorMapper.toEntity(mentorDTO);
@@ -93,21 +92,14 @@ public class MentorService {
         return mentorMapper.toDTO(updatedMentor);
     }
 
-    public void deleteById(Long id) throws Exception {
+    public void deleteById(Long id){
         if (!mentorRepository.existsById(id)) {
             throw new EntityNotFoundException(Mentor.class, id);
         }
         mentorRepository.deleteById(id);
     }
 
-    public void deleteMentor(Long id) throws EntityNotFoundException {
-        if (!mentorRepository.existsById(id)) {
-            throw new EntityNotFoundException(Mentor.class, id);
-        }
-        mentorRepository.deleteById(id);
-    }
-
-    public MentorDTO getCurrentMentor() throws EntityNotFoundException {
+    public MentorDTO getCurrentMentor() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
