@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { Mentor } from '../entity/mentor';
 
 export interface ProfileData {
   type: 'MENTOR' | 'MENTORADO' | 'UNKNOWN';
@@ -79,4 +79,17 @@ updateMentoredProfile(data: any): Observable<any> {
   getCurrentProfileType(): string {
     return this.profileTypeSubject.value;
   }
+
+  searchMentors(interestArea?: string, specializations?: string | string[]): Observable<Mentor[]> {
+    let params = new HttpParams();
+    if (interestArea) {
+      params = params.set('interestArea', interestArea.toUpperCase());
+    }
+    if (specializations) {
+      const specString = Array.isArray(specializations) ? specializations.join(',') : specializations;
+      params = params.set('specializations', specString);
+    }
+    return this.http.get<Mentor[]>(`${this.apiUrl}/mentored/mentors/search`, { params });
+  }
+
 }
