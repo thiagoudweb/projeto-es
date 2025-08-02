@@ -1,11 +1,8 @@
 package br.edu.ufape.plataforma.mentoria.dto;
 
 import br.edu.ufape.plataforma.mentoria.enums.Status;
-import br.edu.ufape.plataforma.mentoria.model.User;
-import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
@@ -19,20 +16,20 @@ public class SessionDTO {
     @NotNull(message = "O ID do mentorado é obrigatório")
     private Long guestId;
 
-    @Column(nullable = false)
+    @NotNull
     private LocalDate date;
 
-    @Column(nullable = false)
+    @NotNull
     private LocalTime time;
 
-    @Column(nullable = false)
+    @NotNull
     private String meetingTopic;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Status status;
 
-    @Column(nullable = false)
+    @NotNull
     private String location;
 
     public SessionDTO() {

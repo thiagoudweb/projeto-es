@@ -72,9 +72,6 @@ public class SessionService {
 
     public void deleteSession(Long id) {
         Session session = getSessionById(id);
-        if (session == null) {
-            throw new EntityNotFoundException(Session.class, id);
-        }
         sessionRepository.delete(session);
     }
 

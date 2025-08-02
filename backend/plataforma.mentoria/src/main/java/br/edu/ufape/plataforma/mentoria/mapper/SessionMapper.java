@@ -2,8 +2,6 @@ package br.edu.ufape.plataforma.mentoria.mapper;
 
 import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
 import br.edu.ufape.plataforma.mentoria.model.Session;
-import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

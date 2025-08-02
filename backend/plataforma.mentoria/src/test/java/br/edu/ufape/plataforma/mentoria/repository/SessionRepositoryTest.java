@@ -89,8 +89,9 @@ class SessionRepositoryTest {
 
         assert !sessions.isEmpty();
         assert sessions.getFirst().getUser().equals(user);
-    }@Test
+    }
 
+    @Test
     void findByUserErro() {
         Session session = new Session(userFake, guest,
                                       LocalDate.of(2023, 10, 1),
