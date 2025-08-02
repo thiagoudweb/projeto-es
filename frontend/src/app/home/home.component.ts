@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   onSearchInput(value: string): void {
-    this.searchMentorsByInterest(value);
+    this.searchSubject.next(value);
   }
 
   performSearch(interest: string): void {
