@@ -16,13 +16,9 @@ public class Session {
     private Long id;
 
     @ManyToOne
-    @MapsId
-    @PrimaryKeyJoinColumn
     private User user;
 
     @ManyToOne
-    @MapsId
-    @PrimaryKeyJoinColumn
     private User guest;
 
     @Column(nullable = false)
