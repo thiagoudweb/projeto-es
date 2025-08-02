@@ -4,12 +4,10 @@ import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 
 import br.edu.ufape.plataforma.mentoria.mapper.SessionMapper;
-import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.model.Session;
 import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,15 +72,12 @@ public class SessionService {
 
     public void deleteSession(Long id) {
         Session session = getSessionById(id);
-        sessionRepository.delete(session);
-    }
-
-    public void deleteSession(Session session) {
         if (session == null) {
-            throw new EntityNotFoundException(Session.class, "null");
+            throw new EntityNotFoundException(Session.class, id);
         }
         sessionRepository.delete(session);
     }
+
 
     public SessionDTO getSessionDTOById(Long id) {
         Session session = getSessionById(id);

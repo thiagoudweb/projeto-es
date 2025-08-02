@@ -38,13 +38,13 @@ public class SessionDTO {
     public SessionDTO() {
     }
 
-    public SessionDTO(Long userId, Long guestId, LocalDate date, LocalTime time, String meetingTopic, Status status, String location) {
+    public SessionDTO(Long userId, Long guestId, LocalDate date, LocalTime time, String meetingTopic, String location) {
         this.userId = userId;
         this.guestId = guestId;
         this.date = date;
         this.time = time;
         this.meetingTopic = meetingTopic;
-        this.status = status;
+        this.status = Status.PENDING;
         this.location = location;
     }
 
