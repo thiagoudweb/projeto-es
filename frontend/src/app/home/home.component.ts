@@ -42,7 +42,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.searchSubject
       .pipe(debounceTime(322), distinctUntilChanged())
       .subscribe((searchTerm) => {
-        this.onSearchInput(searchTerm);
+        this.onSearchInput(searchTerm, undefined);
       });
   }
 
