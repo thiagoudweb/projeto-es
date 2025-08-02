@@ -7,6 +7,7 @@ import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
+import br.edu.ufape.plataforma.mentoria.dto.UpdateMentoredDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
@@ -83,6 +84,32 @@ public class MentoredService {
         Mentored updatedMentored = mentoredRepository.save(mentoredToUpdate);
         
         return mentoredMapper.toDTO(updatedMentored);
+    }
+
+    public Mentored updateMentored(Long id, UpdateMentoredDTO dto) {
+        Mentored mentored = this.getMentoredById(id);
+
+        if (dto.getFullName() != null) {
+            mentored.setFullName(dto.getFullName());
+        }
+
+        if (dto.getBirthDate() != null) {
+            mentored.setBirthDate(dto.getBirthDate());
+        }
+
+        if (dto.getCourse() != null) {
+            mentored.setCourse(dto.getCourse());
+        }
+
+        if (dto.getAcademicSummary() != null) {
+            mentored.setAcademicSummary(dto.getAcademicSummary());
+        }
+
+        if (dto.getInterestArea() != null) {
+            mentored.setInterestArea(dto.getInterestArea());
+        }
+
+        return mentoredRepository.save(mentored);
     }
 
     public void deleteById(Long id) {

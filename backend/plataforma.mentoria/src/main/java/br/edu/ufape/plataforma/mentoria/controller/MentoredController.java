@@ -8,10 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
+import br.edu.ufape.plataforma.mentoria.dto.UpdateMentoredDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
+import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
+import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.service.MentoredService;
 import jakarta.validation.Valid;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -24,6 +26,9 @@ public class MentoredController {
 
     @Autowired
     private MentorService mentorService;
+
+    @Autowired
+    private MentoredMapper mentoredMapper;
 
     @GetMapping("/{idMentored}")
     public ResponseEntity<MentoredDTO> getMentoredDetails(@PathVariable Long idMentored) {
@@ -45,6 +50,13 @@ public class MentoredController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(updatedMentoredDTO);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<MentoredDTO> updateMentored(@PathVariable Long id, @RequestBody @Valid UpdateMentoredDTO dto) {
+        Mentored updated = mentoredService.updateMentored(id, dto);
+        MentoredDTO responseDto = mentoredMapper.toDTO(updated);
+        return ResponseEntity.ok(responseDto);
     }
 
     @DeleteMapping("/{idMentored}")
