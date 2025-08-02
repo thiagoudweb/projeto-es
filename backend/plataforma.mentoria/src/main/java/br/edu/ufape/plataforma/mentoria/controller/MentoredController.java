@@ -8,11 +8,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
+import br.edu.ufape.plataforma.mentoria.dto.UpdateMentoredDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
+import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.service.MentoredService;
 import jakarta.validation.Valid;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -24,17 +25,14 @@ public class MentoredController {
     private MentoredService mentoredService;
 
     @Autowired
-    private MentoredMapper mentoredMapper;
-
-    @Autowired
     private MentorService mentorService;
 
+    @Autowired
+    private MentoredMapper mentoredMapper;
+
     @GetMapping("/{idMentored}")
-    public ResponseEntity<MentoredDTO> getMentoredDetails(@PathVariable Long idMentored) throws Exception {
+    public ResponseEntity<MentoredDTO> getMentoredDetails(@PathVariable Long idMentored) {
         MentoredDTO mentoredDTO = mentoredService.getMentoredDetailsDTO(idMentored);
-        if (mentoredDTO == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(mentoredDTO);
     }
 
@@ -46,7 +44,7 @@ public class MentoredController {
 
     @PutMapping("/{idMentored}")
     public ResponseEntity<MentoredDTO> updateMentored(@PathVariable Long idMentored,
-            @Valid @RequestBody MentoredDTO mentoredDTO) throws Exception {
+            @Valid @RequestBody MentoredDTO mentoredDTO) {
         MentoredDTO updatedMentoredDTO = mentoredService.updateMentored(idMentored, mentoredDTO);
         if (updatedMentoredDTO == null) {
             return ResponseEntity.notFound().build();
@@ -54,8 +52,15 @@ public class MentoredController {
         return ResponseEntity.ok(updatedMentoredDTO);
     }
 
+    @PatchMapping("/{id}")
+    public ResponseEntity<MentoredDTO> updateMentored(@PathVariable Long id, @RequestBody @Valid UpdateMentoredDTO dto) {
+        Mentored updated = mentoredService.updateMentored(id, dto);
+        MentoredDTO responseDto = mentoredMapper.toDTO(updated);
+        return ResponseEntity.ok(responseDto);
+    }
+
     @DeleteMapping("/{idMentored}")
-    public ResponseEntity<String> deleteMentored(@PathVariable Long idMentored) throws Exception {
+    public ResponseEntity<String> deleteMentored(@PathVariable Long idMentored) {
         try {
             mentoredService.deleteById(idMentored);
             return ResponseEntity.ok("Mentored(a) removido(a) com sucesso!");
@@ -87,11 +92,8 @@ public class MentoredController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MentoredDTO> getCurrentMentored() throws EntityNotFoundException {
+    public ResponseEntity<MentoredDTO> getCurrentMentored() {
         MentoredDTO mentored = mentoredService.getCurrentMentored();
-        if (mentored == null) {
-            return ResponseEntity.notFound().build();
-        }
         return ResponseEntity.ok(mentored);
     }
 }

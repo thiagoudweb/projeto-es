@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
+import br.edu.ufape.plataforma.mentoria.dto.UpdateMentorDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentorMapper;
@@ -27,25 +28,18 @@ public class MentorService {
     @Autowired
     private UserRepository userRepository;
 
-    public Mentor getMentorById(Long id) throws Exception {
+    public Mentor getMentorById(Long id) {
         return mentorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Mentor.class, id));
     }
 
-    public MentorDTO getMentorDetailsDTO(Long id) throws Exception {
-        Mentor mentor = getMentorById(id);
+    public MentorDTO getMentorDetailsDTO(Long id) {
+        Mentor mentor = this.getMentorById(id);
         return mentorMapper.toDTO(mentor);
     }
 
     public List<Mentor> getAllMentors() {
         return mentorRepository.findAll();
-    }
-
-    public Mentor createMentor(Mentor mentor) {
-        if (mentorRepository.existsByCpf(mentor.getCpf())) {
-            throw new AttributeAlreadyInUseException("CPF", mentor.getCpf(), Mentor.class);
-        }
-        return mentorRepository.save(mentor);
     }
 
     public MentorDTO createMentor(MentorDTO mentorDTO) {
@@ -62,12 +56,11 @@ public class MentorService {
         }
 
         mentor.setUser(user);
-
         Mentor savedMentor = mentorRepository.save(mentor);
         return mentorMapper.toDTO(savedMentor);
     }
 
-    public Mentor updateMentor(Long id, Mentor mentor) throws Exception {
+    public Mentor updateMentor(Long id, Mentor mentor) {
         if (mentorRepository.existsById(id)) {
             mentor.setId(id);
             return mentorRepository.save(mentor);
@@ -75,10 +68,9 @@ public class MentorService {
         throw new EntityNotFoundException(Mentor.class, id);
     }
 
-    public MentorDTO updateMentor(Long id, MentorDTO mentorDTO) throws Exception {
+    public MentorDTO updateMentor(Long id, MentorDTO mentorDTO) {
         // Buscar o mentor existente para obter o User
-        Mentor existingMentor = mentorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, id));
+        Mentor existingMentor = this.getMentorById(id);
         
         // Converter DTO para Entity
         Mentor mentorToUpdate = mentorMapper.toEntity(mentorDTO);
@@ -93,21 +85,48 @@ public class MentorService {
         return mentorMapper.toDTO(updatedMentor);
     }
 
-    public void deleteById(Long id) throws Exception {
+    public Mentor updateMentor(Long id, UpdateMentorDTO dto) {
+        Mentor mentor = this.getMentorById(id);
+
+        if (dto.getFullName() != null) {
+            mentor.setFullName(dto.getFullName());
+        }
+
+        if (dto.getBirthDate() != null) {
+            mentor.setBirthDate(dto.getBirthDate());
+        }
+
+        if (dto.getCourse() != null) {
+            mentor.setCourse(dto.getCourse());
+        }
+
+        if (dto.getInterestArea() != null) {
+            mentor.setInterestArea(dto.getInterestArea());
+        }
+
+        if (dto.getProfessionalSummary() != null) {
+            mentor.setProfessionalSummary(dto.getProfessionalSummary());
+        }
+
+        if (dto.getAffiliationType() != null) {
+            mentor.setAffiliationType(dto.getAffiliationType());
+        }
+
+        if (dto.getSpecializations() != null) {
+            mentor.setSpecializations(dto.getSpecializations());
+        }
+
+        return mentorRepository.save(mentor);
+    }
+
+    public void deleteById(Long id){
         if (!mentorRepository.existsById(id)) {
             throw new EntityNotFoundException(Mentor.class, id);
         }
         mentorRepository.deleteById(id);
     }
 
-    public void deleteMentor(Long id) throws EntityNotFoundException {
-        if (!mentorRepository.existsById(id)) {
-            throw new EntityNotFoundException(Mentor.class, id);
-        }
-        mentorRepository.deleteById(id);
-    }
-
-    public MentorDTO getCurrentMentor() throws EntityNotFoundException {
+    public MentorDTO getCurrentMentor() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String email = auth.getName();
 
