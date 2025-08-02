@@ -197,7 +197,7 @@ searchMentorsByInterest(interest: string): void {
     },
   ];
 
-  mentorsMockList: any[] = [
+  mentorsMockList: Mentor[] = [
   {
     id: 1,
     name: 'Alice Mentor',
