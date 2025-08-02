@@ -38,6 +38,16 @@ public class SessionDTO {
     public SessionDTO() {
     }
 
+    public SessionDTO(Long userId, Long guestId, LocalDate date, LocalTime time, String meetingTopic, Status status, String location) {
+        this.userId = userId;
+        this.guestId = guestId;
+        this.date = date;
+        this.time = time;
+        this.meetingTopic = meetingTopic;
+        this.status = status;
+        this.location = location;
+    }
+
     public Long getUserId() {
         return userId;
     }
