@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
-import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
 import br.edu.ufape.plataforma.mentoria.service.MentoredService;
 import jakarta.validation.Valid;
@@ -25,11 +24,8 @@ public class MentorController {
     @Autowired
     private MentoredService mentoredService;
 
-    @Autowired
-    private MentoredMapper mentoredMapper;
-
     @GetMapping("/{idMentor}")
-    public ResponseEntity<MentorDTO> getMentorDetails(@PathVariable Long idMentor) throws Exception {
+    public ResponseEntity<MentorDTO> getMentorDetails(@PathVariable Long idMentor) {
         MentorDTO mentorDTO = mentorService.getMentorDetailsDTO(idMentor);
         if (mentorDTO == null) {
             return ResponseEntity.notFound().build();
@@ -45,7 +41,7 @@ public class MentorController {
 
     @PutMapping("/{idMentor}")
     public ResponseEntity<MentorDTO> updateMentor(@PathVariable Long idMentor,
-            @Valid @RequestBody MentorDTO mentorDTO) throws Exception {
+            @Valid @RequestBody MentorDTO mentorDTO){
         MentorDTO updatedMentorDTO = mentorService.updateMentor(idMentor, mentorDTO);
         if (updatedMentorDTO == null) {
             return ResponseEntity.notFound().build();
@@ -56,7 +52,7 @@ public class MentorController {
     @DeleteMapping("/{idMentor}")
     public ResponseEntity<String> deleteMentor(@PathVariable Long idMentor) {
         try {
-            mentorService.deleteMentor(idMentor);
+            mentorService.deleteById(idMentor);
             return ResponseEntity.ok("Mentor(a) removido(a) com sucesso!");
         } catch (EntityNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
@@ -83,7 +79,7 @@ public class MentorController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MentorDTO> getCurrentMentor() throws EntityNotFoundException {
+    public ResponseEntity<MentorDTO> getCurrentMentor() {
         MentorDTO mentor = mentorService.getCurrentMentor();
         if (mentor == null) {
             return ResponseEntity.notFound().build();
