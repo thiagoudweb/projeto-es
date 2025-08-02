@@ -88,12 +88,10 @@ public class Session {
     public void setTime(LocalTime time) {
         this.time = time;
     }
-
-    public String getMeeting_topic() {
+public String getMeetingTopic() {
         return meetingTopic;
     }
-
-    public void setMeeting_topic(String meetingTopic) {
+public void setMeetingTopic(String meetingTopic) {
         this.meetingTopic = meetingTopic;
     }
 
@@ -103,5 +101,13 @@ public class Session {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

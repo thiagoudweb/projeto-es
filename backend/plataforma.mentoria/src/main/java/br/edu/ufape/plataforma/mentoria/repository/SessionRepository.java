@@ -13,4 +13,6 @@ public interface SessionRepository extends JpaRepository<Session, Long>{
     List<Session> findByUserId(Long userId);
     List<Session> findByGuestId(Long guestId);
     List<Session> findByUserIdAndGuestId(Long userId, Long guestId);
+    List<Session> findByUserAndGuestOrUserAndGuest(User user1, User guest1,
+                                                   User user, User guest);
 }

@@ -17,6 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Stream;
 
 @DataJpaTest
 class SessionRepositoryTest {
@@ -161,4 +162,82 @@ class SessionRepositoryTest {
         assert sessions.isEmpty();
     }
 
+    @Test
+    void findByUserAndGuestSameId() {
+        Session session = new Session(user, guest,
+                LocalDate.of(2023, 10, 1),
+                LocalTime.of(10, 0),
+                "Discussão sobre o projeto",
+                "Discord");
+        sessionRepository.save(session);
+
+        Session session2 = new Session(guest, user,
+                LocalDate.of(2023, 10, 1),
+                LocalTime.of(10, 0),
+                "Discussão sobre o projeto",
+                "Discord");
+        sessionRepository.save(session2);
+
+        Session session3 = new Session(user, guestFake,
+                LocalDate.of(2023, 10, 1),
+                LocalTime.of(10, 0),
+                "Discussão sobre o projeto",
+                "Discord");
+        sessionRepository.save(session3);
+
+        List<Session> sessionUser = sessionRepository.findByUserId(user.getId());
+        List<Session> sessionGuest = sessionRepository.findByGuestId(user.getId());
+
+        List<Session> sessoesJuntas = Stream.concat(sessionUser.stream(), sessionGuest.stream())
+                .toList();
+
+
+        assert !sessoesJuntas.isEmpty();
+        assert sessoesJuntas.size() == 3;
+    }
+
+
+    @Test
+    void findByUserAndGuestOrUserAndGuest() {
+        Session session = new Session(user, guest,
+                LocalDate.of(2023, 10, 1),
+                LocalTime.of(10, 0),
+                "Discussão sobre o projeto",
+                "Discord");
+        sessionRepository.save(session);
+
+        Session session2 = new Session(guest, user,
+                LocalDate.of(2023, 10, 1),
+                LocalTime.of(10, 0),
+                "Discussão sobre o projeto",
+                "Discord");
+        sessionRepository.save(session2);
+
+        List<Session> sessions = sessionRepository.findByUserAndGuestOrUserAndGuest(user, guest, guest, user);
+
+        assert !sessions.isEmpty();
+        assert sessions.getFirst().getUser().equals(user);
+        assert sessions.getLast().getGuest().equals(user);
+    }
+
+    @Test
+    void findByUserAndGuestOrUserAndGuestErro() {
+        Session session = new Session(user, guest,
+                LocalDate.of(2023, 10, 1),
+                LocalTime.of(10, 0),
+                "Discussão sobre o projeto",
+                "Discord");
+        sessionRepository.save(session);
+
+        Session session2 = new Session(user, guestFake,
+                LocalDate.of(2023, 10, 1),
+                LocalTime.of(10, 0),
+                "Discussão sobre o projeto",
+                "Discord");
+        sessionRepository.save(session2);
+
+        List<Session> sessions = sessionRepository.findByUserAndGuestOrUserAndGuest(user, guest, guest, user);
+
+        assert  sessions.size() == 1;
+    }
 }
