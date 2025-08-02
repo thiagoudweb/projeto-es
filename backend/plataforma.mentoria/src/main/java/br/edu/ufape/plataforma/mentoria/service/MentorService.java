@@ -56,7 +56,7 @@ public class MentorService {
         }
 
         mentor.setUser(user);
-        System.out.println(">>> Chamando createMentor com DTO");
+        logger.debug(">>> Chamando createMentor com DTO");
         Mentor savedMentor = mentorRepository.save(mentor);
         return mentorMapper.toDTO(savedMentor);
     }
