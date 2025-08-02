@@ -9,10 +9,7 @@
     <div class="search-section-mentor">
       <div class="search-container">
         <p class="description">
-          {{
-            hasMentorRole()
-              : "Preencha os campos para achar um mentor."
-          }}
+          {{ hasMentorRole() ? '' : 'Preencha os campos para achar um mentor.' }}
 
         <div class="search-results">
           <div *ngFor="let result of results" class="search-item">
