@@ -1,6 +1,7 @@
 package br.edu.ufape.plataforma.mentoria.controller;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
+import br.edu.ufape.plataforma.mentoria.dto.UpdateMentorDTO;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
+import br.edu.ufape.plataforma.mentoria.mapper.MentorMapper;
+import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.service.MentorService;
 import br.edu.ufape.plataforma.mentoria.service.MentoredService;
 import jakarta.validation.Valid;
@@ -24,6 +27,9 @@ public class MentorController {
     @Autowired
     private MentoredService mentoredService;
 
+    @Autowired
+    private MentorMapper mentorMapper;
+
     @GetMapping("/{idMentor}")
     public ResponseEntity<MentorDTO> getMentorDetails(@PathVariable Long idMentor) {
         MentorDTO mentorDTO = mentorService.getMentorDetailsDTO(idMentor);
@@ -39,14 +45,22 @@ public class MentorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedMentorDTO);
     }
 
-    @PutMapping("/{idMentor}")
-    public ResponseEntity<MentorDTO> updateMentor(@PathVariable Long idMentor,
+     @PutMapping("/{idMentor}")
+     public ResponseEntity<MentorDTO> updateMentor(@PathVariable Long idMentor,
             @Valid @RequestBody MentorDTO mentorDTO){
         MentorDTO updatedMentorDTO = mentorService.updateMentor(idMentor, mentorDTO);
-        if (updatedMentorDTO == null) {
+         if (updatedMentorDTO == null) {
             return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(updatedMentorDTO);
+         }
+         return ResponseEntity.ok(updatedMentorDTO);
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<MentorDTO> updateMentor(@PathVariable Long id, @RequestBody @Valid UpdateMentorDTO updateMentorDTO) {
+        System.out.println("chamando funçao update controller");
+        Mentor updatedMentor = mentorService.updateMentor(id, updateMentorDTO);
+        MentorDTO dto = mentorMapper.toDTO(updatedMentor);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{idMentor}")

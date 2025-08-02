@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
+import br.edu.ufape.plataforma.mentoria.dto.UpdateMentorDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentorMapper;
@@ -41,13 +42,6 @@ public class MentorService {
         return mentorRepository.findAll();
     }
 
-    public Mentor createMentor(Mentor mentor) {
-        if (mentorRepository.existsByCpf(mentor.getCpf())) {
-            throw new AttributeAlreadyInUseException("CPF", mentor.getCpf(), Mentor.class);
-        }
-        return mentorRepository.save(mentor);
-    }
-
     public MentorDTO createMentor(MentorDTO mentorDTO) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -62,7 +56,7 @@ public class MentorService {
         }
 
         mentor.setUser(user);
-
+        System.out.println(">>> Chamando createMentor com DTO");
         Mentor savedMentor = mentorRepository.save(mentor);
         return mentorMapper.toDTO(savedMentor);
     }
@@ -90,6 +84,41 @@ public class MentorService {
         Mentor updatedMentor = mentorRepository.save(mentorToUpdate);
         
         return mentorMapper.toDTO(updatedMentor);
+    }
+
+    public Mentor updateMentor(Long id, UpdateMentorDTO dto) {
+        System.out.println("chamando função update service");
+        Mentor mentor = this.getMentorById(id);
+
+        if (dto.getFullName() != null) {
+            mentor.setFullName(dto.getFullName());
+        }
+
+        if (dto.getBirthDate() != null) {
+            mentor.setBirthDate(dto.getBirthDate());
+        }
+
+        if (dto.getCourse() != null) {
+            mentor.setCourse(dto.getCourse());
+        }
+
+        if (dto.getInterestArea() != null) {
+            mentor.setInterestArea(dto.getInterestArea());
+        }
+
+        if (dto.getProfessionalSummary() != null) {
+            mentor.setProfessionalSummary(dto.getProfessionalSummary());
+        }
+
+        if (dto.getAffiliationType() != null) {
+            mentor.setAffiliationType(dto.getAffiliationType());
+        }
+
+        if (dto.getSpecializations() != null) {
+            mentor.setSpecializations(dto.getSpecializations());
+        }
+
+        return mentorRepository.save(mentor);
     }
 
     public void deleteById(Long id){
