@@ -25,8 +25,8 @@ public class SessionMapper {
              return null;
          }
          SessionDTO sessionDTO = new SessionDTO();
-         sessionDTO.setUserId(session.getUser().getId());
-         sessionDTO.setGuestId(session.getGuest().getId());
+         sessionDTO.setMentorId(session.getMentor().getId());
+         sessionDTO.setMentoredId(session.getMentored().getId());
          sessionDTO.setDate(session.getDate());
          sessionDTO.setTime(session.getTime());
          sessionDTO.setMeetingTopic(session.getMeetingTopic());

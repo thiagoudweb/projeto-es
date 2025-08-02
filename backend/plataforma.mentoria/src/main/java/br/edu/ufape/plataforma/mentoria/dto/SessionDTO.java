@@ -11,10 +11,10 @@ import java.time.LocalTime;
 public class SessionDTO {
 
     @NotNull(message = "O ID do mentor é obrigatório")
-    private Long userId;
+    private Long mentorId;
 
     @NotNull(message = "O ID do mentorado é obrigatório")
-    private Long guestId;
+    private Long mentoredId;
 
     @NotNull
     private LocalDate date;
@@ -35,9 +35,9 @@ public class SessionDTO {
     public SessionDTO() {
     }
 
-    public SessionDTO(Long userId, Long guestId, LocalDate date, LocalTime time, String meetingTopic, String location) {
-        this.userId = userId;
-        this.guestId = guestId;
+    public SessionDTO(Long mentorId, Long mentoredId, LocalDate date, LocalTime time, String meetingTopic, String location) {
+        this.mentorId = mentorId;
+        this.mentoredId = mentoredId;
         this.date = date;
         this.time = time;
         this.meetingTopic = meetingTopic;
@@ -45,20 +45,20 @@ public class SessionDTO {
         this.location = location;
     }
 
-    public Long getUserId() {
-        return userId;
+    public @NotNull(message = "O ID do mentor é obrigatório") Long getMentorId() {
+        return mentorId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setMentorId(@NotNull(message = "O ID do mentor é obrigatório") Long mentorId) {
+        this.mentorId = mentorId;
     }
 
-    public Long getGuestId() {
-        return guestId;
+    public @NotNull(message = "O ID do mentorado é obrigatório") Long getMentoredID() {
+        return mentoredId;
     }
 
-    public void setGuestId(Long guestId) {
-        this.guestId = guestId;
+    public void setMentoredId(@NotNull(message = "O ID do mentorado é obrigatório") Long mentoredID) {
+        this.mentoredId = mentoredID;
     }
 
     public LocalDate getDate() {

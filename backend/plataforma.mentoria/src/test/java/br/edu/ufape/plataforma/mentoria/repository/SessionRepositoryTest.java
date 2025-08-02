@@ -17,7 +17,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.stream.Stream;
+
 
 @DataJpaTest
 class SessionRepositoryTest {
@@ -34,41 +34,41 @@ class SessionRepositoryTest {
     @Autowired
     private MentoredRepository mentoredRepository;
 
-    private User user;
-    private User guest;
-    private User userFake;
-    private User guestFake;
+    private Mentored mentored;
+    private Mentor mentor;
+    private Mentored mentoredFake;
+    private Mentor mentorFake;
 
     @BeforeEach
     void setUp() {
-        user = new User("user@gmail.com", "Joestar@123", UserRole.MENTORADO);
+        User user = new User("user@gmail.com", "Joestar@123", UserRole.MENTORADO);
         userRepository.save(user);
-        Mentored mentored = new Mentored("Joestar", "12345678900",
+        mentored = new Mentored("Joestar", "12345678900",
                 LocalDate.of(2000, 1, 1),
                 Course.ADMINISTRACAO, user,
                 "Estudante de Administração", InterestArea.CIBERSEGURANCA);
         mentoredRepository.save(mentored);
 
-        guest = new User("guest@gmail.com", "Joestar@123", UserRole.MENTOR);
+        User guest = new User("guest@gmail.com", "Joestar@123", UserRole.MENTOR);
         userRepository.save(guest);
-        Mentor mentor = new Mentor("Guest Mentor", "98765432100",
+        mentor = new Mentor("Guest Mentor", "98765432100",
                 LocalDate.of(1990, 1, 1),
                 Course.ADMINISTRACAO, guest,
                 "Mentor profissional", AffiliationType.GESTOR,
                 List.of("Gestão de Projetos"), InterestArea.CIBERSEGURANCA);
         mentorRepository.save(mentor);
 
-        userFake = new User("userFake@gmail.com", "Joestar@123", UserRole.MENTORADO);
+        User userFake = new User("userFake@gmail.com", "Joestar@123", UserRole.MENTORADO);
         userRepository.save(userFake);
-        Mentored mentoredFake = new Mentored("Joestar", "12345678911",
+        mentoredFake = new Mentored("Joestar", "12345678911",
                 LocalDate.of(2000, 1, 1),
                 Course.ADMINISTRACAO, userFake,
                 "Estudante de Administração", InterestArea.CIBERSEGURANCA);
         mentoredRepository.save(mentoredFake);
 
-        guestFake = new User("guestFake@gmail.com", "Joestar@123", UserRole.MENTOR);
+        User guestFake = new User("guestFake@gmail.com", "Joestar@123", UserRole.MENTOR);
         userRepository.save(guestFake);
-        Mentor mentorFake = new Mentor("Guest Mentor", "98765432122",
+        mentorFake = new Mentor("Guest Mentor", "98765432122",
                 LocalDate.of(1990, 1, 1),
                 Course.ADMINISTRACAO, guestFake,
                 "Mentor profissional", AffiliationType.GESTOR,
@@ -77,168 +77,90 @@ class SessionRepositoryTest {
     }
 
     @Test
-    void findByUser() {
-        Session session = new Session(user, guest,
+    void findByMentor() {
+        Session session = new Session(mentor, mentored,
                                       LocalDate.of(2023, 10, 1),
                                       LocalTime.of(10, 0),
                                       "Discussão sobre o projeto",
                                       "Discord");
         sessionRepository.save(session);
 
-        List<Session> sessions = sessionRepository.findByUserId(user.getId());
+        List<Session> sessions = sessionRepository.findByMentorId(mentor.getId());
 
         assert !sessions.isEmpty();
-        assert sessions.getFirst().getUser().equals(user);
+        assert sessions.getFirst().getDate().equals(LocalDate.of(2023, 10, 1));
     }
 
     @Test
-    void findByUserErro() {
-        Session session = new Session(userFake, guest,
+    void findByMentorErro() {
+        Session session = new Session(mentorFake, mentored,
                                       LocalDate.of(2023, 10, 1),
                                       LocalTime.of(10, 0),
                                       "Discussão sobre o projeto",
                                       "Discord");
         sessionRepository.save(session);
 
-        List<Session> sessions = sessionRepository.findByUserId(user.getId());
+        List<Session> sessions = sessionRepository.findByMentorId(mentor.getId());
 
         assert sessions.isEmpty();
     }
 
     @Test
-    void findByGuest() {
-        Session session = new Session(user, guest,
+    void findByMentored() {
+        Session session = new Session(mentor, mentored,
                 LocalDate.of(2023, 10, 1),
                 LocalTime.of(10, 0),
                 "Discussão sobre o projeto",
                 "Discord");
         sessionRepository.save(session);
 
-        List<Session> sessions = sessionRepository.findByGuestId(guest.getId());
+        List<Session> sessions = sessionRepository.findByMentoredId(mentored.getId());
 
         assert !sessions.isEmpty();
-        assert sessions.getFirst().getGuest().equals(guest);
+        assert sessions.getFirst().getMentored().equals(mentored);
     }
 
     @Test
-    void findByGuestErro() {
-        Session session = new Session(user, guestFake,
+    void findByMentoredErro() {
+        Session session = new Session(mentor, mentoredFake,
                 LocalDate.of(2023, 10, 1),
                 LocalTime.of(10, 0),
                 "Discussão sobre o projeto",
                 "Discord");
         sessionRepository.save(session);
 
-        List<Session> sessions = sessionRepository.findByGuestId(guest.getId());
+        List<Session> sessions = sessionRepository.findByMentoredId(mentored.getId());
 
         assert sessions.isEmpty();
     }
 
     @Test
-    void findByUserAndGuest() {
-        Session session = new Session(user, guest,
+    void findByMentorAndMentored() {
+        Session session = new Session(mentor, mentored,
                 LocalDate.of(2023, 10, 1),
                 LocalTime.of(10, 0),
                 "Discussão sobre o projeto",
                 "Discord");
         sessionRepository.save(session);
 
-        List<Session> sessions = sessionRepository.findByUserIdAndGuestId(user.getId(), guest.getId());
+        List<Session> sessions = sessionRepository.findByMentorIdAndMentoredId(mentor.getId(), mentored.getId());
 
         assert !sessions.isEmpty();
-        assert sessions.getFirst().getGuest().equals(guest);
+        assert sessions.getFirst().getMentor().equals(mentor);
+        assert sessions.getFirst().getMentored().equals(mentored);
     }
 
     @Test
-    void findByUserAndGuestErro() {
-        Session session = new Session(userFake, guestFake,
+    void findByMentorAndMentoredErro() {
+        Session session = new Session(mentorFake, mentoredFake,
                 LocalDate.of(2023, 10, 1),
                 LocalTime.of(10, 0),
                 "Discussão sobre o projeto",
                 "Discord");
         sessionRepository.save(session);
 
-        List<Session> sessions = sessionRepository.findByUserIdAndGuestId(user.getId(), guest.getId());
+        List<Session> sessions = sessionRepository.findByMentorIdAndMentoredId(mentor.getId(), mentored.getId());
 
         assert sessions.isEmpty();
-    }
-
-    @Test
-    void findByUserAndGuestSameId() {
-        Session session = new Session(user, guest,
-                LocalDate.of(2023, 10, 1),
-                LocalTime.of(10, 0),
-                "Discussão sobre o projeto",
-                "Discord");
-        sessionRepository.save(session);
-
-        Session session2 = new Session(guest, user,
-                LocalDate.of(2023, 10, 1),
-                LocalTime.of(10, 0),
-                "Discussão sobre o projeto",
-                "Discord");
-        sessionRepository.save(session2);
-
-        Session session3 = new Session(user, guestFake,
-                LocalDate.of(2023, 10, 1),
-                LocalTime.of(10, 0),
-                "Discussão sobre o projeto",
-                "Discord");
-        sessionRepository.save(session3);
-
-        List<Session> sessionUser = sessionRepository.findByUserId(user.getId());
-        List<Session> sessionGuest = sessionRepository.findByGuestId(user.getId());
-
-        List<Session> sessoesJuntas = Stream.concat(sessionUser.stream(), sessionGuest.stream())
-                .toList();
-
-
-        assert !sessoesJuntas.isEmpty();
-        assert sessoesJuntas.size() == 3;
-    }
-
-
-    @Test
-    void findByUserAndGuestOrUserAndGuest() {
-        Session session = new Session(user, guest,
-                LocalDate.of(2023, 10, 1),
-                LocalTime.of(10, 0),
-                "Discussão sobre o projeto",
-                "Discord");
-        sessionRepository.save(session);
-
-        Session session2 = new Session(guest, user,
-                LocalDate.of(2023, 10, 1),
-                LocalTime.of(10, 0),
-                "Discussão sobre o projeto",
-                "Discord");
-        sessionRepository.save(session2);
-
-        List<Session> sessions = sessionRepository.findByUserAndGuestOrUserAndGuest(user, guest, guest, user);
-
-        assert !sessions.isEmpty();
-        assert sessions.getFirst().getUser().equals(user);
-        assert sessions.getLast().getGuest().equals(user);
-    }
-
-    @Test
-    void findByUserAndGuestOrUserAndGuestErro() {
-        Session session = new Session(user, guest,
-                LocalDate.of(2023, 10, 1),
-                LocalTime.of(10, 0),
-                "Discussão sobre o projeto",
-                "Discord");
-        sessionRepository.save(session);
-
-        Session session2 = new Session(user, guestFake,
-                LocalDate.of(2023, 10, 1),
-                LocalTime.of(10, 0),
-                "Discussão sobre o projeto",
-                "Discord");
-        sessionRepository.save(session2);
-
-        List<Session> sessions = sessionRepository.findByUserAndGuestOrUserAndGuest(user, guest, guest, user);
-
-        assert  sessions.size() == 1;
     }
 }

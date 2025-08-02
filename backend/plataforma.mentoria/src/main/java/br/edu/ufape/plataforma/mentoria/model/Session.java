@@ -16,10 +16,10 @@ public class Session {
     private Long id;
 
     @ManyToOne
-    private User user;
+    private Mentor mentor;
 
     @ManyToOne
-    private User guest;
+    private Mentored mentored;
 
     @Column(nullable = false)
     private LocalDate date;
@@ -39,9 +39,9 @@ public class Session {
 
     public Session() {}
 
-    public Session(User user, User guest, LocalDate date, LocalTime time, String meetingTopic, String location) {
-        this.user = user;
-        this.guest = guest;
+    public Session(Mentor mentor, Mentored mentored, LocalDate date, LocalTime time, String meetingTopic, String location) {
+        this.mentor = mentor;
+        this.mentored = mentored;
         this.date = date;
         this.time = time;
         this.meetingTopic = meetingTopic;
@@ -53,24 +53,32 @@ public class Session {
         return id;
     }
 
+    public Mentor getMentor() {
+        return mentor;
+    }
+
+    public void setMentor(Mentor mentor) {
+        this.mentor = mentor;
+    }
+
+    public Mentored getMentored() {
+        return mentored;
+    }
+
+    public void setMentored(Mentored mentorado) {
+        this.mentored = mentorado;
+    }
+
+    public String getMeetingTopic() {
+        return meetingTopic;
+    }
+
+    public void setMeetingTopic(String meetingTopic) {
+        this.meetingTopic = meetingTopic;
+    }
+
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public User getGuest() {
-        return guest;
-    }
-
-    public void setGuest(User guest) {
-        this.guest = guest;
     }
 
     public LocalDate getDate() {
@@ -87,12 +95,6 @@ public class Session {
 
     public void setTime(LocalTime time) {
         this.time = time;
-    }
-public String getMeetingTopic() {
-        return meetingTopic;
-    }
-public void setMeetingTopic(String meetingTopic) {
-        this.meetingTopic = meetingTopic;
     }
 
     public Status getStatus() {

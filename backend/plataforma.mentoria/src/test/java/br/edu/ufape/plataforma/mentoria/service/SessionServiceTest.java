@@ -12,13 +12,13 @@ import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
-import org.assertj.core.api.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -38,44 +38,47 @@ class SessionServiceTest {
     private SessionRepository sessionRepository;
 
     @Mock
-    private UserRepository userRepository;
+    private MentorRepository mentorRepository;
+
+    @Mock
+    private MentoredRepository mentoredRepository;
 
     @Mock
     private SessionMapper sessionMapper;
 
-
-    private User user;
-    private User guest;
+    private Mentor mentor;
+    private Mentored mentored;
     private Session session;
     private SessionDTO sessionDTO;
 
     @BeforeEach
     void setUp() {
-        user = new User("user@gmail.com", "Joestar@123", UserRole.MENTORADO);
+        User user = new User("user@gmail.com", "Joestar@123", UserRole.MENTORADO);
         user.setId(1L);
-        Mentored mentored = new Mentored("Joestar", "12345678900",
+        mentored = new Mentored("Joestar", "12345678900",
                 LocalDate.of(2000, 1, 1),
                 Course.ADMINISTRACAO, user,
                 "Estudante de Administração", InterestArea.CIBERSEGURANCA);
+        mentored.setId(1L);
 
-        guest = new User("guest@gmail.com", "Joestar@123", UserRole.MENTOR);
+        User guest = new User("guest@gmail.com", "Joestar@123", UserRole.MENTOR);
         guest.setId(2L);
-        Mentor mentor = new Mentor("Guest Mentor", "98765432100",
+        mentor = new Mentor("Guest Mentor", "98765432100",
                 LocalDate.of(1990, 1, 1),
                 Course.ADMINISTRACAO, guest,
                 "Mentor profissional", AffiliationType.GESTOR,
                 List.of("Gestão de Projetos"), InterestArea.CIBERSEGURANCA);
+        mentor.setId(2L);
 
-        session = new Session(user, guest,
+        session = new Session(mentor, mentored,
                 LocalDate.of(2023, 10, 1),
                 LocalTime.of(10, 0),
                 "Discussão sobre o projeto",
                 "Discord");
-        session.setId(1L);
 
        sessionDTO = new SessionDTO(
-                user.getId(),
-                guest.getId(),
+                mentor.getId(),
+                mentored.getId(),
                 LocalDate.of(2023, 10, 1),
                 LocalTime.of(10, 0),
                 "Discussão sobre o projeto",
@@ -85,9 +88,8 @@ class SessionServiceTest {
 
     @Test
     void createSession() {
-
-        when(userRepository.findById(user.getId())).thenReturn(java.util.Optional.of(user));
-        when(userRepository.findById(guest.getId())).thenReturn(java.util.Optional.of(guest));
+        when(mentoredRepository.findById(mentored.getId())).thenReturn(Optional.of(mentored));
+        when(mentorRepository.findById(mentor.getId())).thenReturn(Optional.of(mentor));
         when(sessionMapper.toEntity(sessionDTO)).thenReturn(session);
         when(sessionRepository.save(session)).thenReturn(session);
 
@@ -100,15 +102,15 @@ class SessionServiceTest {
     @Test
     void updateSession() throws Exception {
         SessionDTO sessionUpdateDTO = new SessionDTO(
-                user.getId(),
-                guest.getId(),
+                mentor.getId(),
+                mentored.getId(),
                 LocalDate.of(2023, 10, 1),
                 LocalTime.of(10, 0),
                 "Discussão sobre o projeto",
                 "Meet"
         );
 
-        Session updatedEntity = new Session(user, guest,
+        Session updatedEntity = new Session(mentor, mentored,
                 sessionUpdateDTO.getDate(),
                 sessionUpdateDTO.getTime(),
                 sessionUpdateDTO.getMeetingTopic(),
@@ -129,6 +131,7 @@ class SessionServiceTest {
         assertEquals("Meet", updatedSession.getLocation()); // verifica se o campo atualizado está correto
         assertEquals(session.getMeetingTopic(), updatedSession.getMeetingTopic()); // opcional, já que não mudou
     }
+
 
     @Test
     void getSessionById() {
@@ -168,19 +171,18 @@ class SessionServiceTest {
 
     @Test
     void findSessionHistoryBetweenUsers() {
-        // Mocka os usuários retornados pelo userRepository.findById
-        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
-        when(userRepository.findById(guest.getId())).thenReturn(Optional.of(guest));
+        when(mentorRepository.findById(mentor.getId())).thenReturn(Optional.of(mentor));
+        when(mentoredRepository.findById(mentored.getId())).thenReturn(Optional.of(mentored));
 
         // Mocka o retorno do sessionRepository.findByUserAndGuestOrUserAndGuest
-        when(sessionRepository.findByUserAndGuestOrUserAndGuest(user, guest, guest, user))
+        when(sessionRepository.findByMentorIdAndMentoredId(mentor.getId(), mentored.getId()))
                 .thenReturn(List.of(session));
 
         // Mocka a conversão da entidade Session para SessionDTO
         when(sessionMapper.toDTO(session)).thenReturn(sessionDTO);
 
         // Chama o método do serviço
-        List<SessionDTO> sessionHistory = sessionService.findSessionHistoryBetweenUsers(user.getId(), guest.getId());
+        List<SessionDTO> sessionHistory = sessionService.findSessionHistoryBetweenUsers(mentor.getId(), mentored.getId());
 
         // Verificações
         assertNotNull(sessionHistory);
@@ -190,18 +192,36 @@ class SessionServiceTest {
     }
 
     @Test
-    void findSessionHistoryUser() {
-        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+    void findSessionHistoryMentor() {
+        when(mentorRepository.findById(mentor.getId())).thenReturn(Optional.of(mentor));
 
         // Retorna sessão só em findByUserId, findByGuestId vazio
-        when(sessionRepository.findByUserId(user.getId())).thenReturn(List.of(session));
-        when(sessionRepository.findByGuestId(user.getId())).thenReturn(List.of());
+        when(sessionRepository.findByMentorId(mentor.getId()))
+                .thenReturn(List.of(session));
 
         when(sessionMapper.toDTO(session)).thenReturn(sessionDTO);
 
-        List<SessionDTO> sessionHistoryUser = sessionService.findSessionHistoryUser(user.getId());
+        List<SessionDTO> sessionHistoryUser = sessionService.findSessionHistoryMentor(mentor.getId());
 
         assertNotNull(sessionHistoryUser);
+        assertFalse(sessionHistoryUser.isEmpty());
+        assertEquals(1, sessionHistoryUser.size());
+        assertEquals(sessionDTO, sessionHistoryUser.get(0));
+    }
+
+   @Test
+    void findSessionHistoryMentored() {
+       when(mentoredRepository.findById(mentored.getId())).thenReturn(Optional.of(mentored));
+
+       // Retorna sessão só em findByUserId, findByGuestId vazio
+       when(sessionRepository.findByMentoredId(mentored.getId()))
+               .thenReturn(List.of(session));
+
+       when(sessionMapper.toDTO(session)).thenReturn(sessionDTO);
+
+       List<SessionDTO> sessionHistoryUser = sessionService.findSessionHistoryMentored(mentored.getId());
+
+       assertNotNull(sessionHistoryUser);
         assertFalse(sessionHistoryUser.isEmpty());
         assertEquals(1, sessionHistoryUser.size());
         assertEquals(sessionDTO, sessionHistoryUser.get(0));
