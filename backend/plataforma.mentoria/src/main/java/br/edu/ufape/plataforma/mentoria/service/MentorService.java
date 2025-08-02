@@ -56,7 +56,6 @@ public class MentorService {
         }
 
         mentor.setUser(user);
-        logger.debug(">>> Chamando createMentor com DTO");
         Mentor savedMentor = mentorRepository.save(mentor);
         return mentorMapper.toDTO(savedMentor);
     }
@@ -87,7 +86,6 @@ public class MentorService {
     }
 
     public Mentor updateMentor(Long id, UpdateMentorDTO dto) {
-        System.out.println("chamando função update service");
         Mentor mentor = this.getMentorById(id);
 
         if (dto.getFullName() != null) {

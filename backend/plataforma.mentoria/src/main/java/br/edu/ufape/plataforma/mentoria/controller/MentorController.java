@@ -57,7 +57,6 @@ public class MentorController {
 
     @PatchMapping("/{id}")
     public ResponseEntity<MentorDTO> updateMentor(@PathVariable Long id, @RequestBody @Valid UpdateMentorDTO updateMentorDTO) {
-        System.out.println("chamando funçao update controller");
         Mentor updatedMentor = mentorService.updateMentor(id, updateMentorDTO);
         MentorDTO dto = mentorMapper.toDTO(updatedMentor);
         return ResponseEntity.ok(dto);
