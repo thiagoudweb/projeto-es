@@ -3,9 +3,8 @@
     <h2>Editando</h2>
 
     <div class="mentored-form-container">
-      <form class="signup-form" [formGroup]="mentoredForm" (ngSubmit)="onSave()">
-        <!-- Container com scroll para o conteúdo do formulário -->
-        <div class="form-scroll-container">
+      <div class="form-scroll-container">
+        <form class="signup-form" [formGroup]="mentoredForm" (ngSubmit)="onSave()">
           <!-- Resumo Acadêmico -->
           <div class="form-group">
             <label for="academicSummary">Resumo acadêmico</label>
@@ -268,14 +267,13 @@
               Selecione pelo menos uma área de interesse.
             </div>
           </div>
-        </div>
-
-        <!-- Botões fixos na parte inferior -->
-        <div class="form-actions-fixed">
-          <button type="button" class="btn-cancelar" (click)="onClose()">Cancelar</button>
-          <button type="submit" class="btn-finalizar" [disabled]="!canSave()">Salvar Alterações</button>
-        </div>
-      </form>
+        </form>
+      </div>
+      
+      <div class="form-actions-fixed">
+        <button type="button" class="btn-cancelar" (click)="onClose()">Cancelar</button>
+        <button type="submit" class="btn-finalizar" [disabled]="!canSave()" (click)="onSave()">Salvar Alterações</button>
+      </div>
     </div>
   </div>
 </div>

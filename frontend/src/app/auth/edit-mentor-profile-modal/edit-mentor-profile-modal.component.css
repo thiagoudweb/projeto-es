@@ -1,6 +1,5 @@
 .modal-backdrop *,
-.mentor-register-container *,
-.mentored-register-container * {
+.mentor-register-container * {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
 }
 
@@ -137,6 +136,7 @@
   border-radius: 6px;
   font-size: 14px;
   transition: border-color 0.2s ease;
+  box-sizing: border-box;
 }
 
 .form-group input:focus,
