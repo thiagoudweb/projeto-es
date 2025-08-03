@@ -1,6 +1,7 @@
 package br.edu.ufape.plataforma.mentoria.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import br.edu.ufape.plataforma.mentoria.enums.Course;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
@@ -10,7 +11,7 @@ public class UpdateMentoredDTO {
     private LocalDate birthDate;
     private Course course;
     private String academicSummary;
-    private InterestArea interestArea;
+    private List<InterestArea> interestArea;
 
     public String getFullName() {
         return fullName;
@@ -36,10 +37,11 @@ public class UpdateMentoredDTO {
     public void setAcademicSummary(String academicSummary) {
         this.academicSummary = academicSummary;
     }
-    public InterestArea getInterestArea() {
+    public List<InterestArea> getInterestArea() {
         return interestArea;
     }
-    public void setInterestArea(InterestArea interestArea) {
+
+    public void setInterestArea(List<InterestArea> interestArea) {
         this.interestArea = interestArea;
     }
 

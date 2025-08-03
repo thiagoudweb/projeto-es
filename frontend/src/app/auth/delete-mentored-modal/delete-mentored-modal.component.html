@@ -1,10 +1,20 @@
-<div class="modal">
-  <div class="modal-content">
-    <h2>Confirmar exclusão</h2>
-    <p>Tem certeza que deseja excluir o mentor <strong>{{ mentored.fullName }}</strong>?</p>
-    
-    <!-- Certifique-se de que os eventos estão corretos -->
-    <button class="confirm-btn" (click)="onConfirm()">Excluir</button>
-    <button class="cancel-btn" (click)="onCancel()">Cancelar</button>
+<div class="delete-modal">
+  <div class="delete-modal__content">
+    <h2 class="delete-modal__title">Tem certeza que deseja continuar?</h2>
+    <p class="delete-modal__description">Essa ação é permanente e não poderá ser desfeita.</p>
+    <div class="delete-modal__actions">
+      <button 
+        class="delete-modal__button delete-modal__button--cancel" 
+        (click)="onCancel()"
+        type="button">
+        Cancelar
+      </button>
+      <button 
+        class="delete-modal__button delete-modal__button--confirm" 
+        (click)="onConfirm()"
+        type="button">
+        Confirmar
+      </button>
+    </div>
   </div>
 </div>

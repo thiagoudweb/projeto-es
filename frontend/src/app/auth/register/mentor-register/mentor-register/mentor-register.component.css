@@ -1,6 +1,5 @@
-/* ===== Container Principal ===== */
 .mentor-register-container {
-  max-width: 400px;
+  max-width: 480px;
   margin: 40px auto;
   padding-top: 32px;
   text-align: center;
@@ -8,30 +7,36 @@
 
 .mentor-register-container h2 {
   margin-bottom: 20px;
+  font-size: 1.6rem;
+  font-weight: 600;
 }
 
-/* ===== Cartão do formulário ===== */
 .mentor-form-container {
-  background: #ffffff;
+  background: #fff;
   border: 2px solid #2563eb;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px #0001;
-  padding: 32px 24px;
+  border-radius: 10px;
+  box-shadow: 0 2px 12px #0002;
+  padding: 32px 28px;
 }
 
-/* ===== Bloco de cada campo ===== */
 .form-group {
-  margin-bottom: 18px;
+  margin-bottom: 22px;
   text-align: left;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 7px;
   font-weight: 500;
+  font-size: 1.05rem;
 }
 
-/* ===== Campos de entrada e selects ===== */
+.field-description {
+  font-size: 0.98rem;
+  color: #666;
+  margin-bottom: 10px;
+}
+
 input,
 select,
 textarea {
@@ -39,34 +44,103 @@ textarea {
   width: 100%;
   height: 44px;
   padding: 10px 12px;
-  font-size: 14px;
+  font-size: 15px;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-sizing: border-box;
   color: #374151;
 }
 
-/* ===== Textarea que cresce ===== */
 .auto-grow {
   min-height: 44px;
   max-height: 200px;
   resize: vertical;
 }
 
-/* ===== Botão principal ===== */
+.checkbox-grid {
+  margin-top: 8px;
+}
+
+.checkbox-section {
+  margin-bottom: 16px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 8px;
+}
+
+.section-header {
+  cursor: pointer;
+  font-size: 1.08rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  color: #000000;
+  transition: color 0.2s;
+}
+
+.section-header:hover {
+  color: #1741a6;
+}
+
+.expand-icon {
+  margin-right: 8px;
+  font-size: 1.1rem;
+  transition: transform 0.2s;
+}
+
+.section-content {
+  margin-left: 18px;
+  margin-top: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 6px;
+  min-width: 220px;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-right: 7px;
+  accent-color: #2563eb;
+  width: 18px;
+  height: 18px;
+}
+
+.checkbox-item label {
+  font-size: 0.98rem;
+  color: #333;
+}
+
+.error {
+  color: #d32f2f;
+  font-size: 0.95rem;
+  margin-top: 4px;
+}
+
 .btn-finalizar {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background: #2563eb;
   color: #fff;
   border: none;
-  border-radius: 8px; 
+  border-radius: 5px;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 1.08rem;
   cursor: pointer;
+  margin-top: 18px;
+  transition: background 0.2s;
+}
+
+.btn-finalizar:disabled {
+  background: #b3c6f7;
+  cursor: not-allowed;
 }
 
 .mentor-register-container,
 .mentor-register-container * {
-  font-family: "Segoe UI", sans-serif;
+  font-family: "Segoe UI", Arial, sans-serif;
 }

@@ -1,6 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import {
+  AbstractControl, FormArray,
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../auth.service';
 import { User } from '../../../../entity/user';
@@ -23,13 +31,43 @@ export class MentorRegisterComponent implements OnInit {
 
   signupForm: FormGroup = this.fb.group({
     course: ['', [Validators.required, Validators.minLength(3)]],
-
     professionalSummary: ['', [Validators.required, Validators.minLength(3)]],
-    interestArea: ['', [Validators.required]],
-
+    interestArea: this.fb.array([], [Validators.required, MentorRegisterComponent.minSelectedCheckboxes(1)]),
     affiliationType: ['', [Validators.required]],
     specializations: ['', [Validators.required]],
   })
+
+  static minSelectedCheckboxes(min: number) {
+    return (control: AbstractControl) => {
+      const formArray = control as FormArray;
+      return formArray.length >= min ? null : { minSelected: true };
+    };
+  }
+
+  get interestAreaArray(): FormArray {
+    return this.signupForm.get('interestArea') as FormArray;
+  }
+
+  onInterestChange(event: any): void {
+    const value = event.target.value;
+    if (event.target.checked) {
+      this.interestAreaArray.push(this.fb.control(value));
+    } else {
+      const index = this.interestAreaArray.controls.findIndex(x => x.value === value);
+      if (index !== -1) {
+        this.interestAreaArray.removeAt(index);
+      }
+    }
+    this.interestAreaArray.markAsTouched();
+    this.interestAreaArray.markAsDirty();
+  }
+
+  expandedSections: { [key: string]: boolean } = {};
+
+  toggleSection(section: string): void {
+    this.expandedSections[section] = !this.expandedSections[section];
+  }
+
 
   ngOnInit() {
     const navigation = this.router.getCurrentNavigation();
@@ -56,7 +94,7 @@ export class MentorRegisterComponent implements OnInit {
         professionalSummary: this.signupForm.value.professionalSummary,
         affiliationType: this.signupForm.value.affiliationType,
         specializations: this.signupForm.value.specializations ? this.signupForm.value.specializations.split(',').map((s: string) => s.trim()): [],
-        interestArea: this.signupForm.value.interestArea,
+        interestArea: this.interestAreaArray.value,
         email: this.userData.email,
         password: this.userData.password,
         role: 'MENTOR'

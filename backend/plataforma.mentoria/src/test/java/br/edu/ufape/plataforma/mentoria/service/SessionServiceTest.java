@@ -67,7 +67,7 @@ class SessionServiceTest {
                 LocalDate.of(1990, 1, 1),
                 Course.ADMINISTRACAO, guest,
                 "Mentor profissional", AffiliationType.GESTOR,
-                List.of("Gestão de Projetos"), InterestArea.CIBERSEGURANCA);
+                List.of("Gestão de Projetos"), List.of(InterestArea.CIBERSEGURANCA));
         mentor.setId(2L);
 
         session = new Session(mentor, mentored,
