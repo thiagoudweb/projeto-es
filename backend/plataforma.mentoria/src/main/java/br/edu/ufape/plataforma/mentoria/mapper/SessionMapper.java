@@ -1,6 +1,7 @@
 package br.edu.ufape.plataforma.mentoria.mapper;
 
 import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
+import br.edu.ufape.plataforma.mentoria.enums.Status;
 import br.edu.ufape.plataforma.mentoria.model.Session;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +16,7 @@ public class SessionMapper {
          session.setDate(sessionDTO.getDate());
          session.setTime(sessionDTO.getTime());
          session.setMeetingTopic(sessionDTO.getMeetingTopic());
-         session.setStatus(sessionDTO.getStatus());
+         session.setStatus(Status.PENDING);
          session.setLocation(sessionDTO.getLocation());
          return session;
      }
