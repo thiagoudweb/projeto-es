@@ -13,6 +13,7 @@ import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import br.edu.ufape.plataforma.mentoria.enums.Status;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +41,7 @@ public class SessionService {
     }
 
     public Session createSession(SessionDTO sessionDTO) {
+        sessionDTO.setStatus(Status.PENDING);
 
         Mentor mentor = mentorRepository.findById(sessionDTO.getMentorId())
                 .orElseThrow(() -> new EntityNotFoundException("Mentor com o ID " + sessionDTO.getMentorId() + " não encontrado."));
@@ -57,21 +59,15 @@ public class SessionService {
         return sessionRepository.save(session);
     }
 
-    public SessionDTO updateSession(Long id, SessionDTO sessionDTO) throws Exception{
-        // Buscar o Sessão existente para obter o ID e os usuários associados
-        Session existingSession = sessionRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Session.class, id));
+    public SessionDTO updateSession(Long id, SessionDTO sessionDTO) {
+        Session existingSession = getSessionById(id);
 
-        // Converter DTO para Entity
-        Session sessionToUpdate = sessionMapper.toEntity(sessionDTO);
+        existingSession.setDate(sessionDTO.getDate());
+        existingSession.setTime(sessionDTO.getTime());
+        existingSession.setMeetingTopic(sessionDTO.getMeetingTopic());
+        existingSession.setLocation(sessionDTO.getLocation());
 
-        // Definir o ID e os usuários do Sessão existente
-        sessionToUpdate.setId(existingSession.getId());
-        sessionToUpdate.setMentor(existingSession.getMentor());
-        sessionToUpdate.setMentored(existingSession.getMentored());
-
-        // Salvar a sessão atualizada
-        Session updatedSession = sessionRepository.save(sessionToUpdate);
+        Session updatedSession = sessionRepository.save(existingSession);
 
         return sessionMapper.toDTO(updatedSession);
     }
@@ -84,6 +80,32 @@ public class SessionService {
     public SessionDTO getSessionDTOById(Long id) {
         Session session = getSessionById(id);
         return sessionMapper.toDTO(session);
+    }
+
+    public SessionDTO updateSessionStatus(Long id, Status newStatus) {
+        Session session = getSessionById(id);
+        Status currentStatus = session.getStatus();
+
+        switch (currentStatus) {
+            case PENDING:
+                if (newStatus != Status.ACCEPTED && newStatus != Status.REJECTED && newStatus != Status.CANCELLED) {
+                    throw new IllegalArgumentException("Sessão pendente só pode ser Aceita, Rejeitada ou Cancelada.");
+                }
+                break;
+            case ACCEPTED:
+                if (newStatus != Status.COMPLETED && newStatus != Status.CANCELLED) {
+                    throw new IllegalArgumentException("Sessão aceita só pode ser Concluída ou Cancelada.");
+                }
+                break;
+            case REJECTED:
+            case COMPLETED:
+            case CANCELLED:
+                throw new IllegalArgumentException("A sessão já está em um estado final (" + currentStatus + ") e não pode ser alterada.");
+        }
+
+        session.setStatus(newStatus);
+        Session updatedSession = sessionRepository.save(session);
+        return sessionMapper.toDTO(updatedSession);
     }
 
     public List<SessionDTO> findSessionHistoryBetweenUsers(Long mentorId, Long mentoredId) {
