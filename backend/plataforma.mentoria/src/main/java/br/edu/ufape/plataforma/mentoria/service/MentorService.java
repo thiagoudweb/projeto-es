@@ -69,17 +69,14 @@ public class MentorService {
     }
 
     public MentorDTO updateMentor(Long id, MentorDTO mentorDTO) {
-        // Buscar o mentor existente para obter o User
+
         Mentor existingMentor = this.getMentorById(id);
         
-        // Converter DTO para Entity
         Mentor mentorToUpdate = mentorMapper.toEntity(mentorDTO);
         
-        // Definir o ID e o User existente
         mentorToUpdate.setId(id);
         mentorToUpdate.setUser(existingMentor.getUser());
         
-        // Salvar o mentor atualizado
         Mentor updatedMentor = mentorRepository.save(mentorToUpdate);
         
         return mentorMapper.toDTO(updatedMentor);

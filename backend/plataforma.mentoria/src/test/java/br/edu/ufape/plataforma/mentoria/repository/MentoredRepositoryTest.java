@@ -33,7 +33,7 @@ public class MentoredRepositoryTest {
         mentored.setCpf("12345678900");
         mentored.setBirthDate(LocalDate.of(1990, 1, 1));
         mentored.setUser(user);
-        mentored.setInterestArea(InterestArea.CIBERSEGURANCA);
+        mentored.setInterestArea(List.of(InterestArea.CIBERSEGURANCA));
         mentored.setCourse(Course.ADMINISTRACAO);
         mentored.setAcademicSummary("Academic");
         mentoredRepository.save(mentored);
@@ -49,7 +49,7 @@ public class MentoredRepositoryTest {
         mentored2.setCpf("12345678901");
         mentored2.setBirthDate(LocalDate.of(1990, 1, 1));
         mentored2.setUser(user2);
-        mentored2.setInterestArea(InterestArea.CIBERSEGURANCA);
+        mentored2.setInterestArea(List.of(InterestArea.CIBERSEGURANCA));
         mentored2.setCourse(Course.ADMINISTRACAO);
         mentored2.setAcademicSummary("Academic");
         mentoredRepository.save(mentored2);

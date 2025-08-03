@@ -55,8 +55,8 @@ class SessionRepositoryTest {
                 LocalDate.of(1990, 1, 1),
                 Course.ADMINISTRACAO, guest,
                 "Mentor profissional", AffiliationType.GESTOR,
-                List.of("Gestão de Projetos"), InterestArea.CIBERSEGURANCA);
-        mentorRepository.save(mentor);
+                List.of("Gestão de Projetos"), List.of(InterestArea.CIBERSEGURANCA));
+                mentorRepository.save(mentor);
 
         User userFake = new User("userFake@gmail.com", "Joestar@123", UserRole.MENTORADO);
         userRepository.save(userFake);
@@ -72,7 +72,7 @@ class SessionRepositoryTest {
                 LocalDate.of(1990, 1, 1),
                 Course.ADMINISTRACAO, guestFake,
                 "Mentor profissional", AffiliationType.GESTOR,
-                List.of("Gestão de Projetos"), InterestArea.CIBERSEGURANCA);
+                List.of("Gestão de Projetos"), List.of(InterestArea.CIBERSEGURANCA));
         mentorRepository.save(mentorFake);
     }
 

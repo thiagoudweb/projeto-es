@@ -15,7 +15,7 @@ public class UpdateMentorDTO {
 
     private Course course;
 
-    private InterestArea interestArea;
+    private List<InterestArea> interestArea;
 
     private String professionalSummary;
 
@@ -48,11 +48,11 @@ public class UpdateMentorDTO {
         this.course = course;
     }
 
-    public InterestArea getInterestArea() {
+    public List<InterestArea> getInterestArea() {
         return interestArea;
     }
 
-    public void setInterestArea(InterestArea interestArea) {
+    public void setInterestArea(List<InterestArea> interestArea) {
         this.interestArea = interestArea;
     }
 

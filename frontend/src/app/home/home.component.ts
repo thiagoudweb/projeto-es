@@ -24,6 +24,13 @@ export class HomeComponent implements OnInit, OnDestroy {
   private router = inject(Router);
   private profileService = inject(ProfileService);
 
+  searchMentors() {
+    // lógica de busca
+    this.mentorSearchPerformed = true;
+
+
+  }
+
   logout() {
     this.authService.logout();
     this.router.navigate(['/login']);

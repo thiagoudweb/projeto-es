@@ -39,13 +39,13 @@ public class MentorDTO {
     private List<@NotBlank(message = "Especializações não podem estar em branco") String> specializations;
 
     @NotNull(message = "A área de interesse é obrigatória")
-    private InterestArea interestArea;
+    private List<InterestArea> interestArea;
 
     public MentorDTO() {
     }
 
     public MentorDTO(String fullName, String cpf, LocalDate birthDate, Course course, String professionalSummary,
-            AffiliationType affiliationType, List<String> specializations, InterestArea interestArea) {
+            AffiliationType affiliationType, List<String> specializations, List<InterestArea> interestArea) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
@@ -119,11 +119,11 @@ public class MentorDTO {
         this.specializations = specializations;
     }
 
-    public InterestArea getInterestArea() {
+    public List<InterestArea> getInterestArea() {
         return interestArea;
     }
 
-    public void setInterestArea(InterestArea interestArea) {
+    public void setInterestArea(List<InterestArea> interestArea) {
         this.interestArea = interestArea;
     }
 

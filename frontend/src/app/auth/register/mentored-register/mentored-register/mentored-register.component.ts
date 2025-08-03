@@ -51,7 +51,7 @@ export class MentoredRegisterComponent implements OnInit {
         birthDate: this.userData.birthDate,
         course: this.signupForm.value.course,
         academicSummary: this.signupForm.value.academicSummary,
-        interestArea: this.signupForm.value.interestArea,
+        interestArea: this.signupForm.value.interestArea ? this.signupForm.value.interestArea.split(',').map((a: string) => a.trim().toUpperCase()): [],
         email: this.userData.email,
         password: this.userData.password,
         role: 'MENTORED'
