@@ -1,25 +1,330 @@
-.modal-overlay {
+.modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.4);
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
 }
 
-.modal {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 400px;
-}
-
-.modal-actions {
-  margin-top: 20px;
+.mentor-register-container,
+.mentored-register-container {
+  max-width: 500px;
+  width: 90%;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-height: 90vh;
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
+  flex-direction: column;
+}
+
+.mentor-register-container h2,
+.mentored-register-container h2 {
+  color: #1e293b;
+  font-size: 24px;
+  margin: 0;
+  padding: 24px 24px 20px 24px;
+  text-align: center;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.mentor-form-container,
+.mentored-form-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(90vh - 140px);
+}
+
+.form-scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 24px;
+  padding-bottom: 10px;
+}
+
+.form-scroll-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-scroll-container::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.form-scroll-container::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+}
+
+.form-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+.form-actions-fixed {
+  padding: 20px 24px;
+  border-top: 1px solid #e2e8f0;
+  background: white;
+  display: flex;
+  gap: 12px;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #374151;
+  font-size: 14px;
+}
+
+input,
+select,
+textarea {
+  background-color: #f9fafb;
+  width: 100%;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
+textarea.auto-grow {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.error {
+  color: #dc2626;
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+.btn-finalizar {
+  flex: 1;
+  padding: 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-finalizar:hover:not(:disabled) {
+  background: #1d4ed8;
+}
+
+.btn-finalizar:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
+}
+
+.btn-cancelar {
+  flex: 1;
+  padding: 12px;
+  background: #f1f5f9;
+  color: #64748b;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background: #e2e8f0;
+}
+
+/* Estilos para checkboxes */
+.checkbox-grid {
+  max-height: 300px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 16px;
+  background-color: #f9fafb;
+}
+
+.checkbox-section {
+  margin-bottom: 16px;
+}
+
+.checkbox-section:last-child {
+  margin-bottom: 0;
+}
+
+.checkbox-section h4 {
+  margin: 0 0 12px 0;
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 8px;
+}
+
+/* Estilos para acordeão */
+.section-header {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 12px 8px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  user-select: none;
+  margin: 0;
+}
+
+.section-header:hover {
+  background-color: #e2e8f0;
+}
+
+.expand-icon {
+  margin-right: 8px;
+  font-size: 12px;
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.expand-icon.expanded {
+  transform: rotate(90deg);
+}
+
+.section-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+.section-content.expanded {
+  max-height: 500px;
+  padding-left: 20px;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 4px 0;
+}
+
+.checkbox-item:last-child {
+  margin-bottom: 0;
+}
+
+.checkbox-item input[type="checkbox"] {
+  margin-right: 8px;
+  width: 16px;
+  height: 16px;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.checkbox-item label {
+  font-size: 14px;
+  color: #374151;
+  cursor: pointer;
+  user-select: none;
+  line-height: 1.4;
+  flex: 1;
+  margin: 0;
+}
+
+.checkbox-item:hover {
+  background-color: #e2e8f0;
+  border-radius: 4px;
+  padding: 4px 8px;
+  margin: 2px -8px;
+}
+
+.field-description {
+  margin: 4px 0 12px 0;
+  font-size: 12px;
+  color: #64748b;
+  font-style: italic;
+}
+
+.checkbox-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.checkbox-grid::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.checkbox-grid::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+}
+
+.checkbox-grid::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+.modal-backdrop *,
+.mentor-register-container *,
+.mentored-register-container * {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.mentor-register-container,
+.section-header {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .mentor-register-container,
+  .mentored-register-container {
+    width: 95%;
+    max-height: 95vh;
+  }
+  
+  .form-actions-fixed {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .form-actions-fixed .btn-finalizar,
+  .form-actions-fixed .btn-cancelar {
+    width: 100%;
+  }
+  
+  .checkbox-grid {
+    max-height: 250px;
+  }
+  
+  .checkbox-section h4 {
+    font-size: 13px;
+  }
+  
+  .checkbox-item label {
+    font-size: 13px;
+  }
 }

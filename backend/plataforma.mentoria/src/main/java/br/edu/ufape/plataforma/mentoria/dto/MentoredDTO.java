@@ -1,6 +1,8 @@
 package br.edu.ufape.plataforma.mentoria.dto;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import br.edu.ufape.plataforma.mentoria.enums.Course;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import jakarta.validation.constraints.NotBlank;
@@ -29,13 +31,13 @@ public class MentoredDTO {
     private String academicSummary;
 
     @NotNull(message = "A área de interesse é obrigatória")
-    private InterestArea interestArea;
+    private List<InterestArea> interestArea;
 
     public MentoredDTO() {
     }
 
     public MentoredDTO(String fullName, String cpf, LocalDate birthDate, Course course,
-            String academicSummary, InterestArea interestArea) {
+        String academicSummary, List<InterestArea> interestArea) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
@@ -91,11 +93,11 @@ public class MentoredDTO {
     public void setAcademicSummary(String academicSummary) {
         this.academicSummary = academicSummary;
     }
-    public InterestArea getInterestArea() {
+    public List<InterestArea> getInterestArea() {
         return interestArea;
     }
 
-    public void setInterestArea(InterestArea interestArea) {
+    public void setInterestArea(List<InterestArea> interestArea) {
         this.interestArea = interestArea;
     }
 }

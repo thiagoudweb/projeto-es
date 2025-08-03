@@ -41,7 +41,7 @@ class MentorRepositoryTest {
         mentor.setBirthDate(LocalDate.of(1990, 1, 1));
         mentor.setProfessionalSummary("Professional");
         mentor.setUser(user);
-        mentor.setInterestArea(InterestArea.CIBERSEGURANCA);
+        mentor.setInterestArea(List.of(InterestArea.CIBERSEGURANCA));
         mentor.setCourse(Course.ADMINISTRACAO);
         mentorRepository.save(mentor);
 
@@ -60,7 +60,7 @@ class MentorRepositoryTest {
         mentor2.setBirthDate(LocalDate.of(1990, 1, 1));
         mentor2.setProfessionalSummary("Professional");
         mentor2.setUser(user2);
-        mentor2.setInterestArea(InterestArea.CIBERSEGURANCA);
+        mentor2.setInterestArea(List.of(InterestArea.CIBERSEGURANCA));
         mentor2.setCourse(Course.ADMINISTRACAO);
 
         mentorRepository.save(mentor2);

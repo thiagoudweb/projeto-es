@@ -2,9 +2,12 @@ package br.edu.ufape.plataforma.mentoria.model;
 
 import java.time.LocalDate;
 import java.util.List;
+
 import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
+import jakarta.persistence.AssociationOverride;
+import jakarta.persistence.AssociationOverrides;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -15,11 +18,17 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
+@AssociationOverrides({
+    @AssociationOverride(name = "interestArea",
+        joinTable = @JoinTable(name = "mentor_interest_areas",
+            joinColumns = @JoinColumn(name = "mentor_id")))
+})
 public class Mentor extends Person {
 
     @Id
@@ -31,6 +40,15 @@ public class Mentor extends Person {
     private User user;
 
     private String professionalSummary;
+
+    @ElementCollection(targetClass = InterestArea.class)
+    @CollectionTable(name = "mentor_interest_areas", joinColumns = @JoinColumn(name = "mentor_id"))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "interest_area")
+    @Override
+        public List<InterestArea> getInterestArea() {
+        return super.getInterestArea();
+    }
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -41,7 +59,7 @@ public class Mentor extends Person {
     @Column(name = "specialization")
     private List<String> specializations;
 
-    public Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, String professionalSummary, AffiliationType affiliationType, List<String> specializations,InterestArea interestArea) {
+    public Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, String professionalSummary, AffiliationType affiliationType, List<String> specializations, List<InterestArea> interestArea) {
         super(fullName, cpf, birthDate, course, interestArea);
         this.user = user;
         this.professionalSummary = professionalSummary;

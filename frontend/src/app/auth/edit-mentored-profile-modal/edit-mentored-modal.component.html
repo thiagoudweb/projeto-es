@@ -1,28 +1,281 @@
-<div class="modal-overlay">
-  <div class="modal">
-    <h2>Editar Mentorado</h2>
-    <form [formGroup]="mentoredForm">
-      <label>
-        CPF:
-        <input formControlName="cpf" />
-      </label>
-      <label>
-        Data de Nascimento:
-        <input type="date" formControlName="birthDate" />
-      </label>
-      <label>
-        Curso:
-        <input formControlName="course" />
-      </label>
-      <label>
-        Resumo Acadêmico:
-        <textarea formControlName="academicSummary"></textarea>
-      </label>
-    </form>
+<div class="modal-backdrop">
+  <div class="mentored-register-container">
+    <h2>Editando</h2>
 
-    <div class="modal-actions">
-      <button (click)="onClose()">Cancelar</button>
-      <button [disabled]="!mentoredForm.valid" (click)="onSave()">Salvar</button>
+    <div class="mentored-form-container">
+      <form class="signup-form" [formGroup]="mentoredForm" (ngSubmit)="onSave()">
+        <!-- Container com scroll para o conteúdo do formulário -->
+        <div class="form-scroll-container">
+          <!-- Resumo Acadêmico -->
+          <div class="form-group">
+            <label for="academicSummary">Resumo acadêmico</label>
+            <textarea
+              id="academicSummary"
+              formControlName="academicSummary"
+              placeholder="Descreva sua formação acadêmica"
+              rows="3"
+              class="auto-grow"
+            ></textarea>
+            <div *ngIf="mentoredForm.get('academicSummary')?.invalid && mentoredForm.get('academicSummary')?.touched" class="error">
+              <div *ngIf="mentoredForm.get('academicSummary')?.errors?.['maxlength']">
+                O resumo deve ter no máximo 500 caracteres.
+              </div>
+            </div>
+          </div>
+
+          <!-- Curso -->
+          <div class="form-group">
+            <label for="course">Curso</label>
+            <select id="course" formControlName="course">
+              <option value="" disabled selected>Selecione seu curso</option>
+              <option value="ADMINISTRACAO">Bacharelado em Administração</option>
+              <option value="ARQUITETURA_E_URBANISMO">Bacharelado em Arquitetura e Urbanismo</option>
+              <option value="CONTABILIDADE">Bacharelado em Ciências Contábeis</option>
+              <option value="CIENCIA_DA_COMPUTACAO">Bacharelado em Ciência da Computação</option>
+              <option value="DIREITO">Bacharelado em Direito</option>
+              <option value="EDUCACAO_FISICA">Licenciatura em Educação Física</option>
+              <option value="ENFERMAGEM">Bacharelado em Enfermagem</option>
+              <option value="ENGENHARIA_CIVIL">Bacharelado em Engenharia Civil</option>
+              <option value="FISIOTERAPIA">Bacharelado em Fisioterapia</option>
+              <option value="LETRAS">Bacharelado em Letras</option>
+              <option value="MEDICINA">Bacharelado em Medicina</option>
+              <option value="VETERINARIA">Bacharelado em Medicina Veterinária</option>
+              <option value="NUTRICIONISMO">Bacharelado em Nutrição</option>
+              <option value="ODONTOLOGIA">Bacharelado em Odontologia</option>
+              <option value="PEDAGOGIA">Licenciatura em Pedagogia</option>
+              <option value="PSICOLOGIA">Bacharelado em Psicologia</option>
+              <option value="ZOOTECNIA">Bacharelado em Zootecnia</option>
+            </select>
+            <div *ngIf="mentoredForm.get('course')?.invalid && mentoredForm.get('course')?.touched" class="error">
+              O curso é obrigatório.
+            </div>
+          </div>
+
+          <!-- Áreas de interesse com checkboxes -->
+          <div class="form-group">
+            <label>Áreas de interesse</label>
+            <p class="field-description">Clique nas categorias para expandir e selecione suas áreas de interesse</p>
+            
+            <div class="checkbox-grid" formArrayName="interestArea">
+              <!-- Tecnologia -->
+              <div class="checkbox-section">
+                <h4 class="section-header" (click)="toggleSection('tecnologia')">
+                  <span class="expand-icon" [class.expanded]="expandedSections['tecnologia']">▶</span>
+                  Tecnologia
+                </h4>
+                <div class="section-content" [class.expanded]="expandedSections['tecnologia']">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-tech-info" value="TECNOLOGIA_DA_INFORMACAO" (change)="onInterestChange($event)">
+                    <label for="mentored-tech-info">Tecnologia da Informação</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-dev-software" value="DESENVOLVIMENTO_DE_SOFTWARE" (change)="onInterestChange($event)">
+                    <label for="mentored-dev-software">Desenvolvimento de Software</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-data-ia" value="CIENCIA_DE_DADOS_E_IA" (change)="onInterestChange($event)">
+                    <label for="mentored-data-ia">Ciência de Dados e Inteligência Artificial</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-cybersec" value="CIBERSEGURANCA" (change)="onInterestChange($event)">
+                    <label for="mentored-cybersec">Cibersegurança</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-ux-ui" value="UX_UI_DESIGN" (change)="onInterestChange($event)">
+                    <label for="mentored-ux-ui">UX/UI Design</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Engenharia e Ciências Exatas -->
+              <div class="checkbox-section">
+                <h4 class="section-header" (click)="toggleSection('engenharia')">
+                  <span class="expand-icon" [class.expanded]="expandedSections['engenharia']">▶</span>
+                  Engenharia e Ciências Exatas
+                </h4>
+                <div class="section-content" [class.expanded]="expandedSections['engenharia']">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-eng-geral" value="ENGENHARIA_GERAL" (change)="onInterestChange($event)">
+                    <label for="mentored-eng-geral">Engenharia</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-eng-civil" value="ENGENHARIA_CIVIL" (change)="onInterestChange($event)">
+                    <label for="mentored-eng-civil">Engenharia Civil</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-eng-prod" value="ENGENHARIA_DE_PRODUCAO" (change)="onInterestChange($event)">
+                    <label for="mentored-eng-prod">Engenharia de Produção</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-math-stat" value="MATEMATICA_E_ESTATISTICA" (change)="onInterestChange($event)">
+                    <label for="mentored-math-stat">Matemática e Estatística</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-fisica" value="FISICA" (change)="onInterestChange($event)">
+                    <label for="mentored-fisica">Física</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gestão e Negócios -->
+              <div class="checkbox-section">
+                <h4 class="section-header" (click)="toggleSection('gestao')">
+                  <span class="expand-icon" [class.expanded]="expandedSections['gestao']">▶</span>
+                  Gestão e Negócios
+                </h4>
+                <div class="section-content" [class.expanded]="expandedSections['gestao']">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-admin-gestao" value="ADMINISTRACAO_E_GESTAO" (change)="onInterestChange($event)">
+                    <label for="mentored-admin-gestao">Administração e Gestão</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-empreend" value="EMPREENDEDORISMO_E_INOVACAO" (change)="onInterestChange($event)">
+                    <label for="mentored-empreend">Empreendedorismo e Inovação</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-financas" value="FINANCAS_E_CONTABILIDADE" (change)="onInterestChange($event)">
+                    <label for="mentored-financas">Finanças e Contabilidade</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-rh" value="RECURSOS_HUMANOS" (change)="onInterestChange($event)">
+                    <label for="mentored-rh">Recursos Humanos</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-logistica" value="LOGISTICA_E_CADEIA_DE_SUPRIMENTOS" (change)="onInterestChange($event)">
+                    <label for="mentored-logistica">Logística e Cadeia de Suprimentos</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Comunicação e Marketing -->
+              <div class="checkbox-section">
+                <h4 class="section-header" (click)="toggleSection('comunicacao')">
+                  <span class="expand-icon" [class.expanded]="expandedSections['comunicacao']">▶</span>
+                  Comunicação e Marketing
+                </h4>
+                <div class="section-content" [class.expanded]="expandedSections['comunicacao']">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-marketing" value="MARKETING_E_COMUNICACAO" (change)="onInterestChange($event)">
+                    <label for="mentored-marketing">Marketing e Comunicação</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-marketing-digital" value="MARKETING_DIGITAL" (change)="onInterestChange($event)">
+                    <label for="mentored-marketing-digital">Marketing Digital</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-jornalismo" value="JORNALISMO" (change)="onInterestChange($event)">
+                    <label for="mentored-jornalismo">Jornalismo</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-publicidade" value="PUBLICIDADE_E_PROPAGANDA" (change)="onInterestChange($event)">
+                    <label for="mentored-publicidade">Publicidade e Propaganda</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-com-institucional" value="COMUNICACAO_INSTITUCIONAL" (change)="onInterestChange($event)">
+                    <label for="mentored-com-institucional">Comunicação Institucional</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Saúde e Ciências Biológicas -->
+              <div class="checkbox-section">
+                <h4 class="section-header" (click)="toggleSection('saude')">
+                  <span class="expand-icon" [class.expanded]="expandedSections['saude']">▶</span>
+                  Saúde e Ciências Biológicas
+                </h4>
+                <div class="section-content" [class.expanded]="expandedSections['saude']">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-bio-saude" value="CIENCIAS_BIOLOGICAS_E_SAUDE" (change)="onInterestChange($event)">
+                    <label for="mentored-bio-saude">Ciências Biológicas e Saúde</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-medicina" value="MEDICINA" (change)="onInterestChange($event)">
+                    <label for="mentored-medicina">Medicina</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-psicologia" value="PSICOLOGIA" (change)="onInterestChange($event)">
+                    <label for="mentored-psicologia">Psicologia</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-nutricao" value="NUTRICAO" (change)="onInterestChange($event)">
+                    <label for="mentored-nutricao">Nutrição</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-biotecnologia" value="BIOTECNOLOGIA" (change)="onInterestChange($event)">
+                    <label for="mentored-biotecnologia">Biotecnologia</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Educação e Humanas -->
+              <div class="checkbox-section">
+                <h4 class="section-header" (click)="toggleSection('educacao')">
+                  <span class="expand-icon" [class.expanded]="expandedSections['educacao']">▶</span>
+                  Educação e Ciências Humanas
+                </h4>
+                <div class="section-content" [class.expanded]="expandedSections['educacao']">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-educacao" value="EDUCACAO" (change)="onInterestChange($event)">
+                    <label for="mentored-educacao">Educação</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-humanas" value="CIENCIAS_HUMANAS_E_SOCIAIS" (change)="onInterestChange($event)">
+                    <label for="mentored-humanas">Ciências Humanas e Sociais</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-letras" value="LETRAS" (change)="onInterestChange($event)">
+                    <label for="mentored-letras">Letras</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-historia" value="HISTORIA" (change)="onInterestChange($event)">
+                    <label for="mentored-historia">História</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-geografia" value="GEOGRAFIA" (change)="onInterestChange($event)">
+                    <label for="mentored-geografia">Geografia</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-sociologia" value="SOCIOLOGIA" (change)="onInterestChange($event)">
+                    <label for="mentored-sociologia">Sociologia</label>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Jurídico e Sustentabilidade -->
+              <div class="checkbox-section">
+                <h4 class="section-header" (click)="toggleSection('juridico')">
+                  <span class="expand-icon" [class.expanded]="expandedSections['juridico']">▶</span>
+                  Jurídico e Sustentabilidade
+                </h4>
+                <div class="section-content" [class.expanded]="expandedSections['juridico']">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-juridico" value="JURIDICO" (change)="onInterestChange($event)">
+                    <label for="mentored-juridico">Jurídico</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-direito-digital" value="DIREITO_DIGITAL" (change)="onInterestChange($event)">
+                    <label for="mentored-direito-digital">Direito Digital</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="mentored-sustentabilidade" value="MEIO_AMBIENTE_E_SUSTENTABILIDADE" (change)="onInterestChange($event)">
+                    <label for="mentored-sustentabilidade">Meio Ambiente e Sustentabilidade</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div *ngIf="mentoredForm.get('interestArea')?.invalid && mentoredForm.get('interestArea')?.touched" class="error">
+              Selecione pelo menos uma área de interesse.
+            </div>
+          </div>
+        </div>
+
+        <!-- Botões fixos na parte inferior -->
+        <div class="form-actions-fixed">
+          <button type="button" class="btn-cancelar" (click)="onClose()">Cancelar</button>
+          <button type="submit" class="btn-finalizar" [disabled]="!canSave()">Salvar Alterações</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
