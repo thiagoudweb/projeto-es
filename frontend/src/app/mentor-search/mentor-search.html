@@ -8,7 +8,7 @@
       </select>
     </div>
 
-    <button type="button" (click)="onMentoredSearch()" class="btn btn-primary search-btn">
+    <button type="submit" class="search-btn" (click)="onMentoredSearch()">
       Buscar Mentorados
     </button>
   </form>
@@ -16,7 +16,7 @@
   <!-- Resultados da busca -->
   <div *ngIf="mentoredSearchPerformed" class="search-results">
     <h3>Resultados da Busca</h3>
-    
+
     <div *ngIf="mentoreds.length === 0" class="no-results">
       <p>Nenhum mentorado encontrado com os critérios especificados.</p>
     </div>

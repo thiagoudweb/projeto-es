@@ -1,48 +1,65 @@
 .mentor-search-center {
-  margin: 20px 0;
-  padding: 20px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-}
-
-.search-form {
+  background: #e6f7ec;
+  border-radius: 22px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  padding: 2.5rem 2rem 2rem 2rem;
+  margin: 2rem auto 0 auto;
+  max-width: 700px;
+  width: 95%;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: center;
 }
 
-.form-group {
+.mentor-search-center form {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2rem;
 }
 
-.form-group label {
-  margin-bottom: 5px;
-  font-weight: bold;
-  color: #333;
+.mentor-search-center label {
+  font-weight: 600;
+  color: #257a3a;
+  margin-bottom: 0.2rem;
 }
 
-.form-control {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+.mentor-search-center select,
+.mentor-search-center input[type="text"] {
+  border: 1.5px solid #34a853;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  background: #fafdff;
+  color: #257a3a;
+  outline: none;
+  transition: border 0.2s;
 }
 
-.search-btn {
-  background-color: #007bff;
-  color: white;
-  padding: 12px 20px;
+.mentor-search-center select:focus,
+.mentor-search-center input[type="text"]:focus {
+  border: 2px solid #34a853;
+}
+
+.mentor-search-center button[type="submit"] {
+  background: linear-gradient(90deg, #34a853 60%, #43e97b 100%);
+  color: #fff;
   border: none;
-  border-radius: 4px;
+  border-radius: 10px;
+  padding: 0.7rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: 700;
   cursor: pointer;
-  font-size: 16px;
-  font-weight: bold;
+  margin-top: 1rem;
+  box-shadow: 0 2px 8px 0 rgba(52, 168, 83, 0.10);
+  transition: background 0.2s;
 }
 
-.search-btn:hover {
-  background-color: #0056b3;
+.mentor-search-center button[type="submit"]:hover {
+  background: linear-gradient(90deg, #257a3a 60%, #34a853 100%);
 }
 
 .search-results {

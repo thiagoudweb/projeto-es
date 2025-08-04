@@ -6,7 +6,10 @@
   </header>
   <section class="content">
     <p class="welcome-message">Bem vindo!</p>
-    <app-mentored-search *ngIf="hasMentoredRole()"></app-mentored-search>
+    <app-mentored-search *ngIf="hasMentoredRole(); else mentorSearch"></app-mentored-search>
+    <ng-template #mentorSearch>
+      <app-mentor-search *ngIf="hasMentorRole()"></app-mentor-search>
+    </ng-template>
     <div class="search-section-mentor">
       <div class="search-container">
         <p class="description">

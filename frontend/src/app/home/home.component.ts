@@ -4,11 +4,12 @@ import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 import { MentoredSearchComponent } from '../mentored-search/mentored-search';
+import { MentorSearchComponent } from '../mentor-search/mentor-search';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink, MentoredSearchComponent],
+  imports: [CommonModule, RouterLink, MentoredSearchComponent, MentorSearchComponent],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
