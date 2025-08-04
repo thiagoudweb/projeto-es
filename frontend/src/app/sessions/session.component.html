@@ -1,0 +1,124 @@
+<div class="page-wrapper">
+  <div class="container">
+    <!-- Botão de voltar -->
+    <a routerLink="/home" class="back-button">
+      <span class="back-arrow">←</span>
+      Voltar
+    </a>
+    
+  <div class="session-form-container">
+  <div class="form-header">
+    <h2 class="form-title">
+      <i class="fas fa-calendar-plus"></i>
+      Agendar Nova Sessão
+    </h2>
+    <p class="form-description">
+      Preencha os dados abaixo para agendar uma sessão de mentoria
+    </p>
+  </div>
+
+  <!-- Formulário -->
+  <form [formGroup]="sessionForm" (ngSubmit)="onSubmit()" class="session-form" novalidate>
+
+    <!-- Seleção de Mentor -->
+    <div class="form-group" *ngIf="!isMentor()">
+      <label for="mentorId" class="form-label">
+        <i class="fas fa-user-tie"></i>Mentor
+      </label>
+      <select
+        id="mentorId" formControlName="mentorId" class="form-control">
+        <option value="">Selecione um mentor</option>
+        <option *ngFor="let mentor of mentors" [value]="mentor.id">
+            {{ mentor.fullName }} ({{ mentor.user.username }})
+        </option>
+      </select>
+    </div>
+
+    <!-- Seleção de Mentorado -->
+    <div class="form-group" *ngIf="isMentor()">
+      <label for="mentoredId" class="form-label">
+        <i class="fas fa-user-tie"></i>Mentorado
+      </label>
+      <select
+        id="mentoredId" formControlName="mentoredId" class="form-control">
+        <option value="">Selecione um mentorado</option>
+        <option *ngFor="let mentored of mentoreds" [value]="mentored.id">
+            {{ mentored.fullName }} ({{ mentored.user.username }})
+        </option>
+      </select>
+    </div>
+
+    <div class="form-row">
+      <!-- Data -->
+      <div class="form-group col-md-6">
+        <label for="date" class="form-label">
+          <i class="fas fa-calendar-alt"></i>
+          Data
+        </label>
+        <input
+          type="date"
+          id="date"
+          formControlName="date"
+          class="form-control"
+        >
+      </div>
+
+      <!-- Horário -->
+      <div class="form-group col-md-6">
+        <label for="time" class="form-label">
+          <i class="fas fa-clock"></i>
+          Horário
+        </label>
+        <select
+          id="time"
+          formControlName="time"
+          class="form-control"
+        >
+          <option value="">Selecione o horário</option>
+          <option *ngFor="let timeSlot of timeSlots" [value]="timeSlot">
+            {{ timeSlot }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Local -->
+    <div class="form-group">
+      <label for="location" class="form-label">
+        <i class="fas fa-map-marker-alt"></i>
+        Local
+      </label>
+      <input
+        type="text"
+        id="location"
+        formControlName="location"
+        class="form-control"
+      >
+    </div>
+
+    <!-- Tópico -->
+    <div class="form-group">
+      <label for="meetingTopic" class="form-label">
+        <i class="fas fa-comment-dots"></i>
+        Tópico da Sessão
+      </label>
+      <textarea
+        id="meetingTopic"
+        formControlName="meetingTopic"
+        rows="4"
+        class="form-control textarea"
+      ></textarea>   
+    </div>
+
+
+    <!-- Botões -->
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary" [disabled]="loading">
+        <i *ngIf="loading" class="fas fa-spinner fa-spin"></i>
+        <i *ngIf="!loading" class="fas fa-paper-plane"></i>
+        {{ loading ? 'Agendando...' : 'Agendar Sessão' }}
+      </button>
+    </div>
+  </form>
+</div>
+
