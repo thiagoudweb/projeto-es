@@ -92,4 +92,12 @@ updateMentoredProfile(data: any): Observable<any> {
     return this.http.get<Mentor[]>(`${this.apiUrl}/mentored/mentors/search`, { params });
   }
 
+  searchMentoreds(interestArea?: string): Observable<any[]> {
+    let params = new HttpParams();
+    if (interestArea) {
+      params = params.set('interestArea', interestArea.toUpperCase());
+    }
+    return this.http.get<any[]>(`${this.apiUrl}/mentor/mentoreds/search`, { params });
+  }
+
 }

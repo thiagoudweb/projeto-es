@@ -1,0 +1,33 @@
+<div class="mentor-search-center">
+  <form class="search-form">
+    <div class="form-group">
+      <label for="interestArea">Área de Interesse:</label>
+      <select [(ngModel)]="selectedInterestAreaMentor" name="interestArea" id="interestArea" class="form-control">
+        <option value="">Selecione uma área</option>
+        <option *ngFor="let area of interestAreas" [value]="area.value">{{ area.label }}</option>
+      </select>
+    </div>
+
+    <button type="button" (click)="onMentoredSearch()" class="btn btn-primary search-btn">
+      Buscar Mentorados
+    </button>
+  </form>
+
+  <!-- Resultados da busca -->
+  <div *ngIf="mentoredSearchPerformed" class="search-results">
+    <h3>Resultados da Busca</h3>
+    
+    <div *ngIf="mentoreds.length === 0" class="no-results">
+      <p>Nenhum mentorado encontrado com os critérios especificados.</p>
+    </div>
+
+    <div *ngIf="mentoreds.length > 0" class="results-list">
+      <div *ngFor="let mentored of mentoreds" class="mentored-card">
+        <h4>{{ mentored.fullName }}</h4>
+        <p><strong>Curso:</strong> {{ mentored.course }}</p>
+        <p><strong>Área de Interesse:</strong> {{ mentored.interestArea }}</p>
+        <p *ngIf="mentored.academicSummary"><strong>Resumo Acadêmico:</strong> {{ mentored.academicSummary }}</p>
+      </div>
+    </div>
+  </div>
+</div>
