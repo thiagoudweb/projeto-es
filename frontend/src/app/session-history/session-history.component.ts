@@ -13,9 +13,8 @@ import { ProfileService } from '../profile/profile.service';
 })
 export class SessionHistoryComponent implements OnInit {
   sessions: any[] = [];
-  filteredSessions: any[] = []; // Add filtered sessions array
+  filteredSessions: any[] = [];
 
-  // Status filter options
   statusFilters = [
     { value: 'PENDING', label: 'Pendente', checked: true },
     { value: 'ACCEPTED', label: 'Aceito', checked: true },
@@ -35,7 +34,7 @@ export class SessionHistoryComponent implements OnInit {
     this.profileService.getSessionHistory().subscribe({
       next: (data) => {
         this.sessions = data;
-        this.applyFilters(); // Apply filters after loading
+        this.applyFilters();
       },
       error: (err) => {
         console.error('Erro ao carregar histórico de sessões:', err);
@@ -43,7 +42,6 @@ export class SessionHistoryComponent implements OnInit {
     });
   }
 
-  // Toggle filter checkbox
   onFilterChange(status: string): void {
     const filter = this.statusFilters.find((f) => f.value === status);
     if (filter) {
@@ -52,7 +50,6 @@ export class SessionHistoryComponent implements OnInit {
     }
   }
 
-  // Apply selected filters
   applyFilters(): void {
     const selectedStatuses = this.statusFilters
       .filter((filter) => filter.checked)
@@ -63,24 +60,26 @@ export class SessionHistoryComponent implements OnInit {
     );
   }
 
-  // Select/Deselect all filters
   toggleAllFilters(selectAll: boolean): void {
     this.statusFilters.forEach((filter) => (filter.checked = selectAll));
     this.applyFilters();
   }
 
-  // Check if all filters are selected
   get allFiltersSelected(): boolean {
     return this.statusFilters.every((filter) => filter.checked);
   }
 
-  // Check if no filters are selected
   get noFiltersSelected(): boolean {
     return this.statusFilters.every((filter) => !filter.checked);
   }
 
   getStatusClass(status: string): string {
     return `status-${status.toLowerCase()}`;
+  }
+
+  getStatusLabel(status: string): string {
+    const filter = this.statusFilters.find((f) => f.value === status);
+    return filter ? filter.label : status;
   }
 
   goBack(): void {

@@ -73,7 +73,7 @@
       <div class="card-header">
         <span class="session-topic">{{ session.meetingTopic }}</span>
         <span class="status-tag" [ngClass]="getStatusClass(session.status)">{{
-          session.status
+          getStatusLabel(session.status)
         }}</span>
       </div>
       <div class="card-body">
