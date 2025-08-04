@@ -2,23 +2,86 @@
   <header class="history-header">
     <h1>Histórico de Sessões</h1>
     <button class="back-button" (click)="goBack()">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path
+          d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+        />
       </svg>
       Voltar
     </button>
   </header>
 
+  <!-- Filter Section -->
+  <div class="filter-section">
+    <h3 class="filter-title">Filtrar por Status:</h3>
+
+    <!-- Select All / Deselect All -->
+    <div class="filter-controls">
+      <button
+        class="filter-control-btn"
+        (click)="toggleAllFilters(true)"
+        [disabled]="allFiltersSelected"
+      >
+        Selecionar Todos
+      </button>
+      <button
+        class="filter-control-btn"
+        (click)="toggleAllFilters(false)"
+        [disabled]="noFiltersSelected"
+      >
+        Desmarcar Todos
+      </button>
+    </div>
+
+    <!-- Status Checkboxes -->
+    <div class="status-filters">
+      <label
+        *ngFor="let filter of statusFilters"
+        class="filter-checkbox"
+        [ngClass]="'filter-' + filter.value.toLowerCase()"
+      >
+        <input
+          type="checkbox"
+          [checked]="filter.checked"
+          (change)="onFilterChange(filter.value)"
+        />
+
+        <span class="checkmark"></span>
+        <span class="filter-label">{{ filter.label }}</span>
+        <span
+          class="status-preview"
+          [ngClass]="getStatusClass(filter.value)"
+        ></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Results Count -->
+  <div class="results-info">
+    <span class="results-count">
+      Mostrando {{ filteredSessions.length }} de {{ sessions.length }} sessões
+    </span>
+  </div>
+
+  <!-- Session List -->
   <div class="session-list">
-    <div class="session-card" *ngFor="let session of sessions">
+    <div class="session-card" *ngFor="let session of filteredSessions">
       <div class="card-header">
         <span class="session-topic">{{ session.meetingTopic }}</span>
-        <span class="status-tag" [ngClass]="getStatusClass(session.status)">{{ session.status }}</span>
+        <span class="status-tag" [ngClass]="getStatusClass(session.status)">{{
+          getStatusLabel(session.status)
+        }}</span>
       </div>
       <div class="card-body">
         <div class="session-detail">
           <span class="detail-label">Data:</span>
-          <span class="detail-value">{{ session.date | date: 'dd/MM/yyyy' }}</span>
+          <span class="detail-value">{{
+            session.date | date : "dd/MM/yyyy"
+          }}</span>
         </div>
         <div class="session-detail">
           <span class="detail-label">Hora:</span>
@@ -31,6 +94,15 @@
       </div>
     </div>
 
+    <!-- No Sessions Message -->
+    <div
+      class="no-sessions"
+      *ngIf="filteredSessions.length === 0 && sessions.length > 0"
+    >
+      <p>Nenhuma sessão encontrada com os filtros selecionados.</p>
+    </div>
+
+    <!-- No Data Message -->
     <div class="no-sessions" *ngIf="sessions.length === 0">
       <p>Nenhuma sessão encontrada no seu histórico.</p>
     </div>
