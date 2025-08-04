@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService } from '../auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -11,11 +11,16 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   title = 'Mentoria';
+  results: { name: string; course: string; interests: string[] }[] = [];
 
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  ngOnInit() {
+
+  }
 
   logout() {
     this.authService.logout();
