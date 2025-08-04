@@ -6,6 +6,7 @@
   </header>
   <section class="content">
     <p class="welcome-message">Bem vindo!</p>
+    <app-mentored-search *ngIf="hasMentoredRole()"></app-mentored-search>
     <div class="search-section-mentor">
       <div class="search-container">
         <p class="description">
