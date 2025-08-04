@@ -30,6 +30,9 @@ export class HomeComponent implements OnInit, OnDestroy {
 
 
   }
+  navigateToHistory(): void {
+    this.router.navigate(['/sessions/history']);
+  }
 
   logout() {
     this.authService.logout();

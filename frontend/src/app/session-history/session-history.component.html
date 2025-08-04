@@ -1,0 +1,38 @@
+<div class="history-container">
+  <header class="history-header">
+    <h1>Histórico de Sessões</h1>
+    <button class="back-button" (click)="goBack()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+      </svg>
+      Voltar
+    </button>
+  </header>
+
+  <div class="session-list">
+    <div class="session-card" *ngFor="let session of sessions">
+      <div class="card-header">
+        <span class="session-topic">{{ session.meetingTopic }}</span>
+        <span class="status-tag" [ngClass]="getStatusClass(session.status)">{{ session.status }}</span>
+      </div>
+      <div class="card-body">
+        <div class="session-detail">
+          <span class="detail-label">Data:</span>
+          <span class="detail-value">{{ session.date | date: 'dd/MM/yyyy' }}</span>
+        </div>
+        <div class="session-detail">
+          <span class="detail-label">Hora:</span>
+          <span class="detail-value">{{ session.time }}</span>
+        </div>
+        <div class="session-detail">
+          <span class="detail-label">Local:</span>
+          <span class="detail-value">{{ session.location }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-sessions" *ngIf="sessions.length === 0">
+      <p>Nenhuma sessão encontrada no seu histórico.</p>
+    </div>
+  </div>
+</div>

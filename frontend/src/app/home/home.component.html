@@ -3,6 +3,9 @@
     <button class="logout" (click)="logout()" *ngIf="isAuthenticated()">
       Logout
     </button>
+    <button class="history-button" (click)="navigateToHistory()" title="Ver Histórico">
+      <span>Histórico de Sessões</span>
+    </button>
     <button class="logout" (click)="session()" *ngIf="isAuthenticated()">
       Marcar Sessão
     </button>
