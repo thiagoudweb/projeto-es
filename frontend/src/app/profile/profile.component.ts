@@ -7,6 +7,8 @@ import { EditMentorProfileModalComponent } from '../auth/edit-mentor-profile-mod
 import { DeleteMentorModalComponent } from '../auth/delete-mentor-modal/delete-mentor-modal.component';
 import { DeleteMentoredModalComponent } from '../auth/delete-mentored-modal/delete-mentored-modal.component';
 import { AuthService } from '../auth/auth.service';
+import { MentorSearchComponent } from '../mentor-search/mentor-search';
+import { MentoredSearchComponent } from '../mentored-search/mentored-search';
 
 @Component({
   selector: 'app-perfil',
@@ -17,7 +19,9 @@ import { AuthService } from '../auth/auth.service';
     EditMentorProfileModalComponent,
     EditMentoredModalComponent,
     DeleteMentorModalComponent,
-    DeleteMentoredModalComponent
+    DeleteMentoredModalComponent,
+    MentorSearchComponent,
+    MentoredSearchComponent
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
