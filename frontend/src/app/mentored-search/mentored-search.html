@@ -1,0 +1,45 @@
+<div class="mentor-search-center">
+  <h3>Buscar Mentores</h3>
+  <form (ngSubmit)="onMentorSearch()">
+    <label for="interestArea">Área de Interesse:</label>
+    <select
+      id="interestArea"
+      [(ngModel)]="selectedInterestArea"
+      name="interestArea"
+      required
+    >
+      <option value="">Selecione...</option>
+      <option
+        *ngFor="let area of interestAreas"
+        [value]="area.value"
+      >{{ area.label }}</option>
+    </select>
+    <label for="specializations">Especializações (separe por vírgula):</label>
+    <input
+      id="specializations"
+      type="text"
+      [(ngModel)]="specializationsInput"
+      name="specializations"
+      placeholder="Ex: JAVA,ANGULAR"
+    />
+    <button type="submit">Buscar Mentores</button>
+  </form>
+
+  <div *ngIf="mentors.length > 0">
+    <h3>Mentores encontrados:</h3>
+    <ul>
+      <li *ngFor="let mentor of mentors">
+        <strong>{{ mentor.fullName }}</strong><br />
+        <span
+          *ngIf="mentor.specializations && mentor.specializations.length > 0"
+        >
+          Especializações: {{ mentor.specializations.join(", ") }}<br />
+        </span>
+        <span>Área de interesse: {{ mentor.interestArea }}</span>
+      </li>
+    </ul>
+  </div>
+  <div *ngIf="mentors.length === 0 && mentorSearchPerformed">
+    <p>Nenhum mentor encontrado.</p>
+  </div>
+</div>
