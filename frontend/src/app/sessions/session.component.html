@@ -33,6 +33,14 @@
         </option>
       </select>
     </div>
+    <div
+      *ngIf="
+        sessionForm.get('mentorId')?.touched
+      "
+      class="error"
+    >
+      Selecione pelo menos um mentor.
+    </div>
 
     <!-- Seleção de Mentorado -->
     <div class="form-group" *ngIf="isMentor()">
@@ -47,8 +55,16 @@
         </option>
       </select>
     </div>
+    <div
+      *ngIf="
+        sessionForm.get('mentoredId')?.touched
+      "
+      class="error"
+    >
+      Selecione pelo menos um mentorado.
+    </div>
 
-    <div class="form-row">
+    
       <!-- Data -->
       <div class="form-group col-md-6">
         <label for="date" class="form-label">
@@ -62,6 +78,16 @@
           class="form-control"
         >
       </div>
+      <div
+      *ngIf="
+        sessionForm.get('date')?.invalid &&
+        sessionForm.get('date')?.touched
+      "
+      class="error"
+      >
+        Escolha uma data para a reunião.
+      </div>
+
 
       <!-- Horário -->
       <div class="form-group col-md-6">
@@ -80,6 +106,14 @@
           </option>
         </select>
       </div>
+    <div
+      *ngIf="
+        sessionForm.get('time')?.invalid &&
+        sessionForm.get('time')?.touched
+      "
+      class="error"
+      >
+        Escolha um horário para a reunião.
     </div>
 
     <!-- Local -->
@@ -95,6 +129,15 @@
         class="form-control"
       >
     </div>
+    <div
+      *ngIf="
+        sessionForm.get('location')?.invalid &&
+        sessionForm.get('location')?.touched
+      "
+      class="error"
+      >
+        Digite o local onde será feita a reunião.
+    </div>
 
     <!-- Tópico -->
     <div class="form-group">
@@ -108,6 +151,15 @@
         rows="4"
         class="form-control textarea"
       ></textarea>   
+    </div>
+    <div
+      *ngIf="
+        sessionForm.get('meetingTopic')?.invalid &&
+        sessionForm.get('meetingTopic')?.touched
+      "
+      class="error"
+      >
+        Descreva um pouco sobre o que será a reunião.
     </div>
 
 

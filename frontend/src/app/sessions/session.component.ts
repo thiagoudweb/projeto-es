@@ -15,7 +15,7 @@ import { User } from '../entity/user';
 @Component({
   selector: 'app-session',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, NgIf],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './session.component.html',
   styleUrl: './session.component.css'
 })
@@ -80,9 +80,9 @@ export class SessionComponent implements OnInit {
       this.sessionService.registerSession(sessionData).then(
         () => alert('Sessão registrada com sucesso!'),
       )
-      .catch(error => {
-        console.error('Erro ao registrar Sessão:', error);
-      });
+      .catch(() => 
+        alert('Não foi possivel cadastrar a  essão!'),
+      );
     }
   }
 }
