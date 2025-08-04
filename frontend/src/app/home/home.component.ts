@@ -36,6 +36,10 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.router.navigate(['/login']);
   }
 
+  session() {
+    this.router.navigate(['/sessions']);
+  }
+
   isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
   }
