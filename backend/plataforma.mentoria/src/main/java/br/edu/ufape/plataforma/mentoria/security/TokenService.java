@@ -25,6 +25,7 @@ public class TokenService {
                 .withIssuer("Mentoria")
                 .withSubject(user.getUsername())
                 .withClaim("role", user.getRole().name())
+                .withClaim("userId", user.getId())
                 .withExpiresAt(this.getExpirationAt())
                 .sign(algorithm);
             return token;
