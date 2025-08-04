@@ -5,6 +5,7 @@ import br.edu.ufape.plataforma.mentoria.dto.UserDTO;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,6 +39,14 @@ public class AuthService implements UserDetailsService {
         User user = new User(userDTO.getEmail(), encriptedPassword, userDTO.getRole());
         return this.userRepository.save(user);
 
+    }
+
+    public User getCurrentUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        if (email == null || email.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Usuário não autenticado");
+        }
+        return this.userRepository.findByEmail(email);
     }
 
 }

@@ -3,6 +3,8 @@ import { User } from '../entity/user';
 import { jwtDecode } from 'jwt-decode';
 import { Mentor } from '../entity/mentor';
 import { Mentored } from '../entity/mentored';
+import { responseMentored } from '../entity/responses/response-mentored';
+import { responseMentor } from '../entity/responses/response-mentor';
 
 @Injectable({
   providedIn: 'root',
@@ -62,6 +64,30 @@ export class AuthService {
     }
   }
 
+   async getCurrentUser(): Promise<User | null> {
+    try {
+      const response = await fetch(`${this.apiUrl}/user`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${this.getToken()}`,
+        },
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Erro na resposta:', errorText);
+        throw new Error(`Erro ao buscar perfil do usuario: ${response.status}`);
+      }
+
+      const user = await response.json();
+      return user;
+    } catch (error) {
+      console.error('Erro ao buscar perfil do usuario:', error);
+      throw error;
+    }
+  }
+
   async registerMentor(newMentor: Mentor): Promise<Mentor | null> {
     try {
       const response = await fetch(this.apiUrlMentor, {
@@ -89,6 +115,32 @@ export class AuthService {
     }
   }
 
+  async getAllMentor(): Promise<responseMentor[] | null> {
+    try {
+      const response = await fetch(this.apiUrlMentor, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: 'Erro desconhecido' }));
+        const error = new Error(errorData.message || 'Buscar mentores falhou');
+        (error as any).status = response.status;
+        throw error;
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Erro ao Buscar mentores no AuthService:', error);
+      throw error;
+    }
+  }
+
   async registerMentored(newMentored: Mentored): Promise<Mentor | null> {
     try {
       const response = await fetch(this.apiUrlMentored, {
@@ -112,6 +164,32 @@ export class AuthService {
       return await response.json();
     } catch (error) {
       console.error('Erro ao registrar Mentored no AuthService:', error);
+      throw error;
+    }
+  }
+
+  async getAllMentored(): Promise<responseMentored[] | null> {
+    try {
+      const response = await fetch(this.apiUrlMentored, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response
+          .json()
+          .catch(() => ({ message: 'Erro desconhecido' }));
+        const error = new Error(errorData.message || 'Buscar mentorados falhou');
+        (error as any).status = response.status;
+        throw error;
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Erro ao Buscar mentorados no AuthService:', error);
       throw error;
     }
   }
@@ -166,33 +244,6 @@ export class AuthService {
     }
   }
 
-  async getCurrentMentor(): Promise<Mentor | null> {
-    try {
-      console.log('Buscando mentor atual...');
-      const response = await fetch(`${this.apiUrlMentor}/me`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`,
-          'Content-Type': 'application/json'
-        },
-      });
-
-      console.log('Response status:', response.status);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Erro na resposta:', errorText);
-        throw new Error(`Erro ao buscar perfil do mentor: ${response.status}`);
-      }
-
-      const mentor = await response.json();
-      console.log('Mentor recebido do backend:', mentor);
-      return mentor;
-    } catch (error) {
-      console.error('Erro ao buscar perfil do mentor:', error);
-      throw error;
-    }
-  }
 
     async deleteMentored(id: number): Promise<void> {
     try {
@@ -217,33 +268,7 @@ export class AuthService {
     }
   }
 
-  async getCurrentMentored(): Promise<Mentored | null> {
-    try {
-      console.log('Buscando mentored atual...');
-      const response = await fetch(`${this.apiUrlMentored}/me`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${this.getToken()}`,
-          'Content-Type': 'application/json'
-        },
-      });
-
-      console.log('Response status:', response.status);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Erro na resposta:', errorText);
-        throw new Error(`Erro ao buscar perfil do mentored: ${response.status}`);
-      }
-
-      const mentored = await response.json();
-      console.log('Mentored recebido do backend:', mentored);
-      return mentored;
-    } catch (error) {
-      console.error('Erro ao buscar perfil do mentored:', error);
-      throw error;
-    }
-  }
+ 
 
   logout(): void {
     localStorage.removeItem('token');
