@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { Mentor } from '../entity/mentor';
@@ -7,6 +7,10 @@ import { Mentor } from '../entity/mentor';
 export interface ProfileData {
   type: 'MENTOR' | 'MENTORADO' | 'UNKNOWN';
   data: any;
+}
+interface UserTokenPayload {
+  id: number;
+  role: 'MENTOR' | 'MENTORADO' | 'UNKNOWN';
 }
 
 @Injectable({
@@ -19,46 +23,78 @@ export class ProfileService {
 
   constructor(private http: HttpClient) {}
 
-  private getUserRoleFromToken(): string {
-    const token = localStorage.getItem('token');
-    if (!token) return 'UNKNOWN';
+  getSessionHistory(): Observable<any[]> {
+     const userInfo = this.getUserInfoFromToken();
 
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.role || 'UNKNOWN';
-    } catch (error) {
-      console.error('Erro ao decodificar token:', error);
-      return 'UNKNOWN';
-    }
-  }
+     if (!userInfo || userInfo.role === 'UNKNOWN') {
+       console.error('Usuário não autenticado ou papel inválido.');
+       return of([]);
+     }
 
-  getCompleteProfile(): Observable<ProfileData> {
-    const userRole = this.getUserRoleFromToken();
-    this.profileTypeSubject.next(userRole);
+     let endpoint = '';
+     if (userInfo.role === 'MENTOR') {
+       endpoint = `/sessions/history/mentor/${userInfo.id}`;
+     } else if (userInfo.role === 'MENTORADO') {
+       endpoint = `/sessions/history/mentored/${userInfo.id}`;
+     } else {
+       return of([]);
+     }
 
-    const token = localStorage.getItem('token');
-    const headers = { Authorization: `Bearer ${token}` };
+     const token = localStorage.getItem('token');
+     const headers = new HttpHeaders({ Authorization: `Bearer ${token}` });
 
-    if (userRole === 'MENTOR') {
-      return this.http.get(`${this.apiUrl}/mentor/me`, { headers }).pipe(
-        map((data: any) => ({ type: 'MENTOR' as const, data })),
-        catchError((error: any) => {
-          console.error('Erro ao buscar perfil do mentor:', error);
-          return of({ type: 'UNKNOWN' as const, data: null });
-        })
-      );
-    } else if (userRole === 'MENTORADO') {
-      return this.http.get(`${this.apiUrl}/mentored/me`, { headers }).pipe(
-        map((data: any) => ({ type: 'MENTORADO' as const, data })),
-        catchError((error: any) => {
-          console.error('Erro ao buscar perfil do mentorado:', error);
-          return of({ type: 'UNKNOWN' as const, data: null });
-        })
-      );
-    } else {
-      return of({ type: 'UNKNOWN' as const, data: null });
-    }
-  }
+     return this.http.get<any[]>(`${this.apiUrl}${endpoint}`, { headers }).pipe(
+       catchError((error: any) => {
+         console.error('Erro ao buscar histórico de sessões:', error);
+         return of([]);
+       })
+     );
+   }
+
+   private getUserInfoFromToken(): UserTokenPayload | null {
+     const token = localStorage.getItem('token');
+     if (!token) return null;
+
+     try {
+       const payload = JSON.parse(atob(token.split('.')[1]));
+       return {
+         id: payload.userId,
+         role: payload.role || 'UNKNOWN'
+       };
+     } catch (error) {
+       console.error('Erro ao decodificar token:', error);
+       return null;
+     }
+   }
+
+   getCompleteProfile(): Observable<ProfileData> {
+     const userInfo = this.getUserInfoFromToken();
+     const userRole = userInfo ? userInfo.role : 'UNKNOWN';
+     this.profileTypeSubject.next(userRole);
+
+     const token = localStorage.getItem('token');
+     const headers = { Authorization: `Bearer ${token}` };
+
+     if (userRole === 'MENTOR') {
+       return this.http.get(`${this.apiUrl}/mentor/me`, { headers }).pipe(
+         map((data: any) => ({ type: 'MENTOR' as const, data })),
+         catchError((error: any) => {
+           console.error('Erro ao buscar perfil do mentor:', error);
+           return of({ type: 'UNKNOWN' as const, data: null });
+         })
+       );
+     } else if (userRole === 'MENTORADO') {
+       return this.http.get(`${this.apiUrl}/mentored/me`, { headers }).pipe(
+         map((data: any) => ({ type: 'MENTORADO' as const, data })),
+         catchError((error: any) => {
+           console.error('Erro ao buscar perfil do mentorado:', error);
+           return of({ type: 'UNKNOWN' as const, data: null });
+         })
+       );
+     } else {
+       return of({ type: 'UNKNOWN' as const, data: null });
+     }
+   }
 
  updateMentorProfile(idMentor: number, data: any): Observable<any> {
    const token = localStorage.getItem('token');

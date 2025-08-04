@@ -23,6 +23,9 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
   }
+  navigateToHistory(): void {
+    this.router.navigate(['/sessions/history']);
+  }
 
   logout() {
     this.authService.logout();
