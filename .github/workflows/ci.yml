@@ -1,4 +1,4 @@
-name: CI - Build e Tests
+name: CI - Backend e Frontend
 
 on:
   push:
@@ -12,8 +12,13 @@ on:
     - cron: '0 0 * * *'
 
 jobs:
-  build:
+  build-backend:
+    name: Build e Testes do Backend
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: backend/plataforma.mentoria
 
     steps:
       - name: Checkout do código
@@ -33,4 +38,28 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
-          path: target/site/jacoco/
+          path: backend/plataforma.mentoria/target/site/jacoco/
+
+
+  build-frontend:
+    name: Build do Frontend (Angular)
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Instalar Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18 # você pode ajustar se estiver usando outra versão
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Build do projeto Angular
+        run: npm run build -- --configuration=production
