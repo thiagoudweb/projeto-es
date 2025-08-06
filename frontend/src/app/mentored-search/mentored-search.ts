@@ -17,6 +17,28 @@ export class MentoredSearchComponent {
   selectedInterestArea: string = '';
   specializationsInput: string = '';
 
+  // Limpa busca ao mudar área de interesse
+  onInterestAreaChange() {
+    this.mentors = [];
+    this.mentorSearchPerformed = false;
+  }
+  // Limpa busca ao mudar especialização
+  onSpecializationsInputChange() {
+    this.mentors = [];
+    this.mentorSearchPerformed = false;
+  }
+
+  // Controle de etapas para UI dinâmica
+  get step1Active(): boolean {
+    return !!this.selectedInterestArea;
+  }
+  get step2Active(): boolean {
+    return this.step1Active && !!this.specializationsInput.trim();
+  }
+  get step3Active(): boolean {
+    return this.step2Active && this.mentorSearchPerformed;
+  }
+
   interestAreas = [
     { value: 'TECNOLOGIA_DA_INFORMACAO', label: 'Tecnologia da Informação' },
     { value: 'DESENVOLVIMENTO_DE_SOFTWARE', label: 'Desenvolvimento de Software' },
