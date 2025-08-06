@@ -56,7 +56,7 @@ jobs:
       - name: Instalar Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # você pode ajustar se estiver usando outra versão
+          node-version: 24.4.0 # você pode ajustar se estiver usando outra versão
 
       - name: Instalar dependências
         run: npm ci
