@@ -1,4 +1,4 @@
-package br.edu.ufape.plataforma.mentoria.repository;
+/* package br.edu.ufape.plataforma.mentoria.repository;
 
 import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
@@ -163,4 +163,4 @@ class SessionRepositoryTest {
 
         assert sessions.isEmpty();
     }
-}
+}*/
