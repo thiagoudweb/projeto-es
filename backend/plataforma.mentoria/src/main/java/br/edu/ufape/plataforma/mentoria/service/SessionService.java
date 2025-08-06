@@ -11,6 +11,7 @@ import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
+import br.edu.ufape.plataforma.mentoria.service.contract.SessionServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.edu.ufape.plataforma.mentoria.enums.Status;
@@ -19,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class SessionService {
+public class SessionService implements SessionServiceInterface {
     @Autowired
     private SessionRepository sessionRepository;
 
@@ -35,11 +36,12 @@ public class SessionService {
     @Autowired
     private MentoredRepository mentoredRepository;
 
+    @Override
     public Session getSessionById(Long id) {
         return sessionRepository.findById(id)
                 .orElseThrow(() ->  new EntityNotFoundException(Session.class, id));
     }
-
+    @Override
     public Session createSession(SessionDTO sessionDTO) {
         sessionDTO.setStatus(Status.PENDING);
 
@@ -58,7 +60,7 @@ public class SessionService {
 
         return sessionRepository.save(session);
     }
-
+    @Override
     public SessionDTO updateSession(Long id, SessionDTO sessionDTO) {
         Session existingSession = getSessionById(id);
 
@@ -71,17 +73,17 @@ public class SessionService {
 
         return sessionMapper.toDTO(updatedSession);
     }
-
+    @Override
     public void deleteSession(Long id) {
         Session session = getSessionById(id);
         sessionRepository.delete(session);
     }
-
+    @Override
     public SessionDTO getSessionDTOById(Long id) {
         Session session = getSessionById(id);
         return sessionMapper.toDTO(session);
     }
-
+    @Override
     public SessionDTO updateSessionStatus(Long id, Status newStatus) {
         Session session = getSessionById(id);
         Status currentStatus = session.getStatus();
@@ -107,7 +109,7 @@ public class SessionService {
         Session updatedSession = sessionRepository.save(session);
         return sessionMapper.toDTO(updatedSession);
     }
-
+    @Override
     public List<SessionDTO> findSessionHistoryBetweenUsers(Long mentorId, Long mentoredId) {
         Mentor mentor = mentorRepository.findById(mentorId)
                 .orElseThrow(() -> new EntityNotFoundException("Mentor com o ID " + mentorId + " não encontrado."));
@@ -121,7 +123,7 @@ public class SessionService {
                 map(sessionMapper::toDTO).
                 collect(Collectors.toList());
     }
-
+    @Override
     public List<SessionDTO> findSessionHistoryMentor(Long mentorId) {
         Mentor mentor = mentorRepository.findById(mentorId)
                 .orElseThrow(() -> new EntityNotFoundException("Mentor com o ID " + mentorId + " não encontrado."));
@@ -132,7 +134,7 @@ public class SessionService {
                 map(sessionMapper::toDTO).
                 collect(Collectors.toList());
     }
-
+    @Override
     public List<SessionDTO> findSessionHistoryMentored(Long mentoredId) {
         Mentored mentored = mentoredRepository.findById(mentoredId)
                 .orElseThrow(() -> new EntityNotFoundException("Mentorado com o ID " + mentoredId + " não encontrado."));
@@ -143,7 +145,7 @@ public class SessionService {
                 map(sessionMapper::toDTO).
                 collect(Collectors.toList());
     }
-
+    @Override
     public List<SessionDTO> findAll() {
         return sessionRepository.findAll().stream()
                 .map(sessionMapper::toDTO)
