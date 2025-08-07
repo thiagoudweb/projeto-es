@@ -1,8 +1,6 @@
 package br.edu.ufape.plataforma.mentoria.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
+import br.edu.ufape.plataforma.mentoria.service.contract.MentorServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,7 +16,7 @@ import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 
 @Service
-public class MentorService {
+public class MentorService implements MentorServiceInterface {
     @Autowired
     private MentorRepository mentorRepository;
 
@@ -28,20 +26,10 @@ public class MentorService {
     @Autowired
     private UserRepository userRepository;
 
-    public Mentor getMentorById(Long id) {
-        return mentorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, id));
-    }
+    @Autowired
+    private MentorSearchService mentorSearchService;
 
-    public MentorDTO getMentorDetailsDTO(Long id) {
-        Mentor mentor = this.getMentorById(id);
-        return mentorMapper.toDTO(mentor);
-    }
-
-    public List<Mentor> getAllMentors() {
-        return mentorRepository.findAll();
-    }
-
+    @Override
     public MentorDTO createMentor(MentorDTO mentorDTO) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -59,7 +47,7 @@ public class MentorService {
         Mentor savedMentor = mentorRepository.save(mentor);
         return mentorMapper.toDTO(savedMentor);
     }
-
+    @Override
     public Mentor updateMentor(Long id, Mentor mentor) {
         if (mentorRepository.existsById(id)) {
             mentor.setId(id);
@@ -67,10 +55,10 @@ public class MentorService {
         }
         throw new EntityNotFoundException(Mentor.class, id);
     }
-
+    @Override
     public MentorDTO updateMentor(Long id, MentorDTO mentorDTO) {
 
-        Mentor existingMentor = this.getMentorById(id);
+        Mentor existingMentor = mentorSearchService.getMentorById(id);
         
         Mentor mentorToUpdate = mentorMapper.toEntity(mentorDTO);
         
@@ -81,9 +69,9 @@ public class MentorService {
         
         return mentorMapper.toDTO(updatedMentor);
     }
-
+    @Override
     public Mentor updateMentor(Long id, UpdateMentorDTO dto) {
-        Mentor mentor = this.getMentorById(id);
+        Mentor mentor = mentorSearchService.getMentorById(id);
 
         if (dto.getFullName() != null) {
             mentor.setFullName(dto.getFullName());
@@ -115,7 +103,7 @@ public class MentorService {
 
         return mentorRepository.save(mentor);
     }
-
+    @Override
     public void deleteById(Long id){
         if (!mentorRepository.existsById(id)) {
             throw new EntityNotFoundException(Mentor.class, id);
@@ -123,19 +111,5 @@ public class MentorService {
         mentorRepository.deleteById(id);
     }
 
-    public MentorDTO getCurrentMentor() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String email = auth.getName();
 
-        return mentorRepository.findByUserEmail(email)
-                .map(mentorMapper::toDTO)
-                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, email));
-    }
-
-    public List<MentorDTO> findByInterestAreaAndSpecializations(InterestArea interestArea, String specialization) {
-        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializationsContaining(interestArea, specialization);
-        return mentors.stream()
-                .map(mentorMapper::toDTO)
-                .collect(Collectors.toList());
-    }
 }
