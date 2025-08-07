@@ -3,6 +3,11 @@ package br.edu.ufape.plataforma.mentoria.controller;
 import java.util.Collections;
 import java.util.List;
 
+import br.edu.ufape.plataforma.mentoria.service.MentorSearchService;
+import br.edu.ufape.plataforma.mentoria.service.MentoredSearchService;
+import br.edu.ufape.plataforma.mentoria.service.contract.MentorSearchServiceInterface;
+import br.edu.ufape.plataforma.mentoria.service.contract.MentoredSearchServiceInterface;
+import br.edu.ufape.plataforma.mentoria.service.contract.MentoredServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +29,6 @@ import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
-import br.edu.ufape.plataforma.mentoria.service.MentorService;
-import br.edu.ufape.plataforma.mentoria.service.MentoredService;
 import jakarta.validation.Valid;
 
 @RestController
@@ -33,17 +36,20 @@ import jakarta.validation.Valid;
 public class MentoredController {
 
     @Autowired
-    private MentoredService mentoredService;
+    private MentoredServiceInterface mentoredService;
 
     @Autowired
-    private MentorService mentorService;
+    private MentoredSearchServiceInterface mentoredSearchService;
+    
+    @Autowired
+    MentorSearchServiceInterface mentorSearchService;
 
     @Autowired
     private MentoredMapper mentoredMapper;
 
     @GetMapping("/{idMentored}")
     public ResponseEntity<MentoredDTO> getMentoredDetails(@PathVariable Long idMentored) {
-        MentoredDTO mentoredDTO = mentoredService.getMentoredDetailsDTO(idMentored);
+        MentoredDTO mentoredDTO = mentoredSearchService.getMentoredDetailsDTO(idMentored);
         return ResponseEntity.ok(mentoredDTO);
     }
 
@@ -98,7 +104,7 @@ public class MentoredController {
             }
         }
 
-        List<MentorDTO> results = mentorService.findByInterestAreaAndSpecializations(interestAreaEnum, specializations);
+        List<MentorDTO> results = mentorSearchService.findByInterestAreaAndSpecializations(interestAreaEnum, specializations);
         return ResponseEntity.ok(results);
     }
 
@@ -110,7 +116,7 @@ public class MentoredController {
 
     @GetMapping("/me")
     public ResponseEntity<MentoredDTO> getCurrentMentored() {
-        MentoredDTO mentored = mentoredService.getCurrentMentored();
+        MentoredDTO mentored = mentoredSearchService.getCurrentMentored();
         return ResponseEntity.ok(mentored);
     }
 
