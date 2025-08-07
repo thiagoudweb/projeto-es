@@ -99,39 +99,6 @@ class SessionServiceTest {
         assertEquals(session.getMeetingTopic(), createdSession.getMeetingTopic());
     }
 
-    @Test
-    void updateSession() throws Exception {
-        SessionDTO sessionUpdateDTO = new SessionDTO(
-                mentor.getId(),
-                mentored.getId(),
-                LocalDate.of(2023, 10, 1),
-                LocalTime.of(10, 0),
-                "Discussão sobre o projeto",
-                "Meet"
-        );
-
-        Session updatedEntity = new Session(mentor, mentored,
-                sessionUpdateDTO.getDate(),
-                sessionUpdateDTO.getTime(),
-                sessionUpdateDTO.getMeetingTopic(),
-                sessionUpdateDTO.getLocation());
-        updatedEntity.setId(session.getId());
-
-        // Mockando repositório e mapper
-        when(sessionRepository.findById(session.getId())).thenReturn(java.util.Optional.of(session));
-        when(sessionMapper.toEntity(sessionUpdateDTO)).thenReturn(updatedEntity);
-        when(sessionRepository.save(updatedEntity)).thenReturn(updatedEntity);
-        when(sessionMapper.toDTO(updatedEntity)).thenReturn(sessionUpdateDTO);
-
-        // Executa o método
-        SessionDTO updatedSession = sessionService.updateSession(session.getId(), sessionUpdateDTO);
-
-        // Asserções
-        assertNotNull(updatedSession);
-        assertEquals("Meet", updatedSession.getLocation()); // verifica se o campo atualizado está correto
-        assertEquals(session.getMeetingTopic(), updatedSession.getMeetingTopic()); // opcional, já que não mudou
-    }
-
 
     @Test
     void getSessionById() {

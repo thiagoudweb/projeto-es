@@ -12,7 +12,7 @@
 	<artifactId>plataforma.mentoria</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>plataforma.mentoria</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Plataforma de Mentoria Academica e profissional</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -81,7 +81,43 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>3.4.7</version>
 			</plugin>
+
+		<plugin>
+      		<groupId>org.jacoco</groupId>
+      		<artifactId>jacoco-maven-plugin</artifactId>
+      		<version>0.8.12</version> <!-- versão mais recente estável em 2025 -->
+			<executions>
+				<execution>
+					<goals>
+						<goal>prepare-agent</goal>
+					</goals>
+				</execution>
+				<execution>
+					<id>report</id>
+					<phase>verify</phase>
+					<goals>
+						<goal>report</goal>
+					</goals>
+				</execution>
+			</executions>
+   		</plugin>
+
 		</plugins>
 	</build>
+
+	<profiles>
+    	<profile>
+        	<id>test</id>
+        	<activation>
+            	<property>
+                	<name>env</name>
+                	<value>test</value>
+            	</property>
+        	</activation>
+        	<properties>
+            	<spring.profiles.active>test</spring.profiles.active>
+        	</properties>
+    	</profile>
+	</profiles>
 
 </project>
