@@ -85,4 +85,7 @@ export class SessionComponent implements OnInit {
       );
     }
   }
+  goBack(): void {
+    this.router.navigate(['/home']);
+  }
 }
