@@ -9,6 +9,7 @@ import { DeleteMentoredModalComponent } from '../auth/delete-mentored-modal/dele
 import { AuthService } from '../auth/auth.service';
 import { MentorSearchComponent } from '../mentor-search/mentor-search';
 import { MentoredSearchComponent } from '../mentored-search/mentored-search';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-perfil',
@@ -33,7 +34,7 @@ export class ProfileComponent implements OnInit {
   showEditModal = false;
   showDeleteModal = false;
 
-  constructor(private profileService: ProfileService, private authService: AuthService) {}
+  constructor(private profileService: ProfileService, private authService: AuthService,   private router: Router) {}
 
   ngOnInit(): void {
     this.loadProfile();
@@ -246,4 +247,7 @@ private formatInterestAreaName(area: string): string {
     return this.courseMap[course] || course || 'Não informado';
   }
 
+  goBack(): void {
+    this.router.navigate(['/home']);
+  }
 }
