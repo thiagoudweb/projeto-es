@@ -5,14 +5,14 @@ import { Mentor } from '../entity/mentor';
 import { Mentored } from '../entity/mentored';
 import { responseMentored } from '../entity/responses/response-mentored';
 import { responseMentor } from '../entity/responses/response-mentor';
-
+import { environment } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:8080/auth';
-  private apiUrlMentor = 'http://localhost:8080/mentor';
-  private apiUrlMentored = 'http://localhost:8080/mentored';
+  private apiUrl = environment.apiUrl + "/auth";
+  private apiUrlMentor = environment.apiUrl + "/mentor";
+  private apiUrlMentored = environment.apiUrl + "/mentored";
 
   async login(email: string, password: string): Promise<boolean> {
     try {

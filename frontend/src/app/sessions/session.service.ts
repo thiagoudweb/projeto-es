@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Session } from '../entity/session';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-  private apiUrl = 'http://localhost:8080/sessions';
+  private apiUrl = environment.apiUrl + "/sessions";
 
   async registerSession(newSession: Session): Promise<Session | null> {
       try {

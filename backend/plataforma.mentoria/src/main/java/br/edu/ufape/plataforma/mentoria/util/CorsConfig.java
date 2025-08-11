@@ -13,8 +13,10 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:4200") // Permite Angular acessar
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS");
+                        .allowedOrigins("http://localhost:4200", "https://plataforma-de-mentoria-frontend.onrender.com") // Permite Angular acessar
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true);
             }
         };
     }
