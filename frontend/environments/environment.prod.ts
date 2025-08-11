@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: "colocar a URL do backend do render aqui",
+  apiUrl: "https://plataforma-de-mentoria-backend.onrender.com/",
 };
