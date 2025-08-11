@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { Mentor } from '../entity/mentor';
+import { environment } from '../../../environments/environment';
 
 export interface ProfileData {
   type: 'MENTOR' | 'MENTORADO' | 'UNKNOWN';
@@ -17,7 +18,7 @@ interface UserTokenPayload {
   providedIn: 'root'
 })
 export class ProfileService {
-  private apiUrl = 'http://localhost:8080';
+  private apiUrl = environment.apiUrl;
   private profileTypeSubject = new BehaviorSubject<string>('UNKNOWN');
   public profileType$ = this.profileTypeSubject.asObservable();
 
