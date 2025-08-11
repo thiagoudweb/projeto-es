@@ -49,6 +49,13 @@ Projeto para desenvolvimento de uma aplicação web utilizando Java, Spring Boot
   </tr>
 </table>
 
+## Como rodar
+
+Você pode acessar a versão online do projeto diretamente pelo link abaixo:  
+🔗 [Plataforma de Mentoria](https://plataforma-de-mentoria-frontend.onrender.com)
+
+
+
 ## Status do Projeto
 
 Em desenvolvimento 🚧
