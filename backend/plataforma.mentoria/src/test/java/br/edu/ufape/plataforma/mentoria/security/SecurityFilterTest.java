@@ -1,77 +1,81 @@
+package br.edu.ufape.plataforma.mentoria.security;
+
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.Field;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.context.SecurityContextHolder;
-import jakarta.servlet.FilterChain;
 
-import br.edu.ufape.plataforma.mentoria.security.SecurityFilter;
-import br.edu.ufape.plataforma.mentoria.security.TokenService;
-import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import br.edu.ufape.plataforma.mentoria.model.User;
+import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
+@ExtendWith(MockitoExtension.class)
 class SecurityFilterTest {
 
-    private SecurityFilter filter;
+    @Mock
     private TokenService tokenService;
+
+    @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private HttpServletRequest request;
+
+    @Mock
+    private HttpServletResponse response;
+
+    @Mock
     private FilterChain filterChain;
 
-    static class TestableSecurityFilter extends SecurityFilter {
-        public void callDoFilterInternal(MockHttpServletRequest request, MockHttpServletResponse response, FilterChain chain) throws Exception {
-            super.doFilterInternal(request, response, chain);
-        }
-    }
+    @InjectMocks
+    private SecurityFilter securityFilter;
 
     @BeforeEach
-    void setUp() throws Exception {
-        tokenService = mock(TokenService.class);
-        userRepository = mock(UserRepository.class);
-        filterChain = mock(FilterChain.class);
-        filter = new TestableSecurityFilter();
-
-        Field tokenServiceField = SecurityFilter.class.getDeclaredField("tokenService");
-        tokenServiceField.setAccessible(true);
-        tokenServiceField.set(filter, tokenService);
-
-        Field userRepositoryField = SecurityFilter.class.getDeclaredField("userRepository");
-        userRepositoryField.setAccessible(true);
-        userRepositoryField.set(filter, userRepository);
-
+    void setUp() {
         SecurityContextHolder.clearContext();
     }
 
     @Test
     void testTokenValidoAutenticaUsuario() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("Authorization", "Bearer valid-token");
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        String token = "valid-token";
+        String email = "user@email.com";
+        User mockUser = mock(User.class);
 
-        when(tokenService.validateToken("valid-token")).thenReturn("user@email.com");
-        User userDetails = mock(User.class);
-        when(userRepository.findByEmail("user@email.com")).thenReturn(userDetails);
-        when(userDetails.getAuthorities()).thenReturn(null);
+        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
+        when(tokenService.validateToken(token)).thenReturn(email);
+        when(userRepository.findByEmail(email)).thenReturn(mockUser);
 
-        ((TestableSecurityFilter)filter).callDoFilterInternal(request, response, filterChain);
+        securityFilter.doFilterInternal(request, response, filterChain);
 
+        verify(filterChain, times(1)).doFilter(request, response);
         assertNotNull(SecurityContextHolder.getContext().getAuthentication());
-        verify(filterChain).doFilter(request, response);
+        assertEquals(mockUser, SecurityContextHolder.getContext().getAuthentication().getPrincipal());
     }
 
     @Test
     void testTokenInvalidoNaoAutentica() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("Authorization", "Bearer invalid-token");
-        MockHttpServletResponse response = new MockHttpServletResponse();
-
+        when(request.getHeader("Authorization")).thenReturn("Bearer invalid-token");
         when(tokenService.validateToken("invalid-token")).thenReturn(null);
 
-        ((TestableSecurityFilter)filter).callDoFilterInternal(request, response, filterChain);
+        securityFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    void testHeaderInvalidoNaoAutentica() throws Exception {
+        when(request.getHeader("Authorization")).thenReturn("Basic some_credentials");
+
+        securityFilter.doFilterInternal(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
@@ -79,10 +83,9 @@ class SecurityFilterTest {
 
     @Test
     void testSemTokenNaoAutentica() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        when(request.getHeader("Authorization")).thenReturn(null);
 
-        ((TestableSecurityFilter)filter).callDoFilterInternal(request, response, filterChain);
+        securityFilter.doFilterInternal(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
@@ -90,16 +93,57 @@ class SecurityFilterTest {
 
     @Test
     void testUsuarioNaoEncontrado() throws Exception {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.addHeader("Authorization", "Bearer valid-token");
-        MockHttpServletResponse response = new MockHttpServletResponse();
-
+        when(request.getHeader("Authorization")).thenReturn("Bearer valid-token");
         when(tokenService.validateToken("valid-token")).thenReturn("user@email.com");
         when(userRepository.findByEmail("user@email.com")).thenReturn(null);
 
-        ((TestableSecurityFilter)filter).callDoFilterInternal(request, response, filterChain);
+        securityFilter.doFilterInternal(request, response, filterChain);
 
         assertNull(SecurityContextHolder.getContext().getAuthentication());
         verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    void testTokenValidoLoginVazio() throws Exception {
+        String token = "valid-token";
+        when(request.getHeader("Authorization")).thenReturn("Bearer " + token);
+        when(tokenService.validateToken(token)).thenReturn("");
+
+        securityFilter.doFilterInternal(request, response, filterChain);
+
+        assertNull(SecurityContextHolder.getContext().getAuthentication());
+        verify(filterChain).doFilter(request, response);
+    }
+
+    @Test
+    void testRecoverTokenNullHeader() throws Exception {
+        when(request.getHeader("Authorization")).thenReturn(null);
+        var method = SecurityFilter.class.getDeclaredMethod("recoverToken", HttpServletRequest.class);
+        method.setAccessible(true);
+        assertNull(method.invoke(securityFilter, request));
+    }
+
+    @Test
+    void testRecoverTokenEmptyHeader() throws Exception {
+        when(request.getHeader("Authorization")).thenReturn("");
+        var method = SecurityFilter.class.getDeclaredMethod("recoverToken", HttpServletRequest.class);
+        method.setAccessible(true);
+        assertNull(method.invoke(securityFilter, request));
+    }
+
+    @Test
+    void testRecoverTokenInvalidHeader() throws Exception {
+        when(request.getHeader("Authorization")).thenReturn("Basic abc");
+        var method = SecurityFilter.class.getDeclaredMethod("recoverToken", HttpServletRequest.class);
+        method.setAccessible(true);
+        assertNull(method.invoke(securityFilter, request));
+    }
+
+    @Test
+    void testRecoverTokenValidHeader() throws Exception {
+        when(request.getHeader("Authorization")).thenReturn("Bearer abc123");
+        var method = SecurityFilter.class.getDeclaredMethod("recoverToken", HttpServletRequest.class);
+        method.setAccessible(true);
+        assertEquals("abc123", method.invoke(securityFilter, request));
     }
 }
