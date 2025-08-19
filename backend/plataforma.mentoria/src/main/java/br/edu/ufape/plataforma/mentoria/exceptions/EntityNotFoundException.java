@@ -15,7 +15,7 @@ public class EntityNotFoundException extends RuntimeException {
      * @param entityId    The identifier of the entity that was not found.
      */
     public EntityNotFoundException(Class<?> entityClass, Object entityId) {
-        super(String.format("%s com ID %s não encontrado(a).", entityClass.getSimpleName(), entityId.toString()));
+        super(String.format("%s com ID %s não foi encontrado.", entityClass.getSimpleName(), entityId.toString()));
     }
 
     /**
