@@ -27,7 +27,7 @@ public class EntityNotFoundException extends RuntimeException {
      * @param resourceValue The value of the resource that was not found.
      */
     public EntityNotFoundException(Class<?> entityClass, String resourceName, String resourceValue) {
-        super(String.format("%s com %s '%s' não encontrado(a).", entityClass.getSimpleName(), resourceName,
+        super(String.format("%s com %s '%s' não foi encontrado.", entityClass.getSimpleName(), resourceName,
                 resourceValue));
     }
 
