@@ -66,7 +66,7 @@ public class SessionMapperTest {
         sessionDTO.setTime(LocalTime.of(15, 30));
         sessionDTO.setLocation("Conference Room");
         sessionDTO.setStatus(Status.PENDING);
-        // for some reason isnt working with accepted
+        // for some reason, it isn't working with ACCEPTED
         // sessionDTO.setStatus(Status.ACCEPTED);
 
         Session session = sessionMapper.toEntity(sessionDTO);
