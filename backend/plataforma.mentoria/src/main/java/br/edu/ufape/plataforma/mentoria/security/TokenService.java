@@ -29,7 +29,7 @@ public class TokenService {
                 .withExpiresAt(this.getExpirationAt())
                 .sign(algorithm);
             return token;
-        } catch (JWTCreationException e) {
+        } catch (IllegalArgumentException | JWTCreationException e) {
             throw new RuntimeException("Error creating token", e);
         }
     }

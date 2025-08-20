@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 public class MentorSearchService implements MentorSearchServiceInterface {
 
-
     @Autowired
     private MentorRepository mentorRepository;
 
@@ -34,6 +33,7 @@ public class MentorSearchService implements MentorSearchServiceInterface {
         return mentorRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Mentor.class, id));
     }
+
     @Override
     public MentorDTO getMentorDetailsDTO(Long id) {
         Mentor mentor = this.getMentorById(id);
@@ -54,20 +54,13 @@ public class MentorSearchService implements MentorSearchServiceInterface {
                 .map(mentorMapper::toDTO)
                 .orElseThrow(() -> new EntityNotFoundException(Mentor.class, email));
     }
+
     @Override
     public List<MentorDTO> findByInterestAreaAndSpecializations(InterestArea interestArea, String specialization) {
-        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializationsContaining(interestArea, specialization);
+        List<Mentor> mentors = mentorRepository.findByInterestAreaAndSpecializationsContaining(interestArea,
+                specialization);
         return mentors.stream()
                 .map(mentorMapper::toDTO)
                 .collect(Collectors.toList());
     }
-
-
-
-
-
-
-
-
 }
-
