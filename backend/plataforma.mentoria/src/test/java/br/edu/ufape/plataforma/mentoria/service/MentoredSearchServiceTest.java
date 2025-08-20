@@ -4,6 +4,7 @@ import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.enums.UserRole;
+import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.model.User;
@@ -76,6 +77,20 @@ class MentoredSearchServiceTest {
     }
 
     @Test
+    void testGetCurrentMentored_NotFound() {
+        when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+
+        String userEmail = "notfound@gmail.com";
+        when(authentication.getName()).thenReturn(userEmail);
+        when(mentoredRepository.findByUserEmail(userEmail)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            mentoredSearchService.getCurrentMentored();
+        });
+    }
+
+    @Test
     void findByInterestArea() {
         InterestArea areaDeInteresse = InterestArea.CIBERSEGURANCA;
         List<Mentored> mentoredList = List.of(mentored);
@@ -100,6 +115,16 @@ class MentoredSearchServiceTest {
 
         assertNotNull(foundMentored);
         assertEquals(mentoredId, foundMentored.getId());
+    }
+
+    @Test
+    void getMentoredById_NotFound() {
+        Long mentoredId = 2L;
+        when(mentoredRepository.findById(mentoredId)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> {
+            mentoredSearchService.getMentoredById(mentoredId);
+        });
     }
 
     @Test
