@@ -10,9 +10,9 @@ import java.time.LocalTime;
 public class Session {
 
     @Id
-    @SequenceGenerator(name="session_id_seq", sequenceName="session_id_seq", allocationSize=1)
-    @GeneratedValue(generator="session_id_seq", strategy=GenerationType.SEQUENCE)
-    @Column(name="id", updatable=false)
+    @SequenceGenerator(name = "session_id_seq", sequenceName = "session_id_seq", allocationSize = 1)
+    @GeneratedValue(generator = "session_id_seq", strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", updatable = false)
     private Long id;
 
     @ManyToOne
@@ -37,9 +37,11 @@ public class Session {
     @Column(nullable = false)
     private String location;
 
-    public Session() {}
+    public Session() {
+    }
 
-    public Session(Mentor mentor, Mentored mentored, LocalDate date, LocalTime time, String meetingTopic, String location) {
+    public Session(Mentor mentor, Mentored mentored, LocalDate date, LocalTime time, String meetingTopic,
+            String location) {
         this.mentor = mentor;
         this.mentored = mentored;
         this.date = date;
