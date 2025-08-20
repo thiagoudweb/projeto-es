@@ -5,13 +5,11 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
 
-@DataJpaTest
 public class MentorMapperTest {
 
     private MentorMapper mentorMapper;

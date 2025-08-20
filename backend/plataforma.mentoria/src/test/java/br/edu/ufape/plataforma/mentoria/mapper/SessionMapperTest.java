@@ -9,7 +9,6 @@ import java.time.LocalTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
 import br.edu.ufape.plataforma.mentoria.enums.Status;
@@ -17,7 +16,6 @@ import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.model.Session;
 
-@SpringBootTest // Changed from @DataJpaTest
 public class SessionMapperTest {
 
     private SessionMapper sessionMapper;
