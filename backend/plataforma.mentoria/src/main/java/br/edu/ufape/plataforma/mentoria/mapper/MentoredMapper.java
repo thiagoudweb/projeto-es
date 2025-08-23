@@ -8,6 +8,9 @@ import br.edu.ufape.plataforma.mentoria.model.Mentored;
 @Component
 public class MentoredMapper {
     public Mentored toEntity(MentoredDTO mentoredDTO) {
+        if (mentoredDTO == null) {
+            return null;
+        }
         Mentored mentored = new Mentored();
         mentored.setFullName(mentoredDTO.getFullName());
         mentored.setCpf(mentoredDTO.getCpf());
@@ -19,6 +22,9 @@ public class MentoredMapper {
     }
 
     public MentoredDTO toDTO(Mentored mentored) {
+        if (mentored == null) {
+            return null;
+        }
         MentoredDTO mentoredDTO = new MentoredDTO();
         mentoredDTO.setId(mentored.getId());
         mentoredDTO.setFullName(mentored.getFullName());
