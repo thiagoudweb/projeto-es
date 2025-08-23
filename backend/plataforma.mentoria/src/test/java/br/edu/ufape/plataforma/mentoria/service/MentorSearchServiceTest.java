@@ -74,12 +74,12 @@ class MentorSearchServiceTest {
     @Test
     void testGetCurrentMentorFound() {
         Authentication auth = mock(Authentication.class);
-        when(auth.getName()).thenReturn("test@email.com");
+        when(auth.getName()).thenReturn("user@gmail.com");
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         Mentor mentor = new Mentor();
         MentorDTO dto = new MentorDTO();
-        when(mentorRepository.findByUserEmail("test@email.com")).thenReturn(Optional.of(mentor));
+        when(mentorRepository.findByUserEmail("user@gmail.com")).thenReturn(Optional.of(mentor));
         when(mentorMapper.toDTO(mentor)).thenReturn(dto);
 
         MentorDTO result = mentorSearchService.getCurrentMentor();
