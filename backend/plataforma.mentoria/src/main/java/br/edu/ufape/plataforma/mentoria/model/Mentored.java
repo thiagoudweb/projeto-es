@@ -5,31 +5,20 @@ import java.util.List;
 
 import br.edu.ufape.plataforma.mentoria.enums.Course;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.MapsId;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.AssociationOverride;
-import jakarta.persistence.AssociationOverrides;
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.*;
 
 @Entity
-@AssociationOverrides({
-    @AssociationOverride(name = "interestArea",
+@AssociationOverride(name = "interestArea",
         joinTable = @JoinTable(name = "mentored_interest_areas",
-            joinColumns = @JoinColumn(name = "mentored_id")))
-})
+                joinColumns = @JoinColumn(name = "mentored_id")))
 public class Mentored extends Person {
 
     @Id
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @MapsId
-    @PrimaryKeyJoinColumn
+    @JoinColumn(name = "id")
     private User user;
 
     private String academicSummary;
@@ -43,11 +32,6 @@ public class Mentored extends Person {
 
     public Mentored() {
 
-    }
-
-    public Mentored(String fullName, String cpf, LocalDate of, Course administracao, User user2,
-            String academicSummary2, InterestArea ciberseguranca) {
-        //TODO Auto-generated constructor stub
     }
 
     public Long getId() {
