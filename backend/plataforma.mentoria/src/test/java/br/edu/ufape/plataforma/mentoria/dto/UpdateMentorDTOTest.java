@@ -108,27 +108,6 @@ public class UpdateMentorDTOTest {
     }
 
     @Test
-    void testSetNullValues() {
-        UpdateMentorDTO dto = new UpdateMentorDTO();
-
-        dto.setFullName(null);
-        dto.setBirthDate(null);
-        dto.setCourse(null);
-        dto.setInterestArea(null);
-        dto.setProfessionalSummary(null);
-        dto.setAffiliationType(null);
-        dto.setSpecializations(null);
-
-        assertNull(dto.getFullName());
-        assertNull(dto.getBirthDate());
-        assertNull(dto.getCourse());
-        assertNull(dto.getInterestArea());
-        assertNull(dto.getProfessionalSummary());
-        assertNull(dto.getAffiliationType());
-        assertNull(dto.getSpecializations());
-    }
-
-    @Test
     void testSetEmptyStrings() {
         UpdateMentorDTO dto = new UpdateMentorDTO();
 

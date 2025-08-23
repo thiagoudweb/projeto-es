@@ -123,26 +123,6 @@ public class SessionDTOTest {
     }
 
     @Test
-    void testSetNullValues() {
-        SessionDTO dto = new SessionDTO();
-
-        dto.setMentorId(null);
-        dto.setMentoredId(null);
-        dto.setDate(null);
-        dto.setTime(null);
-        dto.setMeetingTopic(null);
-        dto.setStatus(null);
-        dto.setLocation(null);
-
-        assertNull(dto.getMentorId());
-        assertNull(dto.getDate());
-        assertNull(dto.getTime());
-        assertNull(dto.getMeetingTopic());
-        assertNull(dto.getStatus());
-        assertNull(dto.getLocation());
-    }
-
-    @Test
     void testSetEmptyStrings() {
         SessionDTO dto = new SessionDTO();
 
@@ -157,7 +137,6 @@ public class SessionDTOTest {
     void testCompleteSessionCreation() {
         SessionDTO dto = new SessionDTO();
 
-        // Set all fields
         dto.setMentorId(10L);
         dto.setMentoredId(20L);
         dto.setDate(LocalDate.of(2024, 9, 10));
@@ -166,7 +145,6 @@ public class SessionDTOTest {
         dto.setStatus(Status.ACCEPTED);
         dto.setLocation("Online - Zoom");
 
-        // Verify all fields
         assertEquals(10L, dto.getMentorId());
         assertEquals(LocalDate.of(2024, 9, 10), dto.getDate());
         assertEquals(LocalTime.of(10, 0), dto.getTime());

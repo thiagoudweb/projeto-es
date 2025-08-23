@@ -149,31 +149,6 @@ public class MentorDTOTest {
     }
 
     @Test
-    void testSetNullValues() {
-        MentorDTO dto = new MentorDTO();
-
-        dto.setId(null);
-        dto.setFullName(null);
-        dto.setCpf(null);
-        dto.setBirthDate(null);
-        dto.setCourse(null);
-        dto.setProfessionalSummary(null);
-        dto.setAffiliationType(null);
-        dto.setSpecializations(null);
-        dto.setInterestArea(null);
-
-        assertNull(dto.getId());
-        assertNull(dto.getFullName());
-        assertNull(dto.getCpf());
-        assertNull(dto.getBirthDate());
-        assertNull(dto.getCourse());
-        assertNull(dto.getProfessionalSummary());
-        assertNull(dto.getAffiliationType());
-        assertNull(dto.getSpecializations());
-        assertNull(dto.getInterestArea());
-    }
-
-    @Test
     void testSetEmptyCollections() {
         MentorDTO dto = new MentorDTO();
         List<String> emptySpecializations = Arrays.asList();

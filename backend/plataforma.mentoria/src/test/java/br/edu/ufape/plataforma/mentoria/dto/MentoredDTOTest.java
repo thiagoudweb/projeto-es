@@ -178,7 +178,6 @@ public class MentoredDTOTest {
     void testCompleteObjectCreation() {
         MentoredDTO dto = new MentoredDTO();
 
-        // Set all fields
         dto.setId(2L);
         dto.setFullName("Complete Student");
         dto.setCpf("11122233344");
@@ -187,7 +186,6 @@ public class MentoredDTOTest {
         dto.setAcademicSummary("Business administration student with focus on entrepreneurship");
         dto.setInterestArea(Arrays.asList(InterestArea.ARTES_E_DESIGN, InterestArea.DESENVOLVIMENTO_DE_SOFTWARE));
 
-        // Verify all fields
         assertEquals(2L, dto.getId());
         assertEquals("Complete Student", dto.getFullName());
         assertEquals("11122233344", dto.getCpf());

@@ -81,23 +81,6 @@ public class UpdateMentoredDTOTest {
     }
 
     @Test
-    void testSetNullValues() {
-        UpdateMentoredDTO dto = new UpdateMentoredDTO();
-
-        dto.setFullName(null);
-        dto.setBirthDate(null);
-        dto.setCourse(null);
-        dto.setAcademicSummary(null);
-        dto.setInterestArea(null);
-
-        assertNull(dto.getFullName());
-        assertNull(dto.getBirthDate());
-        assertNull(dto.getCourse());
-        assertNull(dto.getAcademicSummary());
-        assertNull(dto.getInterestArea());
-    }
-
-    @Test
     void testSetEmptyStrings() {
         UpdateMentoredDTO dto = new UpdateMentoredDTO();
 

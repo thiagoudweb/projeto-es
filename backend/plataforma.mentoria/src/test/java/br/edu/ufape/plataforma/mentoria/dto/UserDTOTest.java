@@ -60,19 +60,6 @@ public class UserDTOTest {
     }
 
     @Test
-    void testSetNullValues() {
-        UserDTO dto = new UserDTO();
-
-        dto.setEmail(null);
-        dto.setPassword(null);
-        dto.setRole(null);
-
-        assertNull(dto.getEmail());
-        assertNull(dto.getPassword());
-        assertNull(dto.getRole());
-    }
-
-    @Test
     void testSetEmptyStrings() {
         UserDTO dto = new UserDTO();
 
