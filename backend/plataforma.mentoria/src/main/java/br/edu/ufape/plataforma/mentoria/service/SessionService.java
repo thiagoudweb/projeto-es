@@ -2,7 +2,6 @@ package br.edu.ufape.plataforma.mentoria.service;
 
 import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
-
 import br.edu.ufape.plataforma.mentoria.mapper.SessionMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
@@ -10,7 +9,6 @@ import br.edu.ufape.plataforma.mentoria.model.Session;
 import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
-import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import br.edu.ufape.plataforma.mentoria.service.contract.SessionServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +24,6 @@ public class SessionService implements SessionServiceInterface {
 
     @Autowired
     private SessionMapper sessionMapper;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private MentorRepository mentorRepository;
