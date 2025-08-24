@@ -1,5 +1,4 @@
 package br.edu.ufape.plataforma.mentoria.model;
-
 import java.time.LocalDate;
 import java.util.List;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
@@ -31,11 +30,11 @@ public abstract class Person {
     @Column(name = "interest_area")
     private List<InterestArea> interestArea;
 
-    public Person() {
+    protected Person() {
 
     }
 
-    public Person(String fullName, String cpf, LocalDate birthDate, Course course, List<InterestArea> interestArea) {
+    protected Person(String fullName, String cpf, LocalDate birthDate, Course course, List<InterestArea> interestArea) {
         this.fullName = fullName;
         this.cpf = cpf;
         this.birthDate = birthDate;
