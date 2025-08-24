@@ -7,7 +7,6 @@ import br.edu.ufape.plataforma.mentoria.mapper.MentoredMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.service.contract.MentoredSearchServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,10 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class MentoredSearchService implements MentoredSearchServiceInterface {
 
-    @Autowired
-    private MentoredRepository mentoredRepository;
-    @Autowired
-    private MentoredMapper mentoredMapper;
+    private final MentoredRepository mentoredRepository;
+    private final MentoredMapper mentoredMapper;
+
+    public MentoredSearchService(MentoredRepository mentoredRepository, MentoredMapper mentoredMapper) {
+        this.mentoredRepository = mentoredRepository;
+        this.mentoredMapper = mentoredMapper;
+    }
 
     // Buscar mentorados por id //
     @Override

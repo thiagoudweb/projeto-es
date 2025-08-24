@@ -10,7 +10,6 @@ import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
 import br.edu.ufape.plataforma.mentoria.service.contract.SessionServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import br.edu.ufape.plataforma.mentoria.enums.Status;
 
@@ -19,17 +18,20 @@ import java.util.stream.Collectors;
 
 @Service
 public class SessionService implements SessionServiceInterface {
-    @Autowired
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
+    private final SessionMapper sessionMapper;
+    private final MentorRepository mentorRepository;
+    private final MentoredRepository mentoredRepository;
 
-    @Autowired
-    private SessionMapper sessionMapper;
-
-    @Autowired
-    private MentorRepository mentorRepository;
-
-    @Autowired
-    private MentoredRepository mentoredRepository;
+    public SessionService(SessionRepository sessionRepository,
+                         SessionMapper sessionMapper,
+                         MentorRepository mentorRepository,
+                         MentoredRepository mentoredRepository) {
+        this.sessionRepository = sessionRepository;
+        this.sessionMapper = sessionMapper;
+        this.mentorRepository = mentorRepository;
+        this.mentoredRepository = mentoredRepository;
+    }
 
     @Override
     public Session getSessionById(Long id) {

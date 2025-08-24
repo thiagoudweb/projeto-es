@@ -7,7 +7,6 @@ import br.edu.ufape.plataforma.mentoria.mapper.MentorMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.service.contract.MentorSearchServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -18,11 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class MentorSearchService implements MentorSearchServiceInterface {
 
-    @Autowired
-    private MentorRepository mentorRepository;
+    private final MentorRepository mentorRepository;
+    private final MentorMapper mentorMapper;
 
-    @Autowired
-    private MentorMapper mentorMapper;
+    public MentorSearchService(MentorRepository mentorRepository, MentorMapper mentorMapper) {
+        this.mentorRepository = mentorRepository;
+        this.mentorMapper = mentorMapper;
+    }
 
     @Override
     public Mentor getMentorById(Long id) {
