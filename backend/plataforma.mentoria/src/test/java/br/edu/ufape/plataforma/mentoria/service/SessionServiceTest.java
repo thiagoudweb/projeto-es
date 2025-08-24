@@ -11,20 +11,16 @@ import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
-import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -58,7 +54,7 @@ class SessionServiceTest {
         mentored = new Mentored("Joestar", "12345678900",
                 LocalDate.of(2000, 1, 1),
                 Course.ADMINISTRACAO, user,
-                "Estudante de Administração", InterestArea.CIBERSEGURANCA);
+                "Estudante de Administração", List.of(InterestArea.CIBERSEGURANCA));
         mentored.setId(1L);
 
         User guest = new User("guest@gmail.com", "Joestar@123", UserRole.MENTOR);
