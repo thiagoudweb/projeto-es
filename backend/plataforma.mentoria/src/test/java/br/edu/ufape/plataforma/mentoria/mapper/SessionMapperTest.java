@@ -35,9 +35,10 @@ public class SessionMapperTest {
         session.setLocation("Online");
         session.setStatus(Status.PENDING);
 
-        Mentor mentor = new Mentor();
+        Mentor mentor = new Mentor.Builder()
+            .fullName("John Mentor")
+            .build();
         mentor.setId(1L);
-        mentor.setFullName("John Mentor");
         session.setMentor(mentor);
 
         Mentored mentored = new Mentored();
