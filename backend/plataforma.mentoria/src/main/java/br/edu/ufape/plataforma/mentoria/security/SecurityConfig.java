@@ -26,15 +26,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        final String MENTOR_PATH = "/mentor/**";
+        final String MENTORED_PATH = "/mentored/**";
+
         return httpSecurity.csrf(csrf -> csrf.disable())
-            .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
+            .headers(headers -> headers.frameOptions(org.springframework.security.config.annotation.web.configurers.HeadersConfigurer.FrameOptionsConfig::sameOrigin))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(org.springframework.http.HttpMethod.POST, "/mentor/**", "/mentored/**").authenticated()
-                .requestMatchers(org.springframework.http.HttpMethod.PUT, "/mentor/**", "/mentored/**").authenticated()
-                .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/mentor/**", "/mentored/**").authenticated()
-                .anyRequest().permitAll()
+            .requestMatchers(org.springframework.http.HttpMethod.POST, MENTOR_PATH, MENTORED_PATH).authenticated()
+            .requestMatchers(org.springframework.http.HttpMethod.PUT, MENTOR_PATH, MENTORED_PATH).authenticated()
+            .requestMatchers(org.springframework.http.HttpMethod.DELETE, MENTOR_PATH, MENTORED_PATH).authenticated()
+            .anyRequest().permitAll()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
