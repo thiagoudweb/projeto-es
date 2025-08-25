@@ -108,9 +108,12 @@ public class MentoredController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Mentored>> getAllMentoreds(){
+    public ResponseEntity<List<MentoredDTO>> getAllMentoreds(){
         List<Mentored> results = mentoredService.getAllMentored();
-        return ResponseEntity.ok(results);
+        List<MentoredDTO> dtos = results.stream()
+            .map(mentoredMapper::toDTO)
+            .toList();
+        return ResponseEntity.ok(dtos);
     }
 
     @GetMapping("/me")

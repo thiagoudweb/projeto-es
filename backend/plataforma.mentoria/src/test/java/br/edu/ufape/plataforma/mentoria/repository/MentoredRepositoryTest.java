@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @DataJpaTest
-public class MentoredRepositoryTest {
+class MentoredRepositoryTest {
 
     @Autowired
     private MentoredRepository mentoredRepository;

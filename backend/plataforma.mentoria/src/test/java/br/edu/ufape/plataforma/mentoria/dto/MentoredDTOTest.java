@@ -171,7 +171,7 @@ public class MentoredDTOTest {
         dto.setInterestArea(singleArea);
 
         assertEquals(1, dto.getInterestArea().size());
-        assertEquals(InterestArea.TECNOLOGIA_DA_INFORMACAO, dto.getInterestArea().get(0));
+        assertEquals(InterestArea.TECNOLOGIA_DA_INFORMACAO, dto.getInterestArea().getFirst());
     }
 
     @Test
