@@ -1,6 +1,13 @@
 package br.edu.ufape.plataforma.mentoria.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
+import br.edu.ufape.plataforma.mentoria.enums.Status;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.SessionMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
@@ -10,26 +17,24 @@ import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
 import br.edu.ufape.plataforma.mentoria.service.contract.SessionServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.edu.ufape.plataforma.mentoria.enums.Status;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SessionService implements SessionServiceInterface {
-    @Autowired
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
+    private final SessionMapper sessionMapper;
+    private final MentorRepository mentorRepository;
+    private final MentoredRepository mentoredRepository;
 
-    @Autowired
-    private SessionMapper sessionMapper;
-
-    @Autowired
-    private MentorRepository mentorRepository;
-
-    @Autowired
-    private MentoredRepository mentoredRepository;
+    public SessionService(SessionRepository sessionRepository,
+                         SessionMapper sessionMapper,
+                         MentorRepository mentorRepository,
+                         MentoredRepository mentoredRepository) {
+        this.sessionRepository = sessionRepository;
+        this.sessionMapper = sessionMapper;
+        this.mentorRepository = mentorRepository;
+        this.mentoredRepository = mentoredRepository;
+    }
 
     @Override
     public Session getSessionById(Long id) {
@@ -66,9 +71,7 @@ public class SessionService implements SessionServiceInterface {
         existingSession.setMeetingTopic(sessionDTO.getMeetingTopic());
         existingSession.setLocation(sessionDTO.getLocation());
 
-        Session updatedSession = sessionRepository.save(existingSession);
-
-        return sessionMapper.toDTO(updatedSession);
+        return sessionMapper.toDTO(sessionRepository.save(existingSession));
     }
 
     @Override
@@ -107,8 +110,7 @@ public class SessionService implements SessionServiceInterface {
         }
 
         session.setStatus(newStatus);
-        Session updatedSession = sessionRepository.save(session);
-        return sessionMapper.toDTO(updatedSession);
+        return sessionMapper.toDTO(sessionRepository.save(session));
     }
 
     @Override
