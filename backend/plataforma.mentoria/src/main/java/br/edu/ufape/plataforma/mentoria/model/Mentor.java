@@ -31,11 +31,8 @@ public class Mentor extends Person {
     @Column(name = "specialization")
     private List<String> specializations;
 
-    /**
-     * Construtor padrão necessário para JPA.
-     * Use a classe Builder para criar instâncias.
-     */
     public Mentor() {
+        // Default empty constructor required by JPA
     }
 
     public static class Builder {
