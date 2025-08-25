@@ -40,6 +40,22 @@ public class MentorDTO {
 
     @NotNull(message = "A área de interesse é obrigatória")
     private List<InterestArea> interestArea;
+
+    private MentorDTO(String fullName, String cpf, LocalDate birthDate, Course course, String professionalSummary,
+            AffiliationType affiliationType, List<String> specializations, List<InterestArea> interestArea) {
+        this.fullName = fullName;
+        this.cpf = cpf;
+        this.birthDate = birthDate;
+        this.course = course;
+        this.professionalSummary = professionalSummary;
+        this.affiliationType = affiliationType;
+        this.specializations = specializations;
+        this.interestArea = interestArea;
+    }
+
+    public MentorDTO() {
+    }
+
     public static class Builder {
         private String fullName;
         private String cpf;
@@ -85,21 +101,6 @@ public class MentorDTO {
         public MentorDTO build() {
             return new MentorDTO(fullName, cpf, birthDate, course, professionalSummary, affiliationType, specializations, interestArea);
         }
-    }
-
-    public MentorDTO() {
-    }
-
-    public MentorDTO(String fullName, String cpf, LocalDate birthDate, Course course, String professionalSummary,
-            AffiliationType affiliationType, List<String> specializations, List<InterestArea> interestArea) {
-        this.fullName = fullName;
-        this.cpf = cpf;
-        this.birthDate = birthDate;
-        this.course = course;
-        this.professionalSummary = professionalSummary;
-        this.affiliationType = affiliationType;
-        this.specializations = specializations;
-        this.interestArea = interestArea;
     }
 
     public Long getId() {

@@ -32,6 +32,20 @@ public class Mentor extends Person {
     @CollectionTable(name = "mentor_specializations", joinColumns = @JoinColumn(name = "mentor_id"))
     @Column(name = "specialization")
     private List<String> specializations;
+
+    private Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, 
+                  String professionalSummary, AffiliationType affiliationType, 
+                  List<String> specializations, List<InterestArea> interestArea) {
+        super(fullName, cpf, birthDate, course, interestArea);
+        this.user = user;
+        this.professionalSummary = professionalSummary;
+        this.affiliationType = affiliationType;
+        this.specializations = specializations;
+    }
+
+    public Mentor() {
+    }
+
     public static class Builder {
         private String fullName;
         private String cpf;
@@ -47,55 +61,57 @@ public class Mentor extends Person {
             this.fullName = fullName;
             return this;
         }
+        
         public Builder cpf(String cpf) {
             this.cpf = cpf;
             return this;
         }
+        
         public Builder birthDate(LocalDate birthDate) {
             this.birthDate = birthDate;
             return this;
         }
+        
         public Builder course(Course course) {
             this.course = course;
             return this;
         }
+        
         public Builder user(User user) {
             this.user = user;
             return this;
         }
+        
         public Builder professionalSummary(String professionalSummary) {
             this.professionalSummary = professionalSummary;
             return this;
         }
+        
         public Builder affiliationType(AffiliationType affiliationType) {
             this.affiliationType = affiliationType;
             return this;
         }
+        
         public Builder specializations(List<String> specializations) {
             this.specializations = specializations;
             return this;
         }
+        
         public Builder interestArea(List<InterestArea> interestArea) {
             this.interestArea = interestArea;
             return this;
         }
+        
         public Mentor build() {
-            return new Mentor(fullName, cpf, birthDate, course, user, professionalSummary, affiliationType, specializations, interestArea);
+            return new Mentor(fullName, cpf, birthDate, course, user, professionalSummary, 
+                            affiliationType, specializations, interestArea);
         }
     }
 
-    public Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, String professionalSummary, AffiliationType affiliationType, List<String> specializations, List<InterestArea> interestArea) {
-        super(fullName, cpf, birthDate, course, interestArea);
-        this.user = user;
-        this.professionalSummary = professionalSummary;
-        this.affiliationType = affiliationType;
-        this.specializations = specializations;
+    // Getters and setters
+    public void setId(Long id) { 
+        this.id = id;
     }
-
-    public Mentor(){
-
-    }
-    public void setId(Long id) { this.id = id;}
 
     public Long getId() {
         return this.id;
