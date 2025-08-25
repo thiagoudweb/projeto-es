@@ -45,13 +45,14 @@ public class SessionControllerIntegrationTest {
     private MentoredRepository mentoredRepository;
 
     private SessionDTO buildValidSessionDTO() {
-        // Cria e persiste um Mentor
+ 
         User mentorUser = new User();
         mentorUser.setEmail("mentor" + System.currentTimeMillis() + "@test.com");
         mentorUser.setPassword("senha123");
         mentorUser.setRole(br.edu.ufape.plataforma.mentoria.enums.UserRole.MENTOR);
-        String mentorCpf = String.valueOf(System.currentTimeMillis());
+        String mentorCpf = java.util.UUID.randomUUID().toString().replaceAll("[^0-9]", "");
         if (mentorCpf.length() > 11) mentorCpf = mentorCpf.substring(0, 11);
+        else while (mentorCpf.length() < 11) mentorCpf += "0";
         Mentor mentor = new Mentor.Builder()
                 .fullName("Mentor Teste")
                 .cpf(mentorCpf)
@@ -65,15 +66,15 @@ public class SessionControllerIntegrationTest {
                 .build();
         mentor = mentorRepository.save(mentor);
 
-        // Cria e persiste um Mentored
         User mentoredUser = new User();
         mentoredUser.setEmail("mentored" + System.currentTimeMillis() + "@test.com");
         mentoredUser.setPassword("senha123");
         mentoredUser.setRole(br.edu.ufape.plataforma.mentoria.enums.UserRole.MENTORADO);
+        String mentoredCpf = java.util.UUID.randomUUID().toString().replaceAll("[^0-9]", "");
+        if (mentoredCpf.length() > 11) mentoredCpf = mentoredCpf.substring(0, 11);
+        else while (mentoredCpf.length() < 11) mentoredCpf += "1";
         Mentored mentored = new Mentored();
         mentored.setFullName("Mentorado Teste");
-        String mentoredCpf = String.valueOf(System.currentTimeMillis() + 10000);
-        if (mentoredCpf.length() > 11) mentoredCpf = mentoredCpf.substring(0, 11);
         mentored.setCpf(mentoredCpf);
         mentored.setBirthDate(java.time.LocalDate.of(2000, 1, 1));
         mentored.setCourse(Course.CIENCIA_DA_COMPUTACAO);
@@ -89,10 +90,8 @@ public class SessionControllerIntegrationTest {
         dto.setTime(java.time.LocalTime.of(10, 0));
         dto.setLocation("Sala 101");
         dto.setMeetingTopic("Mentoria de Java");
-        // Adicione outros campos obrigatórios conforme necessário
         return dto;
     }
-
     @Test
     @WithMockUser
     public void testCreateSession() throws Exception {
@@ -116,7 +115,7 @@ public class SessionControllerIntegrationTest {
     @WithMockUser
     public void testGetSessionById_NotFound() throws Exception {
         mockMvc.perform(get("/sessions/{id}", 99999L))
-                .andExpect(status().isNotFound()); // Espera 404 para sessão inexistente
+                .andExpect(status().isNotFound()); // 
     }
 
     @Test
