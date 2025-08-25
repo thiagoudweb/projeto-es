@@ -32,6 +32,57 @@ public class Mentor extends Person {
     @CollectionTable(name = "mentor_specializations", joinColumns = @JoinColumn(name = "mentor_id"))
     @Column(name = "specialization")
     private List<String> specializations;
+    public static class Builder {
+        private String fullName;
+        private String cpf;
+        private LocalDate birthDate;
+        private Course course;
+        private User user;
+        private String professionalSummary;
+        private AffiliationType affiliationType;
+        private List<String> specializations;
+        private List<InterestArea> interestArea;
+
+        public Builder fullName(String fullName) {
+            this.fullName = fullName;
+            return this;
+        }
+        public Builder cpf(String cpf) {
+            this.cpf = cpf;
+            return this;
+        }
+        public Builder birthDate(LocalDate birthDate) {
+            this.birthDate = birthDate;
+            return this;
+        }
+        public Builder course(Course course) {
+            this.course = course;
+            return this;
+        }
+        public Builder user(User user) {
+            this.user = user;
+            return this;
+        }
+        public Builder professionalSummary(String professionalSummary) {
+            this.professionalSummary = professionalSummary;
+            return this;
+        }
+        public Builder affiliationType(AffiliationType affiliationType) {
+            this.affiliationType = affiliationType;
+            return this;
+        }
+        public Builder specializations(List<String> specializations) {
+            this.specializations = specializations;
+            return this;
+        }
+        public Builder interestArea(List<InterestArea> interestArea) {
+            this.interestArea = interestArea;
+            return this;
+        }
+        public Mentor build() {
+            return new Mentor(fullName, cpf, birthDate, course, user, professionalSummary, affiliationType, specializations, interestArea);
+        }
+    }
 
     public Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, String professionalSummary, AffiliationType affiliationType, List<String> specializations, List<InterestArea> interestArea) {
         super(fullName, cpf, birthDate, course, interestArea);
