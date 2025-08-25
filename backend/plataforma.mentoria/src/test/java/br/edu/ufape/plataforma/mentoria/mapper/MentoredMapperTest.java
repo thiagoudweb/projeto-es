@@ -9,17 +9,17 @@ import org.junit.jupiter.api.Test;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 
-public class MentoredMapperTest {
+class MentoredMapperTest {
 
     private MentoredMapper mentoredMapper;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         mentoredMapper = new MentoredMapper();
     }
 
     @Test
-    public void testMentoredToDto() {
+    void testMentoredToDto() {
         Mentored mentored = new Mentored();
         mentored.setId(1L);
         mentored.setCpf("123.456.789-00");
@@ -33,7 +33,7 @@ public class MentoredMapperTest {
     }
 
     @Test
-    public void testDtoToMentored() {
+    void testDtoToMentored() {
         MentoredDTO mentoredDTO = new MentoredDTO();
         mentoredDTO.setId(1L);
         mentoredDTO.setCpf("123.456.789-00");
@@ -46,13 +46,13 @@ public class MentoredMapperTest {
     }
 
     @Test
-    public void testDtoToMentoredWithNull() {
+    void testDtoToMentoredWithNull() {
         Mentored mentored = mentoredMapper.toEntity(null);
         assertNull(mentored);
     }
 
     @Test
-    public void testMentoredToDtoWithNull() {
+    void testMentoredToDtoWithNull() {
         MentoredDTO mentoredDTO = mentoredMapper.toDTO(null);
         assertNull(mentoredDTO);
     }

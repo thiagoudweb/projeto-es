@@ -8,7 +8,7 @@ import java.time.LocalTime;
 
 import br.edu.ufape.plataforma.mentoria.enums.Status;
 
-public class SessionDTOTest {
+class SessionDTOTest {
 
     @Test
     void testNoArgsConstructor() {

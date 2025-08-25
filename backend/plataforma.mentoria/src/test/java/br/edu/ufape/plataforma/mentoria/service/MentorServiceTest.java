@@ -29,7 +29,7 @@ import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class MentorServiceTest {
+class MentorServiceTest {
 
     @InjectMocks
     private MentorService mentorService;
