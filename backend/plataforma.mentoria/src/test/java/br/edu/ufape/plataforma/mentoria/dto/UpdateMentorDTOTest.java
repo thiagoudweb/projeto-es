@@ -11,7 +11,7 @@ import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 
-public class UpdateMentorDTOTest {
+class UpdateMentorDTOTest {
 
     @Test
     void testNoArgsConstructor() {

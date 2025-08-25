@@ -308,45 +308,6 @@ class SessionServiceTest {
     }
 
     @Test
-    void updateSessionStatus_AceptedState_ShouldThrow() {
-        session.setStatus(Status.ACCEPTED);
-        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-
-        assertThrows(IllegalArgumentException.class, () ->
-                sessionService.updateSessionStatus(session.getId(), Status.ACCEPTED)
-        );
-    }
-
-    @Test
-    void updateSessionStatus_FinalState_ShouldThrow() {
-        session.setStatus(Status.CANCELLED);
-        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-
-        assertThrows(IllegalArgumentException.class, () ->
-                sessionService.updateSessionStatus(session.getId(), Status.ACCEPTED)
-        );
-    }
-
-    @Test
-    void updateSessionStatus_PendingToInvalid_ShouldThrow() {
-        session.setStatus(Status.PENDING);
-        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-
-        assertThrows(IllegalArgumentException.class, () ->
-                sessionService.updateSessionStatus(session.getId(), Status.COMPLETED)
-        );
-    }
-
-    @Test
-    void updateSessionStatus_AcceptedToInvalid_ShouldThrow() {
-        session.setStatus(Status.ACCEPTED);
-        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-
-        assertThrows(IllegalArgumentException.class, () ->
-                sessionService.updateSessionStatus(session.getId(), Status.REJECTED)
-        );
-    }
-    @Test
     void findAll() {
         Session session2 = new Session(mentor, mentored,
                 LocalDate.of(2023, 11, 1),

@@ -10,7 +10,7 @@ import java.util.List;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 
-public class UpdateMentoredDTOTest {
+class UpdateMentoredDTOTest {
 
     @Test
     void testNoArgsConstructor() {

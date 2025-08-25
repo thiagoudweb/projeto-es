@@ -21,12 +21,12 @@ public class SessionMapperTest {
     private SessionMapper sessionMapper;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         sessionMapper = new SessionMapper();
     }
 
     @Test
-    public void testSessionToDto() {
+    void testSessionToDto() {
         Session session = new Session();
         session.setId(1L);
         session.setMeetingTopic("Test Meeting");
@@ -57,7 +57,7 @@ public class SessionMapperTest {
     }
 
     @Test
-    public void testDtoToSession() {
+    void testDtoToSession() {
         SessionDTO sessionDTO = new SessionDTO();
         sessionDTO.setMentorId(1L);
         sessionDTO.setMentoredId(2L);
@@ -81,14 +81,14 @@ public class SessionMapperTest {
     }
 
     @Test
-    public void testSessionToDtoWithNullDto() {
+    void testSessionToDtoWithNullDto() {
 
         Session sessionDTO = sessionMapper.toEntity(null);
         assertNull(sessionDTO);
     }
 
     @Test
-    public void testSessionToDtoWithSessionNull() {
+    void testSessionToDtoWithSessionNull() {
 
         SessionDTO sessionDTO = sessionMapper.toDTO(null);
 

@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import br.edu.ufape.plataforma.mentoria.enums.UserRole;
 
-public class UserDTOTest {
+class UserDTOTest {
 
     @Test
     void testNoArgsConstructor() {
