@@ -41,6 +41,10 @@ public class MentorDTO {
     @NotNull(message = "A área de interesse é obrigatória")
     private List<InterestArea> interestArea;
 
+    /**
+     * Construtor padrão necessário para JPA.
+     * Use a classe Builder para criar instâncias.
+     */
     public MentorDTO() {
     }
 

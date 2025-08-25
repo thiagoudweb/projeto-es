@@ -9,9 +9,7 @@ import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import jakarta.persistence.*;
 
 @Entity
-@AssociationOverride(name = "interestArea",
-        joinTable = @JoinTable(name = "mentor_interest_areas",
-                joinColumns = @JoinColumn(name = "mentor_id")))
+@AssociationOverride(name = "interestArea", joinTable = @JoinTable(name = "mentor_interest_areas", joinColumns = @JoinColumn(name = "mentor_id")))
 public class Mentor extends Person {
 
     @Id
@@ -33,6 +31,10 @@ public class Mentor extends Person {
     @Column(name = "specialization")
     private List<String> specializations;
 
+    /**
+     * Construtor padrão necessário para JPA.
+     * Use a classe Builder para criar instâncias.
+     */
     public Mentor() {
     }
 
@@ -51,47 +53,47 @@ public class Mentor extends Person {
             this.fullName = fullName;
             return this;
         }
-        
+
         public Builder cpf(String cpf) {
             this.cpf = cpf;
             return this;
         }
-        
+
         public Builder birthDate(LocalDate birthDate) {
             this.birthDate = birthDate;
             return this;
         }
-        
+
         public Builder course(Course course) {
             this.course = course;
             return this;
         }
-        
+
         public Builder user(User user) {
             this.user = user;
             return this;
         }
-        
+
         public Builder professionalSummary(String professionalSummary) {
             this.professionalSummary = professionalSummary;
             return this;
         }
-        
+
         public Builder affiliationType(AffiliationType affiliationType) {
             this.affiliationType = affiliationType;
             return this;
         }
-        
+
         public Builder specializations(List<String> specializations) {
             this.specializations = specializations;
             return this;
         }
-        
+
         public Builder interestArea(List<InterestArea> interestArea) {
             this.interestArea = interestArea;
             return this;
         }
-        
+
         public Mentor build() {
             Mentor mentor = new Mentor();
             mentor.setFullName(fullName);
@@ -99,18 +101,18 @@ public class Mentor extends Person {
             mentor.setBirthDate(birthDate);
             mentor.setCourse(course);
             mentor.setInterestArea(interestArea);
-            
+
             mentor.setUser(user);
             mentor.setProfessionalSummary(professionalSummary);
             mentor.setAffiliationType(affiliationType);
             mentor.setSpecializations(specializations);
-            
+
             return mentor;
         }
     }
 
     // Getters and setters
-    public void setId(Long id) { 
+    public void setId(Long id) {
         this.id = id;
     }
 
