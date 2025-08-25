@@ -20,17 +20,14 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.security.test.context.support.WithMockUser;
-import java.time.LocalDateTime;
-import java.util.Collections;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class SessionControllerIntegrationTest {
+class SessionControllerIntegrationTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -73,7 +70,9 @@ public class SessionControllerIntegrationTest {
         mentoredUser.setRole(br.edu.ufape.plataforma.mentoria.enums.UserRole.MENTORADO);
         String mentoredCpf = java.util.UUID.randomUUID().toString().replaceAll("[^0-9]", "");
         if (mentoredCpf.length() > 11) mentoredCpf = mentoredCpf.substring(0, 11);
-        else while (mentoredCpf.length() < 11) mentoredCpf += "1";
+        StringBuilder sb = new StringBuilder(mentoredCpf);
+        while (sb.length() < 11) sb.append("1");
+        mentoredCpf = sb.toString();
         Mentored mentored = new Mentored();
         mentored.setFullName("Mentorado Teste");
         mentored.setCpf(mentoredCpf);
@@ -96,7 +95,7 @@ public class SessionControllerIntegrationTest {
     }
     @Test
     @WithMockUser
-    public void testCreateSession() throws Exception {
+    void testCreateSession() throws Exception {
         SessionDTO sessionDTO = buildValidSessionDTO();
         mockMvc.perform(post("/sessions")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -107,7 +106,7 @@ public class SessionControllerIntegrationTest {
 
     @Test
     @WithMockUser
-    public void testGetAllSessions() throws Exception {
+    void testGetAllSessions() throws Exception {
         mockMvc.perform(get("/sessions"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -115,14 +114,14 @@ public class SessionControllerIntegrationTest {
 
     @Test
     @WithMockUser
-    public void testGetSessionById_NotFound() throws Exception {
+    void testGetSessionById_NotFound() throws Exception {
         mockMvc.perform(get("/sessions/{id}", 99999L))
                 .andExpect(status().isNotFound()); // Espera 404 para sessão inexistente
     }
 
     @Test
     @WithMockUser
-    public void testUpdateSession() throws Exception {
+    void testUpdateSession() throws Exception {
         SessionDTO sessionDTO = buildValidSessionDTO();
         Session newSession = sessionService.createSession(sessionDTO);
         SessionDTO updatedDTO = sessionMapper.toDTO(newSession);
@@ -138,7 +137,7 @@ public class SessionControllerIntegrationTest {
 
     @Test
     @WithMockUser
-    public void testDeleteSession() throws Exception {
+    void testDeleteSession() throws Exception {
         SessionDTO sessionDTO = buildValidSessionDTO();
         Session newSession = sessionService.createSession(sessionDTO);
         mockMvc.perform(delete("/sessions/{id}", newSession.getId()))
@@ -147,7 +146,7 @@ public class SessionControllerIntegrationTest {
 
     @Test
     @WithMockUser
-    public void testUpdateSessionStatus() throws Exception {
+    void testUpdateSessionStatus() throws Exception {
         SessionDTO sessionDTO = buildValidSessionDTO();
         Session newSession = sessionService.createSession(sessionDTO);
         mockMvc.perform(patch("/sessions/{id}/status", newSession.getId())

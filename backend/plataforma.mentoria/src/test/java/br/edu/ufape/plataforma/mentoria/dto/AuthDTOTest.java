@@ -1,6 +1,5 @@
 package br.edu.ufape.plataforma.mentoria.dto;
 
-// import jakarta.validation.constraints.NotBlank;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
