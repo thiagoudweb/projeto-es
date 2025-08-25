@@ -97,7 +97,13 @@ public class SessionService implements SessionServiceInterface {
             if (newStatus != Status.COMPLETED && newStatus != Status.CANCELLED) {
                 throw new IllegalArgumentException("Sessão aceita só pode ser Concluída ou Cancelada.");
             }
-        } else if (currentStatus == Status.REJECTED || currentStatus == Status.COMPLETED || currentStatus == Status.CANCELLED) {
+        } else if (currentStatus == Status.REJECTED) {
+            throw new IllegalArgumentException(
+                    "A sessão já está em um estado final (" + currentStatus + ") e não pode ser alterada.");
+        } else if (currentStatus == Status.CANCELLED) {
+            throw new IllegalArgumentException(
+                    "A sessão já está em um estado final (" + currentStatus + ") e não pode ser alterada.");
+        } else if (currentStatus == Status.COMPLETED) {
             throw new IllegalArgumentException(
                     "A sessão já está em um estado final (" + currentStatus + ") e não pode ser alterada.");
         }
