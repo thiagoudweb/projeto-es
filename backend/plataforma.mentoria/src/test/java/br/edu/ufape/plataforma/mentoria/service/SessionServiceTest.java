@@ -308,12 +308,21 @@ class SessionServiceTest {
         session.setStatus(Status.PENDING);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
         assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.PENDING)
+        );
+    }
+
+    @Test
+    void updateSessionStatus_PendingToCOMPLETED_ShouldThrow() {
+        session.setStatus(Status.PENDING);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        assertThrows(IllegalArgumentException.class, () ->
                 sessionService.updateSessionStatus(session.getId(), Status.COMPLETED)
         );
     }
 
     @Test
-    void updateSessionStatus_AcceptedToInvalid_ShouldThrow() {
+    void updateSessionStatus_AcceptedToREJECTED_ShouldThrow() {
         session.setStatus(Status.ACCEPTED);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
         assertThrows(IllegalArgumentException.class, () ->
@@ -322,8 +331,17 @@ class SessionServiceTest {
     }
 
     @Test
-    void updateSessionStatus_FinalStatus_ShouldThrow() {
-        session.setStatus(Status.REJECTED);
+    void updateSessionStatus_AcceptedToInvalid_ShouldThrow() {
+        session.setStatus(Status.ACCEPTED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.ACCEPTED)
+        );
+    }
+
+    @Test
+    void updateSessionStatus_AcceptedToPENDING_ShouldThrow() {
+        session.setStatus(Status.ACCEPTED);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
         assertThrows(IllegalArgumentException.class, () ->
                 sessionService.updateSessionStatus(session.getId(), Status.PENDING)
@@ -342,6 +360,15 @@ class SessionServiceTest {
     @Test
     void updateSessionStatus_CancelledStatus_ShouldThrow() {
         session.setStatus(Status.CANCELLED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.PENDING)
+        );
+    }
+
+    @Test
+    void updateSessionStatus_RejectedStatus_ShouldThrow() {
+        session.setStatus(Status.REJECTED);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
         assertThrows(IllegalArgumentException.class, () ->
                 sessionService.updateSessionStatus(session.getId(), Status.PENDING)
