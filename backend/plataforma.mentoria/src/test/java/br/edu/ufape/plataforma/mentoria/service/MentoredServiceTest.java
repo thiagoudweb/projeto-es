@@ -33,7 +33,7 @@ import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class MentoredServiceTest {
+class MentoredServiceTest {
 
     private MentoredService mentoredService;
 
@@ -53,7 +53,7 @@ public class MentoredServiceTest {
     private Authentication authentication;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
         SecurityContextHolder.clearContext();
         
@@ -62,7 +62,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testGetAllMentored() {
+    void testGetAllMentored() {
         Mentored m1 = new Mentored();
         Mentored m2 = new Mentored();
         List<Mentored> mentored = Arrays.asList(m1, m2);
@@ -75,7 +75,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testCreateMentored_Success() {
+    void testCreateMentored_Success() {
         // Arrange
         MentoredDTO dto = new MentoredDTO();
         dto.setCpf("12345678901");
@@ -115,7 +115,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testCreateMentored_CpfAlreadyExists() {
+    void testCreateMentored_CpfAlreadyExists() {
         MentoredDTO dto = new MentoredDTO();
         Mentored mentored = new Mentored();
         mentored.setCpf("123");
@@ -133,7 +133,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testUpdateMentored_WithMentoredObject_Success() {
+    void testUpdateMentored_WithMentoredObject_Success() {
         Mentored mentored = new Mentored();
         mentored.setId(1L);
         when(mentoredRepository.existsById(1L)).thenReturn(true);
@@ -144,7 +144,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testUpdateMentored_WithMentoredObject_NotFound() {
+    void testUpdateMentored_WithMentoredObject_NotFound() {
         Mentored mentored = new Mentored();
         when(mentoredRepository.existsById(1L)).thenReturn(false);
         
@@ -154,7 +154,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testUpdateMentored_WithDTO_Success() {
+    void testUpdateMentored_WithDTO_Success() {
         MentoredDTO dto = new MentoredDTO();
         Mentored existing = new Mentored();
         existing.setUser(new User());
@@ -172,7 +172,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testUpdateMentored_WithUpdateMentoredDTO_Success() {
+    void testUpdateMentored_WithUpdateMentoredDTO_Success() {
         UpdateMentoredDTO dto = new UpdateMentoredDTO();
         dto.setFullName("New Name");
         dto.setBirthDate(java.time.LocalDate.now());
@@ -193,7 +193,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testUpdateMentored_WithUpdateMentoredDTO_NullValues() {
+    void testUpdateMentored_WithUpdateMentoredDTO_NullValues() {
         UpdateMentoredDTO dto = new UpdateMentoredDTO();
         dto.setFullName(null);
         dto.setBirthDate(null);
@@ -218,7 +218,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testDeleteById_Success() {
+    void testDeleteById_Success() {
         when(mentoredRepository.existsById(1L)).thenReturn(true);
         doNothing().when(mentoredRepository).deleteById(1L);
         assertDoesNotThrow(() -> mentoredService.deleteById(1L));
@@ -226,7 +226,7 @@ public class MentoredServiceTest {
     }
 
     @Test
-    public void testDeleteById_NotFound() {
+    void testDeleteById_NotFound() {
         when(mentoredRepository.existsById(1L)).thenReturn(false);
         
         EntityNotFoundException thrown = assertThrows(EntityNotFoundException.class, 

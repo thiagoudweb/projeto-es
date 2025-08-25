@@ -15,12 +15,12 @@ public class MentorMapperTest {
     private MentorMapper mentorMapper;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         mentorMapper = new MentorMapper();
     }
 
     @Test
-    public void testMentorToDto() {
+    void testMentorToDto() {
         Mentor mentor = new Mentor();
         mentor.setId(1L);
         mentor.setProfessionalSummary("Experienced software engineer");
@@ -35,7 +35,7 @@ public class MentorMapperTest {
     }
 
     @Test
-    public void testDtoToMentor() {
+    void testDtoToMentor() {
         MentorDTO mentorDTO = new MentorDTO();
         mentorDTO.setProfessionalSummary("Experienced software engineer");
         mentorDTO.setAffiliationType(AffiliationType.GESTOR);
@@ -47,13 +47,13 @@ public class MentorMapperTest {
     }
 
     @Test
-    public void testDtoToMentorWithNull() {
+    void testDtoToMentorWithNull() {
         Mentor mentor = mentorMapper.toEntity(null);
         assertNull(mentor);
     }
 
     @Test
-    public void testMentorToDtoWithNull() {
+    void testMentorToDtoWithNull() {
         MentorDTO mentorDTO = mentorMapper.toDTO(null);
         assertNull(mentorDTO);
     }
