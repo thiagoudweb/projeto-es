@@ -431,6 +431,20 @@ class SessionServiceTest {
                 sessionService.updateSessionStatus(session.getId(), Status.CANCELLED)
         );
     }
+
+    @Test
+    void updateSessionStatus_CompletedToAnyStatus_ShouldThrow() {
+        session.setStatus(Status.COMPLETED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+
+        for (Status newStatus : Status.values()) {
+            final Status statusToTest = newStatus;
+            assertThrows(IllegalArgumentException.class, () ->
+                    sessionService.updateSessionStatus(session.getId(), statusToTest)
+            );
+        }
+    }
+
     @Test
     void updateSessionStatus_CancelledToCancelled_ShouldThrow() {
         session.setStatus(Status.CANCELLED);
