@@ -10,6 +10,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
+import br.edu.ufape.plataforma.mentoria.exceptions.TokenCreationException;
 import br.edu.ufape.plataforma.mentoria.model.User;
 
 @Service
@@ -30,7 +31,7 @@ public class TokenService {
                 .sign(algorithm);
             return token;
         } catch (IllegalArgumentException | JWTCreationException e) {
-            throw new RuntimeException("Error creating token", e);
+            throw new TokenCreationException("Error creating token", e);
         }
     }
 
