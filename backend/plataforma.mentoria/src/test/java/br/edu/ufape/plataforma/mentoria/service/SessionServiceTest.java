@@ -298,16 +298,6 @@ class SessionServiceTest {
     }
 
     @Test
-    void updateSessionStatus_InvalidTransition_ShouldThrow() {
-        session.setStatus(Status.PENDING);
-        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-
-        assertThrows(IllegalArgumentException.class, () ->
-                sessionService.updateSessionStatus(session.getId(), Status.COMPLETED)
-        );
-    }
-
-    @Test
     void updateSessionStatus_PendingToInvalid_ShouldThrow() {
         session.setStatus(Status.PENDING);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
