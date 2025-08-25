@@ -3,7 +3,6 @@ package br.edu.ufape.plataforma.mentoria.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
@@ -17,7 +16,6 @@ import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
 import br.edu.ufape.plataforma.mentoria.service.contract.SessionServiceInterface;
-import org.springframework.stereotype.Service;
 
 @Service
 public class SessionService implements SessionServiceInterface {

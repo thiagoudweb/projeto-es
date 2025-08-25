@@ -12,12 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.security.test.context.support.WithMockUser;
 import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.enums.UserRole;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
-import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -147,8 +144,6 @@ public class MentorControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("sucesso")));
     }
-    // ...existing code...
-
       @Test
     void shouldGetMentorById() throws Exception {
         String email = createUniqueUser();
