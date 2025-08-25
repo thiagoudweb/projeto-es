@@ -307,7 +307,6 @@ class SessionServiceTest {
     void updateSessionStatus_PendingToInvalid_ShouldThrow() {
         session.setStatus(Status.PENDING);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-        // Tenta mudar de PENDING para COMPLETED (não permitido)
         assertThrows(IllegalArgumentException.class, () ->
                 sessionService.updateSessionStatus(session.getId(), Status.COMPLETED)
         );
@@ -317,7 +316,6 @@ class SessionServiceTest {
     void updateSessionStatus_AcceptedToInvalid_ShouldThrow() {
         session.setStatus(Status.ACCEPTED);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-        // Tenta mudar de ACCEPTED para REJECTED (não permitido)
         assertThrows(IllegalArgumentException.class, () ->
                 sessionService.updateSessionStatus(session.getId(), Status.REJECTED)
         );
@@ -327,7 +325,24 @@ class SessionServiceTest {
     void updateSessionStatus_FinalStatus_ShouldThrow() {
         session.setStatus(Status.REJECTED);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-        // Tenta mudar de REJECTED para qualquer outro status
+        assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.PENDING)
+        );
+    }
+
+    @Test
+    void updateSessionStatus_CompletedStatus_ShouldThrow() {
+        session.setStatus(Status.COMPLETED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.ACCEPTED)
+        );
+    }
+
+    @Test
+    void updateSessionStatus_CancelledStatus_ShouldThrow() {
+        session.setStatus(Status.CANCELLED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
         assertThrows(IllegalArgumentException.class, () ->
                 sessionService.updateSessionStatus(session.getId(), Status.PENDING)
         );
