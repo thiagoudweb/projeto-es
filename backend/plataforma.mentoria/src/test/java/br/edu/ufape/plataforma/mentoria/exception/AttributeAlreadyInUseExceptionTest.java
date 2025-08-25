@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
 
-public class AttributeAlreadyInUseExceptionTest {
+class AttributeAlreadyInUseExceptionTest {
 
     @Test
     void testConstructorWithAttributeNameAndEntityClass() {

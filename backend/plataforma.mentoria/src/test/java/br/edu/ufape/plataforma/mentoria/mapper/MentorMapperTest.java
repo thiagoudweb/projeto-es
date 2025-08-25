@@ -10,7 +10,7 @@ import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
 
-public class MentorMapperTest {
+class MentorMapperTest {
 
     private MentorMapper mentorMapper;
 

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 
-public class EntityNotFoundExceptionTest {
+class EntityNotFoundExceptionTest {
 
     @Test
     void testConstructorWithEntityClassAndId() {
