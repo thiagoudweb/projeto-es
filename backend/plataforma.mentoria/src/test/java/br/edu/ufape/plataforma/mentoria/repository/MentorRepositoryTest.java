@@ -33,16 +33,17 @@ class MentorRepositoryTest {
         lista.add("Engenharia de Software");
 
         // Dado: criar e salvar um Mentor com interesse em ENGENHARIA
-        Mentor mentor = new Mentor();
-        mentor.setFullName("Maria Souza");
-        mentor.setCpf("12345678900");
-        mentor.setSpecializations(lista);
-        mentor.setAffiliationType(AffiliationType.GESTOR);
-        mentor.setBirthDate(LocalDate.of(1990, 1, 1));
-        mentor.setProfessionalSummary("Professional");
-        mentor.setUser(user);
-        mentor.setInterestArea(List.of(InterestArea.CIBERSEGURANCA));
-        mentor.setCourse(Course.ADMINISTRACAO);
+        Mentor mentor = new Mentor.Builder()
+            .fullName("Maria Souza")
+            .cpf("12345678900")
+            .specializations(lista)
+            .affiliationType(AffiliationType.GESTOR)
+            .birthDate(LocalDate.of(1990, 1, 1))
+            .professionalSummary("Professional")
+            .user(user)
+            .interestArea(List.of(InterestArea.CIBERSEGURANCA))
+            .course(Course.ADMINISTRACAO)
+            .build();
         mentorRepository.save(mentor);
 
         /* --------------------------------------------------------------------------------------- */
@@ -52,16 +53,17 @@ class MentorRepositoryTest {
         user2.setRole(UserRole.MENTOR);
 
         // Dado: criar e salvar um Mentor com interesse em ENGENHARIA
-        Mentor mentor2 = new Mentor();
-        mentor2.setFullName("Maria Souza");
-        mentor2.setCpf("12345678901");
-        mentor2.setSpecializations(lista);
-        mentor2.setAffiliationType(AffiliationType.GESTOR);
-        mentor2.setBirthDate(LocalDate.of(1990, 1, 1));
-        mentor2.setProfessionalSummary("Professional");
-        mentor2.setUser(user2);
-        mentor2.setInterestArea(List.of(InterestArea.CIBERSEGURANCA));
-        mentor2.setCourse(Course.ADMINISTRACAO);
+        Mentor mentor2 = new Mentor.Builder()
+            .fullName("Maria Souza")
+            .cpf("12345678901")
+            .specializations(lista)
+            .affiliationType(AffiliationType.GESTOR)
+            .birthDate(LocalDate.of(1990, 1, 1))
+            .professionalSummary("Professional")
+            .user(user2)
+            .interestArea(List.of(InterestArea.CIBERSEGURANCA))
+            .course(Course.ADMINISTRACAO)
+            .build();
 
         mentorRepository.save(mentor2);
 

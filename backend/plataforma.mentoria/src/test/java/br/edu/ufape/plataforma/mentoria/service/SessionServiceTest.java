@@ -59,11 +59,17 @@ class SessionServiceTest {
 
         User guest = new User("guest@gmail.com", "Joestar@123", UserRole.MENTOR);
         guest.setId(2L);
-        mentor = new Mentor("Guest Mentor", "98765432100",
-                LocalDate.of(1990, 1, 1),
-                Course.ADMINISTRACAO, guest,
-                "Mentor profissional", AffiliationType.GESTOR,
-                List.of("Gestão de Projetos"), List.of(InterestArea.CIBERSEGURANCA));
+        mentor = new Mentor.Builder()
+                .fullName("Guest Mentor")
+                .cpf("98765432100")
+                .birthDate(LocalDate.of(1990, 1, 1))
+                .course(Course.ADMINISTRACAO)
+                .user(guest)
+                .professionalSummary("Mentor profissional")
+                .affiliationType(AffiliationType.GESTOR)
+                .specializations(List.of("Gestão de Projetos"))
+                .interestArea(List.of(InterestArea.CIBERSEGURANCA))
+                .build();
         mentor.setId(2L);
 
         session = new Session(mentor, mentored,
