@@ -1,7 +1,6 @@
 package br.edu.ufape.plataforma.mentoria.service;
 
 import br.edu.ufape.plataforma.mentoria.service.contract.MentorServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -17,17 +16,20 @@ import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 
 @Service
 public class MentorService implements MentorServiceInterface {
-    @Autowired
-    private MentorRepository mentorRepository;
+    private final MentorRepository mentorRepository;
+    private final MentorMapper mentorMapper;
+    private final UserRepository userRepository;
+    private final MentorSearchService mentorSearchService;
 
-    @Autowired
-    private MentorMapper mentorMapper;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private MentorSearchService mentorSearchService;
+    public MentorService(MentorRepository mentorRepository,
+                        MentorMapper mentorMapper,
+                        UserRepository userRepository,
+                        MentorSearchService mentorSearchService) {
+        this.mentorRepository = mentorRepository;
+        this.mentorMapper = mentorMapper;
+        this.userRepository = userRepository;
+        this.mentorSearchService = mentorSearchService;
+    }
 
     @Override
     public MentorDTO createMentor(MentorDTO mentorDTO) {
