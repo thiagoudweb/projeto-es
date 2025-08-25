@@ -117,7 +117,7 @@ class SessionServiceTest {
     @Test
     void createSession_MentoredNotFound_ShouldThrow() {
         when(mentorRepository.findById(sessionDTO.getMentorId())).thenReturn(Optional.of(mentor));
-        when(mentoredRepository.findById(sessionDTO.getMentoredID())).thenReturn(Optional.empty());
+        when(mentoredRepository.findById(sessionDTO.getMentoredId())).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> sessionService.createSession(sessionDTO));
     }
@@ -183,7 +183,7 @@ class SessionServiceTest {
     @Test
     void findSessionHistoryBetweenUsers_MentoredNotFound_ShouldThrow() {
         when(mentorRepository.findById(sessionDTO.getMentorId())).thenReturn(Optional.of(mentor));
-        when(mentoredRepository.findById(sessionDTO.getMentoredID())).thenReturn(Optional.empty());
+        when(mentoredRepository.findById(sessionDTO.getMentoredId())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> sessionService.findSessionHistoryBetweenUsers(mentor.getId(), mentored.getId()));
     }
 
@@ -237,7 +237,7 @@ class SessionServiceTest {
 
     @Test
     void findSessionHistoryMentored_MentoredNotFound_ShouldThrow() {
-        when(mentoredRepository.findById(sessionDTO.getMentoredID())).thenReturn(Optional.empty());
+        when(mentoredRepository.findById(sessionDTO.getMentoredId())).thenReturn(Optional.empty());
         assertThrows(EntityNotFoundException.class, () -> sessionService.findSessionHistoryMentored(mentored.getId()));
     }
 
