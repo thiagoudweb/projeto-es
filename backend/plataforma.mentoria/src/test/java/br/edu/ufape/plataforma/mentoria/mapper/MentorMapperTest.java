@@ -21,7 +21,7 @@ class MentorMapperTest {
 
     @Test
     void testMentorToDto() {
-        Mentor mentor = new Mentor();
+        Mentor mentor = new Mentor.Builder().build();
         mentor.setId(1L);
         mentor.setProfessionalSummary("Experienced software engineer");
         AffiliationType affiliationType = AffiliationType.GESTOR;
@@ -36,7 +36,7 @@ class MentorMapperTest {
 
     @Test
     void testDtoToMentor() {
-        MentorDTO mentorDTO = new MentorDTO();
+        MentorDTO mentorDTO = new MentorDTO.Builder().build();
         mentorDTO.setProfessionalSummary("Experienced software engineer");
         mentorDTO.setAffiliationType(AffiliationType.GESTOR);
 

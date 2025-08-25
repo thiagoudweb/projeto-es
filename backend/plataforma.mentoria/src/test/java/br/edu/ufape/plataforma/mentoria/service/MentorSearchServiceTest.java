@@ -39,7 +39,7 @@ class MentorSearchServiceTest {
 
     @Test
     void testGetMentorByIdFound() {
-        Mentor mentor = new Mentor();
+        Mentor mentor = new Mentor.Builder().build();
         when(mentorRepository.findById(1L)).thenReturn(Optional.of(mentor));
         Mentor result = mentorSearchService.getMentorById(1L);
         assertEquals(mentor, result);
@@ -53,8 +53,8 @@ class MentorSearchServiceTest {
 
     @Test
     void testGetMentorDetailsDTO() {
-        Mentor mentor = new Mentor();
-        MentorDTO dto = new MentorDTO();
+        Mentor mentor = new Mentor.Builder().build();
+        MentorDTO dto = new MentorDTO.Builder().build();
         when(mentorRepository.findById(1L)).thenReturn(Optional.of(mentor));
         when(mentorMapper.toDTO(mentor)).thenReturn(dto);
         MentorDTO result = mentorSearchService.getMentorDetailsDTO(1L);
@@ -63,8 +63,8 @@ class MentorSearchServiceTest {
 
     @Test
     void testGetAllMentors() {
-        Mentor mentor1 = new Mentor();
-        Mentor mentor2 = new Mentor();
+        Mentor mentor1 = new Mentor.Builder().build();
+        Mentor mentor2 = new Mentor.Builder().build();
         List<Mentor> mentors = Arrays.asList(mentor1, mentor2);
         when(mentorRepository.findAll()).thenReturn(mentors);
         List<Mentor> result = mentorSearchService.getAllMentors();
@@ -77,8 +77,8 @@ class MentorSearchServiceTest {
         when(auth.getName()).thenReturn("user@gmail.com");
         SecurityContextHolder.getContext().setAuthentication(auth);
 
-        Mentor mentor = new Mentor();
-        MentorDTO dto = new MentorDTO();
+        Mentor mentor = new Mentor.Builder().build();
+        MentorDTO dto = new MentorDTO.Builder().build();
         when(mentorRepository.findByUserEmail("user@gmail.com")).thenReturn(Optional.of(mentor));
         when(mentorMapper.toDTO(mentor)).thenReturn(dto);
 
@@ -98,11 +98,11 @@ class MentorSearchServiceTest {
 
     @Test
     void testFindByInterestAreaAndSpecializations() {
-        Mentor mentor1 = new Mentor();
-        Mentor mentor2 = new Mentor();
+        Mentor mentor1 = new Mentor.Builder().build();
+        Mentor mentor2 = new Mentor.Builder().build();
+        MentorDTO dto1 = new MentorDTO.Builder().build();
+        MentorDTO dto2 = new MentorDTO.Builder().build();
         List<Mentor> mentors = Arrays.asList(mentor1, mentor2);
-        MentorDTO dto1 = new MentorDTO();
-        MentorDTO dto2 = new MentorDTO();
 
         when(mentorRepository.findByInterestAreaAndSpecializationsContaining(InterestArea.CIBERSEGURANCA, "Java"))
                 .thenReturn(mentors);
