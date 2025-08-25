@@ -1,10 +1,9 @@
-  
 package br.edu.ufape.plataforma.mentoria.controller;
+import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.enums.Course;
-import br.edu.ufape.plataforma.mentoria.enums.AffiliationType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
