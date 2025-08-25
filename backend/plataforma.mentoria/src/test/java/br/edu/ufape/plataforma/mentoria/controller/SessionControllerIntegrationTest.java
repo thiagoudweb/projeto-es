@@ -49,7 +49,9 @@ class SessionControllerIntegrationTest {
         mentorUser.setRole(br.edu.ufape.plataforma.mentoria.enums.UserRole.MENTOR);
         String mentorCpf = java.util.UUID.randomUUID().toString().replaceAll("[^0-9]", "");
         if (mentorCpf.length() > 11) mentorCpf = mentorCpf.substring(0, 11);
-        else while (mentorCpf.length() < 11) mentorCpf += "0";
+        StringBuilder sbMentorCpf = new StringBuilder(mentorCpf);
+        sbMentorCpf.append("0");
+        mentorCpf = sbMentorCpf.toString();
         Mentor mentor = new Mentor.Builder()
                 .fullName("Mentor Teste")
                 .cpf(mentorCpf)
