@@ -127,6 +127,8 @@ public class SessionControllerIntegrationTest {
         Session newSession = sessionService.createSession(sessionDTO);
         SessionDTO updatedDTO = sessionMapper.toDTO(newSession);
         updatedDTO.setStatus(Status.COMPLETED);
+    
+        updatedDTO.setMentoredId(newSession.getMentored().getId());
         mockMvc.perform(put("/sessions/{id}", newSession.getId())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(updatedDTO)))
