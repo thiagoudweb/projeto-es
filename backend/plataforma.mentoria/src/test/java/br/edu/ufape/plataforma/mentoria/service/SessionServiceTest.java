@@ -291,19 +291,6 @@ class SessionServiceTest {
     }
 
     @Test
-    void updateSessionStatus_AcceptedToCompleted() {
-        session.setStatus(Status.ACCEPTED);
-        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-        when(sessionRepository.save(any(Session.class))).thenReturn(session);
-        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
-
-        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.COMPLETED);
-
-        assertNotNull(result);
-        verify(sessionRepository).save(session);
-    }
-
-    @Test
     void updateSessionStatus_PendingToRejected() {
         session.setStatus(Status.PENDING);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
@@ -330,19 +317,6 @@ class SessionServiceTest {
     }
 
     @Test
-    void updateSessionStatus_AcceptedToCancelled() {
-        session.setStatus(Status.ACCEPTED);
-        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-        when(sessionRepository.save(any(Session.class))).thenReturn(session);
-        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
-
-        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.CANCELLED);
-
-        assertNotNull(result);
-        verify(sessionRepository).save(session);
-    }
-
-    @Test
     void updateSessionStatus_PendingToInvalid_ShouldThrow() {
         session.setStatus(Status.PENDING);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
@@ -358,6 +332,32 @@ class SessionServiceTest {
         assertThrows(IllegalArgumentException.class, () ->
                 sessionService.updateSessionStatus(session.getId(), Status.COMPLETED)
         );
+    }
+
+    @Test
+    void updateSessionStatus_AcceptedToCompleted() {
+        session.setStatus(Status.ACCEPTED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
+
+        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.COMPLETED);
+
+        assertNotNull(result);
+        verify(sessionRepository).save(session);
+    }
+
+    @Test
+    void updateSessionStatus_AcceptedToCancelled() {
+        session.setStatus(Status.ACCEPTED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
+
+        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.CANCELLED);
+
+        assertNotNull(result);
+        verify(sessionRepository).save(session);
     }
 
     @Test
@@ -399,6 +399,15 @@ class SessionServiceTest {
     @Test
     void updateSessionStatus_CancelledStatus_ShouldThrow() {
         session.setStatus(Status.CANCELLED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.PENDING)
+        );
+    }
+
+    @Test
+    void updateSessionStatus_REJECTEDStatus_ShouldThrow() {
+        session.setStatus(Status.REJECTED);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
         assertThrows(IllegalArgumentException.class, () ->
                 sessionService.updateSessionStatus(session.getId(), Status.PENDING)
