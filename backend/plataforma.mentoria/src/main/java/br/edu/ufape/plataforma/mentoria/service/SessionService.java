@@ -100,9 +100,7 @@ public class SessionService implements SessionServiceInterface {
                     throw new IllegalArgumentException("Sessão aceita só pode ser Concluída ou Cancelada.");
                 }
                 break;
-            case REJECTED:
-            case COMPLETED:
-            case CANCELLED:
+            case REJECTED, COMPLETED, CANCELLED:
                 throw new IllegalArgumentException(
                         "A sessão já está em um estado final (" + currentStatus + ") e não pode ser alterada.");
         }

@@ -59,8 +59,7 @@ class MentorControllerIntegrationTest {
     private String generateUniqueCpf(String prefix) {
         String millis = String.valueOf(System.currentTimeMillis());
         // Garante que o CPF tenha no máximo 14 caracteres
-        String cpf = prefix + millis.substring(millis.length() - (14 - prefix.length()));
-        return cpf;
+        return prefix + millis.substring(millis.length() - (14 - prefix.length()));
     }
 
     @Test

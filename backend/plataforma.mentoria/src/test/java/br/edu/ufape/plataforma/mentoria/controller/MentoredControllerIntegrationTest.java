@@ -54,8 +54,7 @@ class MentoredControllerIntegrationTest {
 
     private String generateUniqueCpf(String prefix) {
         String millis = String.valueOf(System.currentTimeMillis());
-        String cpf = prefix + millis.substring(millis.length() - (14 - prefix.length()));
-        return cpf;
+        return prefix + millis.substring(millis.length() - (14 - prefix.length()));
     }
 
     @Test
