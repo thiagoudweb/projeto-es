@@ -95,6 +95,32 @@ class SessionServiceTest {
         assertEquals(session.getMeetingTopic(), createdSession.getMeetingTopic());
     }
 
+    @Test
+    void createSession_SameMentorAndMentored_ShouldThrow() {
+        mentored.setId(1L);
+        mentor.setId(1L);
+        sessionDTO.setMentorId(1L);
+        sessionDTO.setMentoredId(1L);
+
+        when(mentorRepository.findById(1L)).thenReturn(Optional.of(mentor));
+        when(mentoredRepository.findById(1L)).thenReturn(Optional.of(mentored));
+
+        assertThrows(IllegalArgumentException.class, () -> sessionService.createSession(sessionDTO));
+    }
+
+    @Test
+    void createSession_MentorNotFound_ShouldThrow() {
+        when(mentorRepository.findById(sessionDTO.getMentorId())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> sessionService.createSession(sessionDTO));
+    }
+
+    @Test
+    void createSession_MentoredNotFound_ShouldThrow() {
+        when(mentorRepository.findById(sessionDTO.getMentorId())).thenReturn(Optional.of(mentor));
+        when(mentoredRepository.findById(sessionDTO.getMentoredID())).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, () -> sessionService.createSession(sessionDTO));
+    }
 
     @Test
     void getSessionById() {
@@ -151,7 +177,20 @@ class SessionServiceTest {
         assertNotNull(sessionHistory);
         assertFalse(sessionHistory.isEmpty());
         assertEquals(1, sessionHistory.size());
-        assertEquals(sessionDTO, sessionHistory.get(0));
+        assertEquals(sessionDTO, sessionHistory.getFirst());
+    }
+
+    @Test
+    void findSessionHistoryBetweenUsers_MentoredNotFound_ShouldThrow() {
+        when(mentorRepository.findById(sessionDTO.getMentorId())).thenReturn(Optional.of(mentor));
+        when(mentoredRepository.findById(sessionDTO.getMentoredID())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> sessionService.findSessionHistoryBetweenUsers(mentor.getId(), mentored.getId()));
+    }
+
+    @Test
+    void findSessionHistoryBetweenUsers_MentorNotFound_ShouldThrow() {
+        when(mentorRepository.findById(sessionDTO.getMentorId())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> sessionService.findSessionHistoryBetweenUsers(mentor.getId(), mentored.getId()));
     }
 
     @Test
@@ -169,10 +208,16 @@ class SessionServiceTest {
         assertNotNull(sessionHistoryUser);
         assertFalse(sessionHistoryUser.isEmpty());
         assertEquals(1, sessionHistoryUser.size());
-        assertEquals(sessionDTO, sessionHistoryUser.get(0));
+        assertEquals(sessionDTO, sessionHistoryUser.getFirst());
     }
 
-   @Test
+    @Test
+    void findSessionHistoryMentor_MentorNotFound_ShouldThrow() {
+        when(mentorRepository.findById(sessionDTO.getMentorId())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> sessionService.findSessionHistoryMentor(mentor.getId()));
+    }
+
+    @Test
     void findSessionHistoryMentored() {
        when(mentoredRepository.findById(mentored.getId())).thenReturn(Optional.of(mentored));
 
@@ -187,7 +232,13 @@ class SessionServiceTest {
        assertNotNull(sessionHistoryUser);
         assertFalse(sessionHistoryUser.isEmpty());
         assertEquals(1, sessionHistoryUser.size());
-        assertEquals(sessionDTO, sessionHistoryUser.get(0));
+        assertEquals(sessionDTO, sessionHistoryUser.getFirst());
+    }
+
+    @Test
+    void findSessionHistoryMentored_MentoredNotFound_ShouldThrow() {
+        when(mentoredRepository.findById(sessionDTO.getMentoredID())).thenReturn(Optional.empty());
+        assertThrows(EntityNotFoundException.class, () -> sessionService.findSessionHistoryMentored(mentored.getId()));
     }
 
     @Test
@@ -257,6 +308,16 @@ class SessionServiceTest {
     }
 
     @Test
+    void updateSessionStatus_AceptedState_ShouldThrow() {
+        session.setStatus(Status.ACCEPTED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+
+        assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.ACCEPTED)
+        );
+    }
+
+    @Test
     void updateSessionStatus_FinalState_ShouldThrow() {
         session.setStatus(Status.CANCELLED);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
@@ -268,5 +329,16 @@ class SessionServiceTest {
 
     @Test
     void findAll() {
+        Session session2 = new Session(mentor, mentored,
+                LocalDate.of(2023, 11, 1),
+                LocalTime.of(15, 0),
+                "Nova sessão",
+                "Google Meet");
+
+        when(sessionRepository.findAll()).thenReturn(List.of(session, session2));
+
+        List<SessionDTO> result = sessionService.findAll();
+        assertNotNull(result);
+        assertEquals(2, result.size());
     }
 }
