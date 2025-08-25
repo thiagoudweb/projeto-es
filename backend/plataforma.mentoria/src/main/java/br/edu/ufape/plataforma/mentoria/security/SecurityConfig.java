@@ -1,4 +1,7 @@
 package br.edu.ufape.plataforma.mentoria.security;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.http.HttpStatus;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,15 +29,20 @@ public class SecurityConfig {
         return httpSecurity.csrf(csrf -> csrf.disable())
             .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPoint()))
             .authorizeHttpRequests(authorize -> authorize
-            .anyRequest().permitAll()
-            //.requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
-            //.requestMatchers("/location/**", "/booking/**").hasRole("MENTOR")
-            //To-do: substituir as rodas, quando estas estiverem devidamente implementadas
-            //.anyRequest().authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.POST, "/mentor/**", "/mentored/**").authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.PUT, "/mentor/**", "/mentored/**").authenticated()
+                .requestMatchers(org.springframework.http.HttpMethod.DELETE, "/mentor/**", "/mentored/**").authenticated()
+                .anyRequest().permitAll()
             )
             .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
             .build();
+    }
+
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
     }
 
     @Bean
