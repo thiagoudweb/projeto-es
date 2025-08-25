@@ -190,4 +190,83 @@ class SessionServiceTest {
         assertEquals(sessionDTO, sessionHistoryUser.get(0));
     }
 
+    @Test
+    void updateSession() {
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+        when(sessionMapper.toDTO(any())).thenAnswer(inv -> {
+            SessionDTO dto = new SessionDTO();
+            dto.setDate(session.getDate());
+            dto.setTime(session.getTime());
+            dto.setMeetingTopic(session.getMeetingTopic());
+            dto.setLocation("Casa nova");
+            dto.setStatus(Status.CANCELLED); // Corrija para o status esperado
+            return dto;
+        });
+
+        SessionDTO updated = sessionService.updateSession(session.getId(), sessionDTO);
+
+        assertNotNull(updated);
+        assertEquals(Status.CANCELLED, updated.getStatus());
+    }
+
+    @Test
+    void getSessionDTOById() {
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionMapper.toDTO(session)).thenReturn(sessionDTO);
+
+        SessionDTO result = sessionService.getSessionDTOById(session.getId());
+        assertNotNull(result);
+        assertEquals(session.getStatus(), result.getStatus());
+    }
+
+    @Test
+    void updateSessionStatus_PendingToAccepted() {
+        session.setStatus(Status.PENDING);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
+
+        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.ACCEPTED);
+
+        assertNotNull(result);
+        verify(sessionRepository).save(session);
+    }
+
+    @Test
+    void updateSessionStatus_AcceptedToCompleted() {
+        session.setStatus(Status.ACCEPTED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
+
+        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.COMPLETED);
+
+        assertNotNull(result);
+        verify(sessionRepository).save(session);
+    }
+
+    @Test
+    void updateSessionStatus_InvalidTransition_ShouldThrow() {
+        session.setStatus(Status.PENDING);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+
+        assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.COMPLETED)
+        );
+    }
+
+    @Test
+    void updateSessionStatus_FinalState_ShouldThrow() {
+        session.setStatus(Status.CANCELLED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+
+        assertThrows(IllegalArgumentException.class, () ->
+                sessionService.updateSessionStatus(session.getId(), Status.ACCEPTED)
+        );
+    }
+
+    @Test
+    void findAll() {
+    }
 }
