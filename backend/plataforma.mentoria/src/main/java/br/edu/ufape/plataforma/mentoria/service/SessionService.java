@@ -68,7 +68,9 @@ public class SessionService implements SessionServiceInterface {
         existingSession.setTime(sessionDTO.getTime());
         existingSession.setMeetingTopic(sessionDTO.getMeetingTopic());
         existingSession.setLocation(sessionDTO.getLocation());
+
         existingSession.setStatus(sessionDTO.getStatus());
+
 
         return sessionMapper.toDTO(sessionRepository.save(existingSession));
     }
