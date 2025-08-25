@@ -2,13 +2,9 @@ package br.edu.ufape.plataforma.mentoria.controller;
 
 import java.util.Collections;
 import java.util.List;
-
-import br.edu.ufape.plataforma.mentoria.service.MentorSearchService;
-import br.edu.ufape.plataforma.mentoria.service.MentoredSearchService;
 import br.edu.ufape.plataforma.mentoria.service.contract.MentorSearchServiceInterface;
 import br.edu.ufape.plataforma.mentoria.service.contract.MentoredSearchServiceInterface;
 import br.edu.ufape.plataforma.mentoria.service.contract.MentoredServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import br.edu.ufape.plataforma.mentoria.dto.MentorDTO;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.dto.UpdateMentoredDTO;
@@ -35,17 +30,21 @@ import jakarta.validation.Valid;
 @RequestMapping("/mentored")
 public class MentoredController {
 
-    @Autowired
-    private MentoredServiceInterface mentoredService;
+    private final MentoredServiceInterface mentoredService;
+    private final MentoredSearchServiceInterface mentoredSearchService;
+    private final MentorSearchServiceInterface mentorSearchService;
+    private final MentoredMapper mentoredMapper;
 
-    @Autowired
-    private MentoredSearchServiceInterface mentoredSearchService;
-    
-    @Autowired
-    MentorSearchServiceInterface mentorSearchService;
-
-    @Autowired
-    private MentoredMapper mentoredMapper;
+    public MentoredController(
+            MentoredServiceInterface mentoredService,
+            MentoredSearchServiceInterface mentoredSearchService,
+            MentorSearchServiceInterface mentorSearchService,
+            MentoredMapper mentoredMapper) {
+        this.mentoredService = mentoredService;
+        this.mentoredSearchService = mentoredSearchService;
+        this.mentorSearchService = mentorSearchService;
+        this.mentoredMapper = mentoredMapper;
+    }
 
     @GetMapping("/{idMentored}")
     public ResponseEntity<MentoredDTO> getMentoredDetails(@PathVariable Long idMentored) {

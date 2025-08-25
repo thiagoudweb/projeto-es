@@ -1,8 +1,14 @@
 package br.edu.ufape.plataforma.mentoria.service;
 
-import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
-import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
+import br.edu.ufape.plataforma.mentoria.enums.Status;
+import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.SessionMapper;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
@@ -10,48 +16,43 @@ import br.edu.ufape.plataforma.mentoria.model.Session;
 import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.SessionRepository;
-import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import br.edu.ufape.plataforma.mentoria.service.contract.SessionServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import br.edu.ufape.plataforma.mentoria.enums.Status;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class SessionService implements SessionServiceInterface {
-    @Autowired
-    private SessionRepository sessionRepository;
+    private final SessionRepository sessionRepository;
+    private final SessionMapper sessionMapper;
+    private final MentorRepository mentorRepository;
+    private final MentoredRepository mentoredRepository;
 
-    @Autowired
-    private SessionMapper sessionMapper;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private MentorRepository mentorRepository;
-
-    @Autowired
-    private MentoredRepository mentoredRepository;
+    public SessionService(SessionRepository sessionRepository,
+                         SessionMapper sessionMapper,
+                         MentorRepository mentorRepository,
+                         MentoredRepository mentoredRepository) {
+        this.sessionRepository = sessionRepository;
+        this.sessionMapper = sessionMapper;
+        this.mentorRepository = mentorRepository;
+        this.mentoredRepository = mentoredRepository;
+    }
 
     @Override
     public Session getSessionById(Long id) {
         return sessionRepository.findById(id)
-                .orElseThrow(() ->  new EntityNotFoundException(Session.class, id));
+                .orElseThrow(() -> new EntityNotFoundException(Session.class, id));
     }
+
     @Override
     public Session createSession(SessionDTO sessionDTO) {
         sessionDTO.setStatus(Status.PENDING);
 
         Mentor mentor = mentorRepository.findById(sessionDTO.getMentorId())
-                .orElseThrow(() -> new EntityNotFoundException("Mentor com o ID " + sessionDTO.getMentorId() + " não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, sessionDTO.getMentorId()));
 
         Mentored mentored = mentoredRepository.findById(sessionDTO.getMentoredID())
-                .orElseThrow(() -> new EntityNotFoundException("Mentorado com o ID " + sessionDTO.getMentoredID() + " não encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException(Mentored.class, sessionDTO.getMentoredID()));
 
-        if(mentor.getId().equals(mentored.getId())) {
+        if (mentor.getId().equals(mentored.getId())) {
             throw new IllegalArgumentException("Mentor e Mentorado não podem ser a mesma pessoa.");
         }
         Session session = sessionMapper.toEntity(sessionDTO);
@@ -60,6 +61,7 @@ public class SessionService implements SessionServiceInterface {
 
         return sessionRepository.save(session);
     }
+
     @Override
     public SessionDTO updateSession(Long id, SessionDTO sessionDTO) {
         Session existingSession = getSessionById(id);
@@ -69,20 +71,21 @@ public class SessionService implements SessionServiceInterface {
         existingSession.setMeetingTopic(sessionDTO.getMeetingTopic());
         existingSession.setLocation(sessionDTO.getLocation());
 
-        Session updatedSession = sessionRepository.save(existingSession);
-
-        return sessionMapper.toDTO(updatedSession);
+        return sessionMapper.toDTO(sessionRepository.save(existingSession));
     }
+
     @Override
     public void deleteSession(Long id) {
         Session session = getSessionById(id);
         sessionRepository.delete(session);
     }
+
     @Override
     public SessionDTO getSessionDTOById(Long id) {
         Session session = getSessionById(id);
         return sessionMapper.toDTO(session);
     }
+
     @Override
     public SessionDTO updateSessionStatus(Long id, Status newStatus) {
         Session session = getSessionById(id);
@@ -102,49 +105,47 @@ public class SessionService implements SessionServiceInterface {
             case REJECTED:
             case COMPLETED:
             case CANCELLED:
-                throw new IllegalArgumentException("A sessão já está em um estado final (" + currentStatus + ") e não pode ser alterada.");
+                throw new IllegalArgumentException(
+                        "A sessão já está em um estado final (" + currentStatus + ") e não pode ser alterada.");
         }
 
         session.setStatus(newStatus);
-        Session updatedSession = sessionRepository.save(session);
-        return sessionMapper.toDTO(updatedSession);
+        return sessionMapper.toDTO(sessionRepository.save(session));
     }
+
     @Override
     public List<SessionDTO> findSessionHistoryBetweenUsers(Long mentorId, Long mentoredId) {
-        Mentor mentor = mentorRepository.findById(mentorId)
-                .orElseThrow(() -> new EntityNotFoundException("Mentor com o ID " + mentorId + " não encontrado."));
+        mentorRepository.findById(mentorId)
+                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, mentorId));
 
-        Mentored mentored = mentoredRepository.findById(mentoredId)
-                .orElseThrow(() -> new EntityNotFoundException("Mentorado com o ID " + mentoredId + " não encontrado."));
+        mentoredRepository.findById(mentoredId)
+                .orElseThrow(() -> new EntityNotFoundException(Mentored.class, mentoredId));
 
         List<Session> sessions = sessionRepository.findByMentorIdAndMentoredId(mentorId, mentoredId);
 
-        return sessions.stream().
-                map(sessionMapper::toDTO).
-                collect(Collectors.toList());
+        return sessions.stream().map(sessionMapper::toDTO).collect(Collectors.toList());
     }
+
     @Override
     public List<SessionDTO> findSessionHistoryMentor(Long mentorId) {
-        Mentor mentor = mentorRepository.findById(mentorId)
-                .orElseThrow(() -> new EntityNotFoundException("Mentor com o ID " + mentorId + " não encontrado."));
+        mentorRepository.findById(mentorId)
+                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, mentorId));
 
         List<Session> sessions = sessionRepository.findByMentorId(mentorId);
 
-        return sessions.stream().
-                map(sessionMapper::toDTO).
-                collect(Collectors.toList());
+        return sessions.stream().map(sessionMapper::toDTO).collect(Collectors.toList());
     }
+
     @Override
     public List<SessionDTO> findSessionHistoryMentored(Long mentoredId) {
-        Mentored mentored = mentoredRepository.findById(mentoredId)
-                .orElseThrow(() -> new EntityNotFoundException("Mentorado com o ID " + mentoredId + " não encontrado."));
+        mentoredRepository.findById(mentoredId)
+                .orElseThrow(() -> new EntityNotFoundException(Mentored.class, mentoredId));
 
         List<Session> sessions = sessionRepository.findByMentoredId(mentoredId);
 
-        return sessions.stream().
-                map(sessionMapper::toDTO).
-                collect(Collectors.toList());
+        return sessions.stream().map(sessionMapper::toDTO).collect(Collectors.toList());
     }
+
     @Override
     public List<SessionDTO> findAll() {
         return sessionRepository.findAll().stream()

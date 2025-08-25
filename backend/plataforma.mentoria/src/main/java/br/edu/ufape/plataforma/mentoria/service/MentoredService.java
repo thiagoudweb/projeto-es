@@ -5,7 +5,6 @@ import java.util.List;
 import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import br.edu.ufape.plataforma.mentoria.service.contract.MentoredServiceInterface;
-import org.springframework.beans.factory.annotation.Autowired;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.dto.UpdateMentoredDTO;
 import br.edu.ufape.plataforma.mentoria.exceptions.AttributeAlreadyInUseException;
@@ -20,17 +19,20 @@ import org.springframework.stereotype.Service;
 @Service
 public class MentoredService implements MentoredServiceInterface {
 
-    @Autowired
-    private MentoredRepository mentoredRepository;
+    private final MentoredRepository mentoredRepository;
+    private final MentoredSearchService mentoredSearchService;
+    private final MentoredMapper mentoredMapper;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private MentoredSearchService mentoredSearchService;
-
-    @Autowired
-    private MentoredMapper mentoredMapper;
-
-    @Autowired
-    private UserRepository userRepository;
+    public MentoredService(MentoredRepository mentoredRepository,
+                           MentoredSearchService mentoredSearchService,
+                           MentoredMapper mentoredMapper,
+                           UserRepository userRepository) {
+        this.mentoredRepository = mentoredRepository;
+        this.mentoredSearchService = mentoredSearchService;
+        this.mentoredMapper = mentoredMapper;
+        this.userRepository = userRepository;
+    }
 
     @Override
     public List<Mentored> getAllMentored() {

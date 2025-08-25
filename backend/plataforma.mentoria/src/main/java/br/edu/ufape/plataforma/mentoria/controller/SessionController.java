@@ -4,25 +4,24 @@ import br.edu.ufape.plataforma.mentoria.dto.SessionDTO;
 import br.edu.ufape.plataforma.mentoria.enums.Status;
 import br.edu.ufape.plataforma.mentoria.mapper.SessionMapper;
 import br.edu.ufape.plataforma.mentoria.model.Session;
-import br.edu.ufape.plataforma.mentoria.service.SessionService;
 import br.edu.ufape.plataforma.mentoria.service.contract.SessionServiceInterface;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
 @RequestMapping("/sessions")
 public class SessionController {
 
-    @Autowired
-    private SessionServiceInterface sessionService;
+    private final SessionServiceInterface sessionService;
+    private final SessionMapper sessionMapper;
 
-    @Autowired
-    private SessionMapper sessionMapper;
+    public SessionController(SessionServiceInterface sessionService, SessionMapper sessionMapper) {
+        this.sessionService = sessionService;
+        this.sessionMapper = sessionMapper;
+    }
 
     @GetMapping
     public ResponseEntity<List<SessionDTO>> getAllSessions() {
