@@ -1,7 +1,6 @@
 package br.edu.ufape.plataforma.mentoria.service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -123,7 +122,7 @@ public class SessionService implements SessionServiceInterface {
 
         List<Session> sessions = sessionRepository.findByMentorIdAndMentoredId(mentorId, mentoredId);
 
-        return sessions.stream().map(sessionMapper::toDTO).collect(Collectors.toList());
+        return sessions.stream().map(sessionMapper::toDTO).toList();
     }
 
     @Override
@@ -133,7 +132,7 @@ public class SessionService implements SessionServiceInterface {
 
         List<Session> sessions = sessionRepository.findByMentorId(mentorId);
 
-        return sessions.stream().map(sessionMapper::toDTO).collect(Collectors.toList());
+        return sessions.stream().map(sessionMapper::toDTO).toList();
     }
 
     @Override
@@ -143,13 +142,13 @@ public class SessionService implements SessionServiceInterface {
 
         List<Session> sessions = sessionRepository.findByMentoredId(mentoredId);
 
-        return sessions.stream().map(sessionMapper::toDTO).collect(Collectors.toList());
+        return sessions.stream().map(sessionMapper::toDTO).toList();
     }
 
     @Override
     public List<SessionDTO> findAll() {
         return sessionRepository.findAll().stream()
                 .map(sessionMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
