@@ -304,6 +304,45 @@ class SessionServiceTest {
     }
 
     @Test
+    void updateSessionStatus_PendingToRejected() {
+        session.setStatus(Status.PENDING);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
+
+        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.REJECTED);
+
+        assertNotNull(result);
+        verify(sessionRepository).save(session);
+    }
+
+    @Test
+    void updateSessionStatus_PendingToCancelled() {
+        session.setStatus(Status.PENDING);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
+
+        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.CANCELLED);
+
+        assertNotNull(result);
+        verify(sessionRepository).save(session);
+    }
+
+    @Test
+    void updateSessionStatus_AcceptedToCancelled() {
+        session.setStatus(Status.ACCEPTED);
+        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
+        when(sessionRepository.save(any(Session.class))).thenReturn(session);
+        when(sessionMapper.toDTO(any(Session.class))).thenReturn(sessionDTO);
+
+        SessionDTO result = sessionService.updateSessionStatus(session.getId(), Status.CANCELLED);
+
+        assertNotNull(result);
+        verify(sessionRepository).save(session);
+    }
+
+    @Test
     void updateSessionStatus_PendingToInvalid_ShouldThrow() {
         session.setStatus(Status.PENDING);
         when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
