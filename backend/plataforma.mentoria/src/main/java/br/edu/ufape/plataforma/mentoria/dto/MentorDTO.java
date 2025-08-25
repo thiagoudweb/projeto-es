@@ -40,6 +40,11 @@ public class MentorDTO {
 
     @NotNull(message = "A área de interesse é obrigatória")
     private List<InterestArea> interestArea;
+
+    public MentorDTO() {
+        // Default empty constructor required by JPA
+    }
+
     public static class Builder {
         private String fullName;
         private String cpf;
@@ -54,57 +59,60 @@ public class MentorDTO {
             this.fullName = fullName;
             return this;
         }
+
         public Builder cpf(String cpf) {
             this.cpf = cpf;
             return this;
         }
+
         public Builder birthDate(LocalDate birthDate) {
             this.birthDate = birthDate;
             return this;
         }
+
         public Builder course(Course course) {
             this.course = course;
             return this;
         }
+
         public Builder professionalSummary(String professionalSummary) {
             this.professionalSummary = professionalSummary;
             return this;
         }
+
         public Builder affiliationType(AffiliationType affiliationType) {
             this.affiliationType = affiliationType;
             return this;
         }
+
         public Builder specializations(List<String> specializations) {
             this.specializations = specializations;
             return this;
         }
+
         public Builder interestArea(List<InterestArea> interestArea) {
             this.interestArea = interestArea;
             return this;
         }
+
         public MentorDTO build() {
-            return new MentorDTO(fullName, cpf, birthDate, course, professionalSummary, affiliationType, specializations, interestArea);
+            MentorDTO dto = new MentorDTO();
+            dto.setFullName(fullName);
+            dto.setCpf(cpf);
+            dto.setBirthDate(birthDate);
+            dto.setCourse(course);
+            dto.setProfessionalSummary(professionalSummary);
+            dto.setAffiliationType(affiliationType);
+            dto.setSpecializations(specializations);
+            dto.setInterestArea(interestArea);
+            return dto;
         }
-    }
-
-    public MentorDTO() {
-    }
-
-    public MentorDTO(String fullName, String cpf, LocalDate birthDate, Course course, String professionalSummary,
-            AffiliationType affiliationType, List<String> specializations, List<InterestArea> interestArea) {
-        this.fullName = fullName;
-        this.cpf = cpf;
-        this.birthDate = birthDate;
-        this.course = course;
-        this.professionalSummary = professionalSummary;
-        this.affiliationType = affiliationType;
-        this.specializations = specializations;
-        this.interestArea = interestArea;
     }
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -172,5 +180,4 @@ public class MentorDTO {
     public void setInterestArea(List<InterestArea> interestArea) {
         this.interestArea = interestArea;
     }
-
 }

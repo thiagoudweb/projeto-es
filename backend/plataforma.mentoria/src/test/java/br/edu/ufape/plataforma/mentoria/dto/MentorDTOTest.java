@@ -39,8 +39,16 @@ class MentorDTOTest {
         List<String> specializations = Arrays.asList("Java", "Spring Boot");
         List<InterestArea> interestAreas = Arrays.asList(InterestArea.TECNOLOGIA_DA_INFORMACAO);
 
-        MentorDTO dto = new MentorDTO(fullName, cpf, birthDate, course,
-                professionalSummary, affiliationType, specializations, interestAreas);
+        MentorDTO dto = new MentorDTO.Builder()
+                .fullName(fullName)
+                .cpf(cpf)
+                .birthDate(birthDate)
+                .course(course)
+                .professionalSummary(professionalSummary)
+                .affiliationType(affiliationType)
+                .specializations(specializations)
+                .interestArea(interestAreas)
+                .build();
 
         assertEquals(fullName, dto.getFullName());
         assertEquals(cpf, dto.getCpf());

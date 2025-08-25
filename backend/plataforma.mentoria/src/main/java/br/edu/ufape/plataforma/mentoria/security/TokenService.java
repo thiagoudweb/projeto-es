@@ -22,14 +22,13 @@ public class TokenService {
     public String generateToken(User user) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(this.secret);
-            String token = JWT.create()
+            return JWT.create()
                 .withIssuer("Mentoria")
                 .withSubject(user.getUsername())
                 .withClaim("role", user.getRole().name())
                 .withClaim("userId", user.getId())
                 .withExpiresAt(this.getExpirationAt())
                 .sign(algorithm);
-            return token;
         } catch (IllegalArgumentException | JWTCreationException e) {
             throw new TokenCreationException("Error creating token", e);
         }
