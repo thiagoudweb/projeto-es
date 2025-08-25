@@ -144,8 +144,6 @@ public class MentorControllerIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("sucesso")));
     }
-    // ...existing code...
-
       @Test
     void shouldGetMentorById() throws Exception {
         String email = createUniqueUser();

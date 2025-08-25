@@ -7,14 +7,14 @@ public enum Status {
     COMPLETED("Concluído"),
     CANCELLED("Cancelado");
 
-    private final String status;
+    private final String status_sessao;
 
-    Status(String status) {
-        this.status = status;
+    Status(String status_sessao) {
+        this.status_sessao = status_sessao;
     }
 
     public String getStatus() {
-        return status;
+        return status_sessao;
     }
 
 }
