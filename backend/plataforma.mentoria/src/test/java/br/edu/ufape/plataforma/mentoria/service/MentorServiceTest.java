@@ -51,10 +51,10 @@ class MentorServiceTest {
 
     @Test
     void testCreateMentor_Success() {
-        MentorDTO mentorDTO = new MentorDTO();
-        Mentor mentor = new Mentor();
+        MentorDTO mentorDTO = new MentorDTO.Builder().build();
+        Mentor mentor = new Mentor.Builder().build();
         User user = new User();
-        Mentor savedMentor = new Mentor();
+        Mentor savedMentor = new Mentor.Builder().build();
 
         when(authentication.getName()).thenReturn("test@example.com");
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -73,8 +73,8 @@ class MentorServiceTest {
     @Test
     @SuppressWarnings("unused")
     void testCreateMentor_CpfAlreadyInUse() {
-        MentorDTO mentorDTO = new MentorDTO();
-        Mentor mentor = new Mentor();
+        MentorDTO mentorDTO = new MentorDTO.Builder().build();
+        Mentor mentor = new Mentor.Builder().build();
         User user = new User();
 
         when(authentication.getName()).thenReturn("test@example.com");
@@ -88,8 +88,8 @@ class MentorServiceTest {
 
     @Test
     void testUpdateMentor_WithMentorEntity_Success() {
-        Mentor mentor = new Mentor();
-        Mentor savedMentor = new Mentor();
+        Mentor mentor = new Mentor.Builder().build();
+        Mentor savedMentor = new Mentor.Builder().build();
         Long id = 1L;
 
         when(mentorRepository.existsById(id)).thenReturn(true);
@@ -104,7 +104,7 @@ class MentorServiceTest {
     @Test
     @SuppressWarnings("unused")
     void testUpdateMentor_WithMentorEntity_NotFound() {
-        Mentor mentor = new Mentor();
+        Mentor mentor = new Mentor.Builder().build();
         Long id = 1L;
 
         when(mentorRepository.existsById(id)).thenReturn(false);
@@ -115,11 +115,11 @@ class MentorServiceTest {
     @Test
     void testUpdateMentor_WithMentorDTO_Success() {
         Long id = 1L;
-        MentorDTO mentorDTO = new MentorDTO();
-        Mentor existingMentor = new Mentor();
-        Mentor mentorToUpdate = new Mentor();
-        Mentor updatedMentor = new Mentor();
-        MentorDTO updatedDTO = new MentorDTO();
+        MentorDTO mentorDTO = new MentorDTO.Builder().build();
+        Mentor existingMentor = new Mentor.Builder().build();
+        Mentor mentorToUpdate = new Mentor.Builder().build();
+        Mentor updatedMentor = new Mentor.Builder().build();
+        MentorDTO updatedDTO = new MentorDTO.Builder().build();
 
         when(mentorSearchService.getMentorById(id)).thenReturn(existingMentor);
         when(mentorMapper.toEntity(mentorDTO)).thenReturn(mentorToUpdate);
@@ -136,7 +136,7 @@ class MentorServiceTest {
     void testUpdateMentor_WithUpdateMentorDTO_Success() {
         Long id = 1L;
         UpdateMentorDTO dto = new UpdateMentorDTO();
-        Mentor mentor = new Mentor();
+        Mentor mentor = new Mentor.Builder().build();
 
         when(mentorSearchService.getMentorById(id)).thenReturn(mentor);
         when(mentorRepository.save(mentor)).thenReturn(mentor);
@@ -170,7 +170,7 @@ class MentorServiceTest {
     @SuppressWarnings("unused")
     void testUpdateMentor_WithMentorDTO_NotFound() {
         Long id = 2L;
-        MentorDTO mentorDTO = new MentorDTO();
+        MentorDTO mentorDTO = new MentorDTO.Builder().build();
 
         when(mentorSearchService.getMentorById(id)).thenThrow(new EntityNotFoundException(Mentor.class, id));
 
@@ -181,7 +181,7 @@ class MentorServiceTest {
     void testUpdateMentor_WithUpdateMentorDTO_PartialUpdate() {
         Long id = 3L;
         UpdateMentorDTO dto = new UpdateMentorDTO();
-        Mentor mentor = new Mentor();
+        Mentor mentor = new Mentor.Builder().build();
 
         // Only set fullName and course
         dto.setFullName("New Name");
@@ -212,7 +212,7 @@ class MentorServiceTest {
     void testUpdateMentor_WithUpdateMentorDTO_AllFields() {
         Long id = 5L;
         UpdateMentorDTO dto = new UpdateMentorDTO();
-        Mentor mentor = new Mentor();
+        Mentor mentor = new Mentor.Builder().build();
 
         // Set all fields to test complete coverage
         dto.setFullName("Complete Name");
@@ -243,7 +243,7 @@ class MentorServiceTest {
     void testUpdateMentor_WithUpdateMentorDTO_NullFields() {
         Long id = 6L;
         UpdateMentorDTO dto = new UpdateMentorDTO();
-        Mentor mentor = new Mentor();
+        Mentor mentor = new Mentor.Builder().build();
 
         // Set some initial values to verify they don't change when null is passed
         mentor.setFullName("Original Name");
