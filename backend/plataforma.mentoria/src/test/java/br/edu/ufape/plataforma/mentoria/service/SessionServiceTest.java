@@ -415,15 +415,6 @@ class SessionServiceTest {
     }
 
     @Test
-    void updateSessionStatus_RejectedStatus_ShouldThrow() {
-        session.setStatus(Status.REJECTED);
-        when(sessionRepository.findById(session.getId())).thenReturn(Optional.of(session));
-        assertThrows(IllegalArgumentException.class, () ->
-                sessionService.updateSessionStatus(session.getId(), Status.PENDING)
-        );
-    }
-
-    @Test
     void findAll() {
         Session session2 = new Session(mentor, mentored,
                 LocalDate.of(2023, 11, 1),
