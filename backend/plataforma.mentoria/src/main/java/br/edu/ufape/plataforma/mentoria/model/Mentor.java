@@ -33,16 +33,6 @@ public class Mentor extends Person {
     @Column(name = "specialization")
     private List<String> specializations;
 
-    private Mentor(String fullName, String cpf, LocalDate birthDate, Course course, User user, 
-                  String professionalSummary, AffiliationType affiliationType, 
-                  List<String> specializations, List<InterestArea> interestArea) {
-        super(fullName, cpf, birthDate, course, interestArea);
-        this.user = user;
-        this.professionalSummary = professionalSummary;
-        this.affiliationType = affiliationType;
-        this.specializations = specializations;
-    }
-
     public Mentor() {
     }
 
@@ -103,8 +93,19 @@ public class Mentor extends Person {
         }
         
         public Mentor build() {
-            return new Mentor(fullName, cpf, birthDate, course, user, professionalSummary, 
-                            affiliationType, specializations, interestArea);
+            Mentor mentor = new Mentor();
+            mentor.setFullName(fullName);
+            mentor.setCpf(cpf);
+            mentor.setBirthDate(birthDate);
+            mentor.setCourse(course);
+            mentor.setInterestArea(interestArea);
+            
+            mentor.setUser(user);
+            mentor.setProfessionalSummary(professionalSummary);
+            mentor.setAffiliationType(affiliationType);
+            mentor.setSpecializations(specializations);
+            
+            return mentor;
         }
     }
 
