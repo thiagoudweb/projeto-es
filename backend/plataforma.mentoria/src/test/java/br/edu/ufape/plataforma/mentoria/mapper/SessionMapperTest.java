@@ -16,7 +16,7 @@ import br.edu.ufape.plataforma.mentoria.model.Mentor;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.model.Session;
 
-public class SessionMapperTest {
+class SessionMapperTest {
 
     private SessionMapper sessionMapper;
 

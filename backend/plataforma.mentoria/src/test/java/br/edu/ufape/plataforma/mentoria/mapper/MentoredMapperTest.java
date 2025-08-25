@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import br.edu.ufape.plataforma.mentoria.dto.MentoredDTO;
 import br.edu.ufape.plataforma.mentoria.model.Mentored;
 
-public class MentoredMapperTest {
+class MentoredMapperTest {
 
     private MentoredMapper mentoredMapper;
 
