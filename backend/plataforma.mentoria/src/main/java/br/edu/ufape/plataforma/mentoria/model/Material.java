@@ -41,7 +41,7 @@ public class Material {
     private Set<InterestArea> interestArea = new HashSet<>();
 
     @ManyToOne
-    private Mentor mentorUploader;
+    private User userUploader;
 
     public Material() {
         // Construtor padrão exigido pelo JPA
@@ -53,7 +53,7 @@ public class Material {
         private String filePath;
         private String url;
         private Set<InterestArea> interestArea = new HashSet<>();
-        private Mentor mentorUploader;
+        private User userUploader;
 
         public Builder title(String title) {
             this.title = title;
@@ -80,8 +80,8 @@ public class Material {
             return this;
         }
 
-        public Builder mentorUploader(Mentor mentorUploader) {
-            this.mentorUploader = mentorUploader;
+        public Builder userUploader(User userUploader) {
+            this.userUploader = userUploader;
             return this;
         }
 
@@ -92,7 +92,7 @@ public class Material {
             material.setFilePath(this.filePath);
             material.setUrl(this.url);
             material.setInterestArea(this.interestArea);
-            material.setMentorUploader(this.mentorUploader);
+            material.setUserUploader(this.userUploader);
             return material;
         }
     }
@@ -146,12 +146,12 @@ public class Material {
         this.interestArea = interestArea;
     }
 
-    public Mentor getMentorUploader() {
-        return mentorUploader;
+    public User getUserUploader() {
+        return userUploader;
     }
 
-    public void setMentorUploader(Mentor mentorUploader) {
-        this.mentorUploader = mentorUploader;
+    public void setUserUploader(User userUploader) {
+        this.userUploader = userUploader;
     }
 
     @Override

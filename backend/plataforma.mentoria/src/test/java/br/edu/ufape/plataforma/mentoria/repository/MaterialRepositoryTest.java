@@ -49,7 +49,7 @@ class MaterialRepositoryTest {
                 .title("Artigo sobre Engenharia")
                 .materialType(MaterialType.VIDEO)
                 .interestArea(Set.of(InterestArea.CIBERSEGURANCA))
-                .mentorUploader(mentor)
+                .userUploader(user)
                 .build();
         materialRepository.save(material1);
 
@@ -57,7 +57,7 @@ class MaterialRepositoryTest {
                 .title("Livro sobre Cibersegurança")
                 .materialType(MaterialType.VIDEO)
                 .interestArea(Set.of(InterestArea.CIBERSEGURANCA))
-                .mentorUploader(mentor)
+                .userUploader(user)
                 .build();
         materialRepository.save(material2);
 
@@ -96,7 +96,7 @@ class MaterialRepositoryTest {
                 .title("Livro de Programação")
                 .materialType(MaterialType.VIDEO)
                 .interestArea(Set.of(InterestArea.DESENVOLVIMENTO_DE_SOFTWARE))
-                .mentorUploader(mentor)
+                .userUploader(user)
                 .build();
         materialRepository.save(material1);
 
@@ -104,7 +104,7 @@ class MaterialRepositoryTest {
                 .title("Livro de Redes")
                 .materialType(MaterialType.VIDEO)
                 .interestArea(Set.of(InterestArea.CIBERSEGURANCA))
-                .mentorUploader(mentor)
+                .userUploader(user)
                 .build();
         materialRepository.save(material2);
 
@@ -140,7 +140,7 @@ class MaterialRepositoryTest {
                 .title("Artigo sobre Dados")
                 .materialType(MaterialType.LINK)
                 .interestArea(Set.of(InterestArea.ARTES_E_DESIGN))
-                .mentorUploader(mentor)
+                .userUploader(user)
                 .build();
         materialRepository.save(material1);
 
@@ -148,7 +148,7 @@ class MaterialRepositoryTest {
                 .title("Tutorial sobre Dados")
                 .materialType(MaterialType.DOCUMENTO)
                 .interestArea(Set.of(InterestArea.FINANCAS_E_CONTABILIDADE, InterestArea.ARTES_E_DESIGN))
-                .mentorUploader(mentor)
+                .userUploader(user)
                 .build();
         materialRepository.save(material2);
 
@@ -156,7 +156,7 @@ class MaterialRepositoryTest {
                 .title("Livro sobre Engenharia")
                 .materialType(MaterialType.VIDEO)
                 .interestArea(Set.of(InterestArea.ARTES_E_DESIGN))
-                .mentorUploader(mentor)
+                .userUploader(user)
                 .build();
         materialRepository.save(material3);
 
