@@ -34,17 +34,14 @@ public class Material {
     @Column(length = 600)
     private String url;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "material_interest_area",
-            joinColumns = @JoinColumn(name = "material_id"),
-            inverseJoinColumns = @JoinColumn(name = "interest_area_id")
-    )
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "interest_area_id", joinColumns = @JoinColumn(name = "mentor_id"))
+    @Column(name = "material_interest_area")
     private Set<InterestArea> interestArea = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User userUploader;
+    @ManyToOne
+    private Mentor mentorUploader;
 
     public Material() {
         // Construtor padrão exigido pelo JPA
@@ -56,7 +53,7 @@ public class Material {
         private String filePath;
         private String url;
         private Set<InterestArea> interestArea = new HashSet<>();
-        private User userUploader;
+        private Mentor mentorUploader;
 
         public Builder title(String title) {
             this.title = title;
@@ -83,8 +80,8 @@ public class Material {
             return this;
         }
 
-        public Builder userUploader(User userUploader) {
-            this.userUploader = userUploader;
+        public Builder mentorUploader(Mentor mentorUploader) {
+            this.mentorUploader = mentorUploader;
             return this;
         }
 
@@ -95,7 +92,7 @@ public class Material {
             material.setFilePath(this.filePath);
             material.setUrl(this.url);
             material.setInterestArea(this.interestArea);
-            material.setUserUploader(this.userUploader);
+            material.setMentorUploader(this.mentorUploader);
             return material;
         }
     }
@@ -149,12 +146,12 @@ public class Material {
         this.interestArea = interestArea;
     }
 
-    public User getUserUploader() {
-        return userUploader;
+    public Mentor getMentorUploader() {
+        return mentorUploader;
     }
 
-    public void setUserUploader(User userUploader) {
-        this.userUploader = userUploader;
+    public void setMentorUploader(Mentor mentorUploader) {
+        this.mentorUploader = mentorUploader;
     }
 
     @Override
