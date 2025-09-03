@@ -39,7 +39,7 @@ class MaterialRepositoryTest {
                 .birthDate(LocalDate.of(1988, 3, 10))
                 .professionalSummary("Especialista em dados")
                 .user(user)
-                .interestArea(List.of(InterestArea.CIBERSEGURANCA))
+                .interestArea(List.of(InterestArea.CIBERSEGURANCA, InterestArea.DESENVOLVIMENTO_DE_SOFTWARE))
                 .course(Course.ADMINISTRACAO)
                 .build();
         mentorRepository.save(mentor);
@@ -147,7 +147,7 @@ class MaterialRepositoryTest {
         Material material2 = new Material.Builder()
                 .title("Tutorial sobre Dados")
                 .materialType(MaterialType.DOCUMENTO)
-                .interestArea(Set.of(InterestArea.FINANCAS_E_CONTABILIDADE))
+                .interestArea(Set.of(InterestArea.FINANCAS_E_CONTABILIDADE, InterestArea.ARTES_E_DESIGN))
                 .mentorUploader(mentor)
                 .build();
         materialRepository.save(material2);
@@ -162,7 +162,6 @@ class MaterialRepositoryTest {
 
         // Testando a busca por área de interesse
         List<Material> encontrados = materialRepository.findByInterestArea(InterestArea.ARTES_E_DESIGN);
-
-        assertEquals(2, encontrados.size());
+        assertEquals(3, encontrados.size());
     }
 }
