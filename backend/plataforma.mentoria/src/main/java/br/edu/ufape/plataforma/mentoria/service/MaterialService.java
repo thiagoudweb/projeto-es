@@ -83,7 +83,7 @@ public class MaterialService {
         return materialMapper.toDTO(material);
     }
 
-    public List<MaterialDTO> listarTodos() {
+    public List<MaterialDTO> listAll() {
         List<Material> materiais = materialRepository.findAll();
         return materiais.stream()
                 .map(materialMapper::toDTO)
@@ -137,9 +137,9 @@ public class MaterialService {
         materialRepository.delete(material);
     }
 
-    public List<MaterialDTO> filtrarPorAreasDeInteresse(List<InterestArea> areas) {
+    public List<MaterialDTO> filterByInterestArea(List<InterestArea> areas) {
         if (areas == null || areas.isEmpty()) {
-            return listarTodos();
+            return listAll();
         }
 
         List<Material> materiais = new ArrayList<>();
@@ -153,7 +153,7 @@ public class MaterialService {
                 .collect(Collectors.toList());
     }
 
-    public List<MaterialDTO> sugerirMateriais(Long usuarioId) {
+    public List<MaterialDTO> suggestMaterials(Long usuarioId) {
         User usuario = userRepository.findById(usuarioId)
                 .orElseThrow(() -> new EntityNotFoundException(User.class, usuarioId));
 

@@ -58,7 +58,7 @@ public class MaterialController {
 
     @GetMapping
     public ResponseEntity<List<MaterialDTO>> getAllMaterial() {
-        List<MaterialDTO> materiais = materialService.listarTodos();
+        List<MaterialDTO> materiais = materialService.listAll();
         return ResponseEntity.ok(materiais);
     }
 
@@ -89,10 +89,10 @@ public class MaterialController {
     }
 
     @GetMapping("/sugestoes")
-    public ResponseEntity<List<MaterialDTO>> sugerirMateriais() {
+    public ResponseEntity<List<MaterialDTO>> suggestMaterials() {
         try {
             Long userId = authService.getCurrentUser().getId();
-            List<MaterialDTO> sugestoes = materialService.sugerirMateriais(userId);
+            List<MaterialDTO> sugestoes = materialService.suggestMaterials(userId);
             return ResponseEntity.ok(sugestoes);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -102,9 +102,9 @@ public class MaterialController {
     }
 
     @PostMapping("/filtrar-por-areas")
-    public ResponseEntity<List<MaterialDTO>> filtrarPorAreas(@RequestBody List<InterestArea> areas) {
+    public ResponseEntity<List<MaterialDTO>> filterByAreas(@RequestBody List<InterestArea> areas) {
         try {
-            List<MaterialDTO> materiais = materialService.filtrarPorAreasDeInteresse(areas);
+            List<MaterialDTO> materiais = materialService.filterByInterestArea(areas);
             return ResponseEntity.ok(materiais);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
