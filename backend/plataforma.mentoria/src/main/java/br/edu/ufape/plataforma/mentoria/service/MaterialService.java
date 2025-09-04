@@ -1,24 +1,28 @@
 package br.edu.ufape.plataforma.mentoria.service;
 
 import br.edu.ufape.plataforma.mentoria.dto.MaterialDTO;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.enums.MaterialType;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.mapper.MaterialMapper;
 import br.edu.ufape.plataforma.mentoria.model.Material;
 import br.edu.ufape.plataforma.mentoria.model.Mentor;
+import br.edu.ufape.plataforma.mentoria.model.Mentored;
 import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.repository.MaterialRepository;
+import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
+import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.util.List;
+
+import java.util.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,18 +30,22 @@ public class MaterialService {
 
     private final MaterialRepository materialRepository;
     private final UserRepository userRepository;
+    private final MentoredRepository mentoredRepository;
+    private final MentorRepository mentorRepository;
     private final MaterialMapper materialMapper;
     private final Path uploadDir = Paths.get("upload");
 
     @Autowired
     public MaterialService(MaterialRepository materialRepository,
                            UserRepository userRepository,
-                           MaterialMapper materialMapper) {
+                           MaterialMapper materialMapper,
+                           MentoredRepository mentoredRepository,
+                           MentorRepository mentorRepository) {
         this.materialRepository = materialRepository;
         this.userRepository = userRepository;
         this.materialMapper = materialMapper;
-
-        // Criar diretório de upload se não existir
+        this.mentoredRepository = mentoredRepository;
+        this.mentorRepository = mentorRepository;
         try {
             if (!Files.exists(uploadDir)) {
                 Files.createDirectories(uploadDir);
@@ -47,63 +55,27 @@ public class MaterialService {
         }
     }
 
-    /**
-     * Persiste um novo material de apoio no banco de dados.
-     * Para vídeos e documentos, o arquivo é salvo na pasta "upload".
-     *
-     * @param materialDTO DTO com dados do material
-     * @param arquivo Arquivo a ser salvo (quando for documento ou vídeo)
-     * @param userID ID do user que está fazendo o upload
-     * @return Material persistido com ID gerado
-     * @throws IOException Se houver erro ao salvar o arquivo
-     */
+
     public MaterialDTO createMaterial(MaterialDTO materialDTO, MultipartFile arquivo, Long userID) throws IOException {
-        // Buscar mentor pelo ID
         User user = userRepository.findById(userID)
                 .orElseThrow(() -> new EntityNotFoundException(Mentor.class, userID));
-
-        // Converter DTO para entidade
         Material material = materialMapper.toEntity(materialDTO);
-
-        // Tratamento específico para LINK
         if (material.getMaterialType() == MaterialType.LINK) {
-            // Garantir que filePath seja null para LINK
             material.setFilePath(null);
-            // A URL já deve estar definida no objeto material
         }
-        // Verificar se é um tipo que requer arquivo (vídeo ou documento)
         else if ((material.getMaterialType() == MaterialType.VIDEO ||
                 material.getMaterialType() == MaterialType.DOCUMENTO) &&
                 arquivo != null && !arquivo.isEmpty()) {
-
-            // Gerar nome único para o arquivo
             String nomeArquivo = UUID.randomUUID().toString() + "_" + arquivo.getOriginalFilename();
             Path caminhoCompleto = uploadDir.resolve(nomeArquivo);
-
-            // Salvar arquivo no sistema de arquivos
             Files.copy(arquivo.getInputStream(), caminhoCompleto);
-
-            // Atualizar o caminho do arquivo no material
             material.setFilePath(caminhoCompleto.toString());
         }
-
-        // Associar o material ao mentor
         material.setUserUploader(user);
-
-        // Persistir o material no banco de dados
         Material materialSalvo = materialRepository.save(material);
-
-        // Retornar DTO do material salvo
         return materialMapper.toDTO(materialSalvo);
     }
 
-    /**
-     * Busca um material pelo ID
-     *
-     * @param id ID do material a ser buscado
-     * @return DTO do material encontrado
-     * @throws EntityNotFoundException se o material não for encontrado
-     */
     public MaterialDTO getMaterialById(Long id) {
         Material material = materialRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(Material.class, id));
@@ -114,6 +86,107 @@ public class MaterialService {
     public List<MaterialDTO> listarTodos() {
         List<Material> materiais = materialRepository.findAll();
         return materiais.stream()
+                .map(materialMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public MaterialDTO updateById(Long id, MaterialDTO materialDTO, MultipartFile arquivo) throws IOException {
+        // Verificar se o material existe
+        Material existingMaterial = materialRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Material.class, id));
+
+        // Converter DTO para entidade
+        Material updatedMaterial = materialMapper.toEntity(materialDTO);
+        updatedMaterial.setId(id);
+        updatedMaterial.setUserUploader(existingMaterial.getUserUploader());
+
+        if (updatedMaterial.getMaterialType() == MaterialType.LINK) {
+            updatedMaterial.setFilePath(null);
+        }
+        else if ((updatedMaterial.getMaterialType() == MaterialType.VIDEO ||
+                updatedMaterial.getMaterialType() == MaterialType.DOCUMENTO) &&
+                arquivo != null && !arquivo.isEmpty()) {
+            if (existingMaterial.getFilePath() != null) {
+                try {
+                    Files.deleteIfExists(Paths.get(existingMaterial.getFilePath()));
+                } catch (IOException e) {
+                    System.err.println("Não foi possível excluir o arquivo antigo: " + e.getMessage());
+                }
+            }
+            String nomeArquivo = UUID.randomUUID().toString() + "_" + arquivo.getOriginalFilename();
+            Path caminhoCompleto = uploadDir.resolve(nomeArquivo);
+            Files.copy(arquivo.getInputStream(), caminhoCompleto);
+            updatedMaterial.setFilePath(caminhoCompleto.toString());
+        } else {
+            updatedMaterial.setFilePath(existingMaterial.getFilePath());
+        }
+        Material materialSalvo = materialRepository.save(updatedMaterial);
+        return materialMapper.toDTO(materialSalvo);
+    }
+
+    public void deleteById(Long id) {
+        Material material = materialRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(Material.class, id));
+        if (material.getFilePath() != null) {
+            try {
+                Files.deleteIfExists(Paths.get(material.getFilePath()));
+            } catch (IOException e) {
+                System.err.println("Não foi possível excluir o arquivo: " + e.getMessage());
+            }
+        }
+        materialRepository.delete(material);
+    }
+
+    public List<MaterialDTO> filtrarPorAreasDeInteresse(List<InterestArea> areas) {
+        if (areas == null || areas.isEmpty()) {
+            return listarTodos();
+        }
+
+        List<Material> materiais = new ArrayList<>();
+        for (InterestArea area : areas) {
+            materiais.addAll(materialRepository.findByInterestAreaContaining(area));
+        }
+
+        return materiais.stream()
+                .distinct()
+                .map(materialMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<MaterialDTO> sugerirMateriais(Long usuarioId) {
+        User usuario = userRepository.findById(usuarioId)
+                .orElseThrow(() -> new EntityNotFoundException(User.class, usuarioId));
+
+        Set<InterestArea> areasDeInteresse = new HashSet<>();
+
+        if (usuario.getRole() == br.edu.ufape.plataforma.mentoria.enums.UserRole.MENTOR) {
+            Mentor mentor = mentorRepository.findByUserId(usuarioId);
+            if (mentor != null) {
+                areasDeInteresse.addAll(mentor.getInterestArea());
+            }
+        } else {
+            // Verificar se é um mentorado
+            Mentored mentored = mentoredRepository.findByUserId(usuarioId);
+            if (mentored != null) {
+                areasDeInteresse.addAll(mentored.getInterestArea());
+            }
+        }
+
+        if (areasDeInteresse.isEmpty()) {
+            List<Material> materiaisRecentes = materialRepository.findTop10ByOrderByIdDesc();
+            return materiaisRecentes.stream()
+                    .map(materialMapper::toDTO)
+                    .collect(Collectors.toList());
+        }
+
+        List<Material> materiaisSugeridos = new ArrayList<>();
+        for (InterestArea area : areasDeInteresse) {
+            materiaisSugeridos.addAll(materialRepository.findByInterestAreaContaining(area));
+        }
+
+        return materiaisSugeridos.stream()
+                .distinct()
+                .limit(20)
                 .map(materialMapper::toDTO)
                 .collect(Collectors.toList());
     }

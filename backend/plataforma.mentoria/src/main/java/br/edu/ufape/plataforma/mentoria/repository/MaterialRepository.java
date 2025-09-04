@@ -13,4 +13,7 @@ public interface MaterialRepository extends JpaRepository<Material, Long> {
     List<Material> findByMaterialTypeAndInterestArea(MaterialType materialType, InterestArea interestArea);
     List<Material> findByMaterialType(MaterialType materialType);
     List<Material> findByInterestArea(InterestArea interestArea);
+    List<Material> findByInterestAreaContaining(InterestArea area);
+    List<Material> findByMaterialTypeAndInterestAreaContaining(MaterialType tipo, InterestArea area);
+    List<Material> findTop10ByOrderByIdDesc();
 }

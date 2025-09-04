@@ -1,11 +1,10 @@
 package br.edu.ufape.plataforma.mentoria.controller;
 
 import br.edu.ufape.plataforma.mentoria.dto.MaterialDTO;
+import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
-import br.edu.ufape.plataforma.mentoria.model.User;
 import br.edu.ufape.plataforma.mentoria.service.AuthService;
 import br.edu.ufape.plataforma.mentoria.service.MaterialService;
-import br.edu.ufape.plataforma.mentoria.service.MentorSearchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -58,8 +57,57 @@ public class MaterialController {
     }
 
     @GetMapping
-    public ResponseEntity<List<MaterialDTO>> listarTodos() {
+    public ResponseEntity<List<MaterialDTO>> getAllMaterial() {
         List<MaterialDTO> materiais = materialService.listarTodos();
         return ResponseEntity.ok(materiais);
+    }
+
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<MaterialDTO> updateMaterialById(
+            @PathVariable Long id,
+            @RequestPart("material") MaterialDTO materialDTO,
+            @RequestPart(name = "arquivo", required = false) MultipartFile arquivo
+    ) {
+        try {
+            MaterialDTO updatedMaterialDTO = materialService.updateById(id, materialDTO, arquivo);
+            return ResponseEntity.ok(updatedMaterialDTO);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (IOException e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMaterialById(@PathVariable Long id) {
+        try {
+            materialService.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/sugestoes")
+    public ResponseEntity<List<MaterialDTO>> sugerirMateriais() {
+        try {
+            Long userId = authService.getCurrentUser().getId();
+            List<MaterialDTO> sugestoes = materialService.sugerirMateriais(userId);
+            return ResponseEntity.ok(sugestoes);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping("/filtrar-por-areas")
+    public ResponseEntity<List<MaterialDTO>> filtrarPorAreas(@RequestBody List<InterestArea> areas) {
+        try {
+            List<MaterialDTO> materiais = materialService.filtrarPorAreasDeInteresse(areas);
+            return ResponseEntity.ok(materiais);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
