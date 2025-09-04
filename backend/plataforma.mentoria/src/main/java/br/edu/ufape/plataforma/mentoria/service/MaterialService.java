@@ -58,7 +58,7 @@ public class MaterialService {
 
     public MaterialDTO createMaterial(MaterialDTO materialDTO, MultipartFile arquivo, Long userID) throws IOException {
         User user = userRepository.findById(userID)
-                .orElseThrow(() -> new EntityNotFoundException(Mentor.class, userID));
+                .orElseThrow(() -> new EntityNotFoundException(User.class, userID));
         Material material = materialMapper.toEntity(materialDTO);
         if (material.getMaterialType() == MaterialType.LINK) {
             material.setFilePath(null);
