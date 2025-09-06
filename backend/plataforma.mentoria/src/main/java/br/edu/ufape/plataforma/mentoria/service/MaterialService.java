@@ -13,7 +13,6 @@ import br.edu.ufape.plataforma.mentoria.repository.MaterialRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentorRepository;
 import br.edu.ufape.plataforma.mentoria.repository.MentoredRepository;
 import br.edu.ufape.plataforma.mentoria.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +34,6 @@ public class MaterialService {
     private final MaterialMapper materialMapper;
     private final Path uploadDir = Paths.get("upload");
 
-    @Autowired
     public MaterialService(MaterialRepository materialRepository,
                            UserRepository userRepository,
                            MaterialMapper materialMapper,
