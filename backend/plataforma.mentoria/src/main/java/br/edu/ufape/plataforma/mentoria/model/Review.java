@@ -1,6 +1,8 @@
 package br.edu.ufape.plataforma.mentoria.model;
 
 import java.time.LocalDateTime;
+
+import br.edu.ufape.plataforma.mentoria.enums.UserRole;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -35,12 +37,15 @@ public class Review {
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "rated_user_id", nullable = false)
-    private Person ratedUser;
+    @JoinColumn(name = "mentor_id", nullable = false)
+    private Mentor mentor;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "reviewer_user_id", nullable = false)
-    private Person reviewerUser;
+    @JoinColumn(name = "mentored_id", nullable = false)
+    private Mentored mentored;
+
+    @NotNull(message = "A role é obrigatória")
+    private UserRole reviewerRole;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "session_id", nullable = false)
@@ -54,13 +59,15 @@ public class Review {
         this.createdAt = LocalDateTime.now();
     }
 
-    public Review(
-            @NotNull(message = "A nota é obrigatória") @Min(value = 1, message = "A nota minima é 1") @Max(value = 5, message = "A nota máxima é 5") int score,
-            String comment, Person ratedUser, Person reviewerUser, Session session) {
+    public Review(){}
+
+    
+    public Review(int score, String comment, Mentor mentor, Mentored mentored, Session session, UserRole reviewerRole) {
         this.score = score;
         this.comment = comment;
-        this.ratedUser = ratedUser;
-        this.reviewerUser = reviewerUser;
+        this.mentor = mentor;
+        this.mentored = mentored;
+        this.reviewerRole = reviewerRole;
         this.session = session;
     }
 
@@ -84,20 +91,28 @@ public class Review {
         this.comment = comment;
     }
 
-    public Person getRatedUser() {
-        return ratedUser;
+    public Mentor getMentor() {
+        return mentor;
     }
 
-    public void setRatedUser(Person ratedUser) {
-        this.ratedUser = ratedUser;
+    public void setMentor(Mentor mentor) {
+        this.mentor = mentor;
     }
 
-    public Person getReviewerUser() {
-        return reviewerUser;
+    public Mentored getMentored() {
+        return mentored;
     }
 
-    public void setReviewerUser(Person reviewerUser) {
-        this.reviewerUser = reviewerUser;
+    public void setMentored(Mentored mentored) {
+        this.mentored = mentored;
+    }
+
+    public UserRole getReviewerRole() {
+        return reviewerRole;
+    }
+
+    public void setReviewerRole(UserRole reviewerRole) {
+        this.reviewerRole = reviewerRole;
     }
 
     public Session getSession() {
