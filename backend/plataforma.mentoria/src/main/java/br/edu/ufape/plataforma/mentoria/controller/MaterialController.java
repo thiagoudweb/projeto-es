@@ -5,13 +5,11 @@ import br.edu.ufape.plataforma.mentoria.enums.InterestArea;
 import br.edu.ufape.plataforma.mentoria.exceptions.EntityNotFoundException;
 import br.edu.ufape.plataforma.mentoria.service.AuthService;
 import br.edu.ufape.plataforma.mentoria.service.MaterialService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
 import java.util.List;
 
@@ -23,10 +21,8 @@ public class MaterialController {
     private final MaterialService materialService;
 
 
-    @Autowired
     public MaterialController(MaterialService materialService, AuthService authService) {
         this.materialService = materialService;
-
         this.authService = authService;
     }
 
