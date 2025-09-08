@@ -115,28 +115,17 @@ class SecurityFilterTest {
         verify(filterChain).doFilter(request, response);
     }
 
-    @Test
-    void testRecoverTokenNullHeader() throws Exception {
-        when(request.getHeader("Authorization")).thenReturn(null);
+    @org.junit.jupiter.params.ParameterizedTest
+    @org.junit.jupiter.params.provider.MethodSource("invalidAuthorizationHeaders")
+    void testRecoverTokenInvalidHeaders(String headerValue) throws Exception {
+        when(request.getHeader("Authorization")).thenReturn(headerValue);
         var method = SecurityFilter.class.getDeclaredMethod("recoverToken", HttpServletRequest.class);
         method.setAccessible(true);
         assertNull(method.invoke(securityFilter, request));
     }
 
-    @Test
-    void testRecoverTokenEmptyHeader() throws Exception {
-        when(request.getHeader("Authorization")).thenReturn("");
-        var method = SecurityFilter.class.getDeclaredMethod("recoverToken", HttpServletRequest.class);
-        method.setAccessible(true);
-        assertNull(method.invoke(securityFilter, request));
-    }
-
-    @Test
-    void testRecoverTokenInvalidHeader() throws Exception {
-        when(request.getHeader("Authorization")).thenReturn("Basic abc");
-        var method = SecurityFilter.class.getDeclaredMethod("recoverToken", HttpServletRequest.class);
-        method.setAccessible(true);
-        assertNull(method.invoke(securityFilter, request));
+    static java.util.stream.Stream<String> invalidAuthorizationHeaders() {
+        return java.util.stream.Stream.of(null, "", "Basic abc");
     }
 
     @Test
